@@ -1,0 +1,522 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Hephaion - local document harness for cited answers</title>
+    <meta
+      name="description"
+      content="Hephaion is a local document harness for accurate, cited answers over private armories of PDFs, notes, Office files, code, and text."
+    />
+    <meta name="theme-color" content="#000000" />
+    <link rel="canonical" href="https://hephaion.vercel.app/" />
+    <link rel="icon" href="./assets/heph-mark.v0.0.49.svg" type="image/svg+xml" />
+    <meta property="og:title" content="Hephaion" />
+    <meta
+      property="og:description"
+      content="A local document harness for accurate, cited answers, scoped memory, and swappable model access."
+    />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://hephaion.vercel.app/" />
+    <style>
+      :root {
+        color-scheme: dark;
+        --font-sans: Geist, Inter, ui-sans-serif, system-ui, -apple-system,
+          BlinkMacSystemFont, "Segoe UI", sans-serif;
+        --font-mono: "Geist Mono", "SFMono-Regular", Consolas, ui-monospace,
+          monospace;
+        --background: #000;
+        --foreground: #fff;
+        --surface: #161616;
+        --surface-soft: #0f0f0f;
+        --copy: #cfcfcf;
+        --secondary: #8f8f8f;
+        --muted: #6f6f6f;
+        --border: #3d3d3d;
+        --accent: #d06a4a;
+        --success: #57c785;
+        --page-pad: 48px;
+        --wide-max: 1500px;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      html {
+        background: var(--background);
+        color: var(--foreground);
+        scroll-behavior: smooth;
+        -webkit-text-size-adjust: 100%;
+      }
+
+      body {
+        margin: 0;
+        background: var(--background);
+        color: var(--copy);
+        font-family: var(--font-sans);
+        line-height: 1.5;
+        text-rendering: optimizeLegibility;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+      }
+
+      a {
+        color: inherit;
+        text-decoration: none;
+      }
+
+      code,
+      pre {
+        font-family: var(--font-mono);
+      }
+
+      .fallback-header {
+        position: sticky;
+        top: 0;
+        z-index: 2;
+        background: rgb(0 0 0 / 0.86);
+        backdrop-filter: blur(16px);
+      }
+
+      .fallback-nav {
+        width: min(100%, var(--wide-max));
+        min-height: 76px;
+        margin: 0 auto;
+        padding: 0 var(--page-pad);
+        display: flex;
+        align-items: center;
+        gap: 32px;
+      }
+
+      .fallback-brand {
+        display: inline-flex;
+        width: 96px;
+        min-height: 44px;
+        align-items: center;
+      }
+
+      .fallback-brand-logo {
+        display: block;
+        width: 86px;
+        height: auto;
+        aspect-ratio: 4000 / 1083;
+      }
+
+      .fallback-links {
+        margin-left: auto;
+        display: flex;
+        align-items: center;
+        gap: 30px;
+        color: var(--secondary);
+        font-size: 15px;
+      }
+
+      .fallback-links a:hover {
+        color: var(--foreground);
+      }
+
+      .fallback-button {
+        display: inline-flex;
+        min-height: 40px;
+        align-items: center;
+        justify-content: center;
+        border: 1px solid var(--border);
+        border-radius: 6px;
+        padding: 0 16px;
+        color: var(--foreground);
+        font-size: 14px;
+        font-weight: 500;
+      }
+
+      .fallback-button.primary {
+        border-color: var(--accent);
+        background: var(--accent);
+        color: #000;
+      }
+
+      .fallback-main {
+        width: min(100%, var(--wide-max));
+        margin: 0 auto;
+        padding: 78px var(--page-pad) 96px;
+      }
+
+      .fallback-hero {
+        display: grid;
+        grid-template-columns: minmax(0, 0.82fr) minmax(360px, 1fr);
+        gap: clamp(36px, 6vw, 88px);
+        align-items: center;
+      }
+
+      .fallback-hero h1 {
+        margin: 0;
+        color: var(--foreground);
+        font-size: clamp(64px, 9vw, 112px);
+        font-weight: 600;
+        line-height: 1;
+        letter-spacing: 0;
+      }
+
+      .fallback-hero p {
+        max-width: 640px;
+        margin: 24px 0 0;
+        font-size: clamp(18px, 2vw, 24px);
+        line-height: 1.42;
+      }
+
+      .fallback-actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 12px;
+        margin-top: 32px;
+      }
+
+      .fallback-terminal {
+        border: 1px solid var(--border);
+        border-radius: 8px;
+        background: #050505;
+        overflow: hidden;
+      }
+
+      .fallback-terminal-status,
+      .fallback-terminal-footer {
+        display: flex;
+        justify-content: space-between;
+        gap: 18px;
+        padding: 14px 18px;
+        color: var(--secondary);
+        font: 500 13px/18px var(--font-mono);
+      }
+
+      .fallback-terminal-status,
+      .fallback-terminal-footer {
+        border-bottom: 1px solid var(--border);
+      }
+
+      .fallback-terminal-footer {
+        border-top: 1px solid var(--border);
+        border-bottom: 0;
+      }
+
+      .fallback-terminal pre {
+        margin: 0;
+        padding: clamp(22px, 4vw, 44px);
+        color: var(--foreground);
+        font: 500 16px/1.8 var(--font-mono);
+        white-space: pre-wrap;
+      }
+
+      .fallback-terminal em {
+        color: var(--success);
+        font-style: normal;
+      }
+
+      .fallback-section {
+        margin-top: 112px;
+        display: grid;
+        grid-template-columns: minmax(260px, 0.6fr) minmax(0, 1fr);
+        gap: clamp(28px, 6vw, 84px);
+      }
+
+      .fallback-section h2 {
+        margin: 0;
+        color: var(--foreground);
+        font-size: clamp(32px, 4vw, 56px);
+        font-weight: 600;
+        line-height: 1.12;
+        letter-spacing: 0;
+      }
+
+      .fallback-section p {
+        margin: 18px 0 0;
+        max-width: 620px;
+        color: var(--copy);
+        font-size: 17px;
+      }
+
+      .fallback-command,
+      .fallback-card,
+      .fallback-table {
+        border: 1px solid var(--border);
+        border-radius: 8px;
+        background: var(--surface-soft);
+      }
+
+      .fallback-command {
+        margin: 0;
+        padding: 24px;
+        color: var(--foreground);
+        font: 500 16px/1.8 var(--font-mono);
+        white-space: pre-wrap;
+      }
+
+      .fallback-grid {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 16px;
+      }
+
+      .fallback-card {
+        padding: 22px;
+      }
+
+      .fallback-card h3 {
+        margin: 0;
+        color: var(--foreground);
+        font-size: 20px;
+        line-height: 1.35;
+      }
+
+      .fallback-card p {
+        margin-top: 12px;
+        font-size: 15px;
+      }
+
+      .fallback-table {
+        overflow: hidden;
+      }
+
+      .fallback-row {
+        display: grid;
+        grid-template-columns: 0.8fr 0.9fr 1fr;
+        gap: 16px;
+        padding: 16px 18px;
+        border-top: 1px solid var(--border);
+      }
+
+      .fallback-row:first-child {
+        border-top: 0;
+        color: var(--foreground);
+        font-weight: 500;
+      }
+
+      .fallback-row span {
+        min-width: 0;
+      }
+
+      .fallback-final {
+        margin-top: 112px;
+        padding: 38px 0 0;
+        border-top: 1px solid var(--border);
+        display: flex;
+        justify-content: space-between;
+        gap: 32px;
+        align-items: center;
+      }
+
+      .fallback-final h2 {
+        margin: 0;
+        color: var(--foreground);
+        font-size: 40px;
+        line-height: 1.15;
+      }
+
+      .fallback-final p {
+        margin: 12px 0 0;
+      }
+
+      .fallback-footer {
+        width: min(100%, var(--wide-max));
+        margin: 0 auto;
+        padding: 0 var(--page-pad) 48px;
+        color: var(--muted);
+        font-size: 14px;
+      }
+
+      @media (max-width: 960px) {
+        :root {
+          --page-pad: 24px;
+        }
+
+        .fallback-links {
+          display: none;
+        }
+
+        .fallback-hero,
+        .fallback-section {
+          grid-template-columns: 1fr;
+        }
+
+        .fallback-grid,
+        .fallback-row {
+          grid-template-columns: 1fr;
+        }
+
+        .fallback-final {
+          align-items: flex-start;
+          flex-direction: column;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div id="root">
+      <header class="fallback-header">
+        <nav class="fallback-nav" aria-label="Primary navigation">
+          <a class="fallback-brand" href="#top" aria-label="Hephaion home">
+            <img
+              class="fallback-brand-logo"
+              src="./assets/logo-auto.v0.0.49.svg"
+              alt=""
+              aria-hidden="true"
+            />
+          </a>
+          <div class="fallback-links">
+            <a href="#install">Install</a>
+            <a href="#cli">Terminal</a>
+            <a href="#workflow">Workflow</a>
+            <a href="#sdk">Bridge</a>
+            <a href="#privacy">Privacy</a>
+          </div>
+          <a class="fallback-button" href="#install">Download</a>
+        </nav>
+      </header>
+
+      <main class="fallback-main" id="top">
+        <section class="fallback-hero" aria-labelledby="fallback-title">
+          <div>
+            <h1 id="fallback-title">Hephaion</h1>
+            <p>
+              A local document harness for accurate, cited answers. Build an
+              armory from your files, ask questions, and inspect the evidence
+              path.
+            </p>
+            <div class="fallback-actions">
+              <a class="fallback-button primary" href="#install">Install Heph locally</a>
+              <a class="fallback-button" href="#cli">Try the terminal</a>
+            </div>
+          </div>
+
+          <section class="fallback-terminal" id="cli" aria-label="Heph terminal preview">
+            <div class="fallback-terminal-status">
+              <span>Heph ARMORY exams MODEL gpt-5.5</span>
+              <span>REASONING low</span>
+            </div>
+            <pre><code>OPEN ctrl+a
+OPEN exact armory name
+SCOPE ~/.armories
+MATERIALS materials/
+
+-> Ask a cited question about your materials.
+
+Heph retrieves top chunks, answers with citations,
+and keeps <em>[E1]</em> inspectable in /evidence.</code></pre>
+            <div class="fallback-terminal-footer">
+              <span>ARMORY ctrl+a</span>
+              <span>MATERIALS ctrl+o</span>
+              <span>COMMANDS ctrl+p</span>
+            </div>
+          </section>
+        </section>
+
+        <section class="fallback-section" id="install" aria-labelledby="fallback-install">
+          <div>
+            <h2 id="fallback-install">Install Heph locally.</h2>
+            <p>
+              Use uv tool for the public command, then open Heph and check the
+              installed version.
+            </p>
+          </div>
+          <pre class="fallback-command"><code>uv tool install heph@latest
+heph
+heph --version</code></pre>
+        </section>
+
+        <section class="fallback-section" id="workflow" aria-labelledby="fallback-workflow">
+          <div>
+            <h2 id="fallback-workflow">A harness around your documents, not a hosted workspace.</h2>
+            <p>
+              Hephaion provides the guardrails around Heph: retrieval, citation
+              checks, scoped memory, and model boundaries.
+            </p>
+          </div>
+          <div class="fallback-grid">
+            <article class="fallback-card">
+              <h3>Create an armory</h3>
+              <p>
+                Each project gets a normal folder under ~/.armories with source
+                files, local memory, saved chats, traces, and retrieval state.
+              </p>
+            </article>
+            <article class="fallback-card">
+              <h3>Ask with evidence</h3>
+              <p>
+                Heph retrieves from enabled materials before the model answers,
+                then keeps citations and evidence inspectable.
+              </p>
+            </article>
+            <article class="fallback-card">
+              <h3>Keep models swappable</h3>
+              <p>
+                Use /login and /models for hosted providers, local llama.cpp, or
+                a custom OpenAI-compatible endpoint.
+              </p>
+            </article>
+          </div>
+        </section>
+
+        <section class="fallback-section" id="sdk" aria-labelledby="fallback-sdk">
+          <div>
+            <h2 id="fallback-sdk">Use the SDK when the interface is yours.</h2>
+            <p>
+              The browser surface can talk to a local bridge at 127.0.0.1:8766.
+              Deployed pages stay static; your armory stays on your machine.
+            </p>
+          </div>
+          <pre class="fallback-command"><code>npm run heph:sdk-bridge -- --armory ~/.armories/exams --allow-origin https://hephaion.vercel.app
+# then refresh this page and ask in the terminal</code></pre>
+        </section>
+
+        <section class="fallback-section" id="privacy" aria-labelledby="fallback-privacy">
+          <div>
+            <h2 id="fallback-privacy">Private by default, explicit when it talks to a model.</h2>
+            <p>
+              Documents, chat history, retrieval indexes, traces, and local
+              memory live in the armory.
+            </p>
+          </div>
+          <div class="fallback-table" role="table" aria-label="Supported model access">
+            <div class="fallback-row" role="row">
+              <span role="columnheader">Provider</span>
+              <span role="columnheader">Access</span>
+              <span role="columnheader">Use</span>
+            </div>
+            <div class="fallback-row" role="row">
+              <span role="cell">Pollinations AI</span>
+              <span role="cell">No account required</span>
+              <span role="cell">Testing and casual use</span>
+            </div>
+            <div class="fallback-row" role="row">
+              <span role="cell">OpenAI</span>
+              <span role="cell">API key or subscription login</span>
+              <span role="cell">Production document work</span>
+            </div>
+            <div class="fallback-row" role="row">
+              <span role="cell">Local llama.cpp</span>
+              <span role="cell">Local tool-capable model</span>
+              <span role="cell">Private prompts on your machine</span>
+            </div>
+          </div>
+        </section>
+
+        <section class="fallback-final" aria-labelledby="fallback-final-title">
+          <div>
+            <h2 id="fallback-final-title">Start with one armory.</h2>
+            <p>Install Heph, add files to materials/, and ask for an answer you can trace.</p>
+          </div>
+          <a class="fallback-button primary" href="#install">Get the install script</a>
+        </section>
+      </main>
+
+      <footer class="fallback-footer">
+        Heph is the public command for the Hephaion local document harness.
+      </footer>
+    </div>
+
+    <script type="module">
+      if (window.location.protocol !== "file:") {
+        import("./src/main.jsx");
+      }
+    </script>
+  </body>
+</html>
