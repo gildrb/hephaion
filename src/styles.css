@@ -551,7 +551,8 @@ h3 {
 .feature-card p,
 .sdk-notes p,
 .final-cta p,
-.secondary-install,
+.install-notes,
+.workflow-notes,
 .site-footer {
   color: var(--color-surface-foreground);
 }
@@ -589,12 +590,18 @@ h3 {
   font-size: 14px;
 }
 
-.secondary-install {
+.install-notes {
   grid-column: 2;
-  margin: 0;
+  display: grid;
+  gap: 8px;
+  margin: -28px 0 0;
   color: var(--color-tertiary);
   font-size: 14px;
   line-height: 22px;
+}
+
+.install-notes p {
+  margin: 0;
 }
 
 .workflow-grid {
@@ -602,6 +609,26 @@ h3 {
   grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 20px;
   margin-top: 34px;
+}
+
+.workflow-onboarding {
+  display: grid;
+  grid-template-columns: minmax(420px, 1fr) minmax(0, 0.86fr);
+  gap: 24px;
+  align-items: start;
+  margin-top: 34px;
+}
+
+.workflow-notes {
+  display: grid;
+  gap: 10px;
+  color: var(--color-surface-foreground);
+  font-size: 15px;
+  line-height: 23px;
+}
+
+.workflow-notes p {
+  margin: 0;
 }
 
 .feature-card {
@@ -726,11 +753,15 @@ h3 {
     display: none;
   }
 
-  .secondary-install {
+  .install-notes {
     grid-column: 1;
   }
 
   .workflow-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .workflow-onboarding {
     grid-template-columns: 1fr;
   }
 }

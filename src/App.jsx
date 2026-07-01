@@ -3,6 +3,9 @@ import { probeHephBridge, streamPromptThroughBridge } from "./hephSdkBridge.js";
 
 const INSTALL_SCRIPT = "uv tool install heph@latest\nheph\nheph --version";
 const SECONDARY_INSTALL = "pip install heph";
+const PATH_FIX = "uv tool update-shell";
+const ARMORY_SCRIPT =
+  "heph armory course-notes\ncp notes.pdf ~/.armories/course-notes/materials/\nheph course-notes";
 const DEFAULT_SITE_ORIGIN = "https://hephaion.vercel.app";
 
 const NAV_LINKS = [
@@ -678,9 +681,16 @@ function InstallSection() {
         </p>
       </div>
       <CommandBlock command={INSTALL_SCRIPT} feedbackId="install-copy-feedback" />
-      <p className="secondary-install">
-        Prefer pip for this Python environment? <code>{SECONDARY_INSTALL}</code>
-      </p>
+      <div className="install-notes" aria-label="Install notes">
+        <p>
+          If your shell cannot find <code>heph</code> after install, run{" "}
+          <code>{PATH_FIX}</code>, restart the terminal, then try{" "}
+          <code>heph --version</code> again.
+        </p>
+        <p>
+          Prefer pip for this Python environment? <code>{SECONDARY_INSTALL}</code>
+        </p>
+      </div>
     </section>
   );
 }
@@ -728,6 +738,20 @@ function WorkflowSection() {
           Hephaion provides the guardrails around Heph: retrieval, citation
           checks, scoped memory, and model boundaries.
         </p>
+      </div>
+      <div className="workflow-onboarding">
+        <CommandBlock command={ARMORY_SCRIPT} feedbackId="armory-copy-feedback" />
+        <div className="workflow-notes">
+          <p>
+            An armory is a normal folder under <code>~/.armories</code>. Put
+            source files in its <code>materials/</code> directory, open the
+            armory by name, then ask questions against that local scope.
+          </p>
+          <p>
+            Use <code>/materials</code> to choose what retrieval can see and{" "}
+            <code>/evidence</code> to inspect the chunks behind an answer.
+          </p>
+        </div>
       </div>
       <div className="workflow-grid">
         {WORKFLOW_STEPS.map((step) => (

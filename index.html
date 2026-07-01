@@ -250,6 +250,35 @@
         white-space: pre-wrap;
       }
 
+      .fallback-workflow-onboarding {
+        display: grid;
+        grid-template-columns: minmax(360px, 1fr) minmax(0, 0.86fr);
+        gap: 20px;
+        align-items: start;
+        margin-bottom: 22px;
+      }
+
+      .fallback-workflow-notes {
+        color: var(--copy);
+        font-size: 15px;
+        line-height: 1.55;
+      }
+
+      .fallback-workflow-notes p {
+        margin: 0 0 10px;
+      }
+
+      .fallback-install-notes {
+        margin-top: 16px;
+        color: var(--muted);
+        font-size: 14px;
+        line-height: 1.55;
+      }
+
+      .fallback-install-notes p {
+        margin: 8px 0 0;
+      }
+
       .fallback-grid {
         display: grid;
         grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -333,7 +362,8 @@
         }
 
         .fallback-hero,
-        .fallback-section {
+        .fallback-section,
+        .fallback-workflow-onboarding {
           grid-template-columns: 1fr;
         }
 
@@ -420,6 +450,14 @@ and keeps <em>[E1]</em> inspectable in /evidence.</code></pre>
           <pre class="fallback-command"><code>uv tool install heph@latest
 heph
 heph --version</code></pre>
+          <div class="fallback-install-notes">
+            <p>
+              If your shell cannot find <code>heph</code> after install, run
+              <code>uv tool update-shell</code>, restart the terminal, then try
+              <code>heph --version</code> again.
+            </p>
+            <p>Prefer pip for this Python environment? <code>pip install heph</code></p>
+          </div>
         </section>
 
         <section class="fallback-section" id="workflow" aria-labelledby="fallback-workflow">
@@ -430,7 +468,26 @@ heph --version</code></pre>
               checks, scoped memory, and model boundaries.
             </p>
           </div>
-          <div class="fallback-grid">
+          <div>
+            <div class="fallback-workflow-onboarding">
+              <pre class="fallback-command"><code>heph armory course-notes
+cp notes.pdf ~/.armories/course-notes/materials/
+heph course-notes</code></pre>
+              <div class="fallback-workflow-notes">
+                <p>
+                  An armory is a normal folder under <code>~/.armories</code>.
+                  Put source files in its <code>materials/</code> directory,
+                  open the armory by name, then ask questions against that
+                  local scope.
+                </p>
+                <p>
+                  Use <code>/materials</code> to choose what retrieval can see
+                  and <code>/evidence</code> to inspect the chunks behind an
+                  answer.
+                </p>
+              </div>
+            </div>
+            <div class="fallback-grid">
             <article class="fallback-card">
               <h3>Create an armory</h3>
               <p>
@@ -452,6 +509,7 @@ heph --version</code></pre>
                 a custom OpenAI-compatible endpoint.
               </p>
             </article>
+            </div>
           </div>
         </section>
 
