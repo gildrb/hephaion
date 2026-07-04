@@ -10,7 +10,7 @@ Search for and remove:
 - fixed repository owner/name strings
 - local machine paths
 - clone URLs in guidance files
-- `Product-Grade` or `product-grade`
+- unnecessary quality-label wording
 - product-specific command rules in root files
 
 ## Structure Checks
