@@ -1,4 +1,4 @@
-# CLI UX Rules
+# Core
 
 Design, output, safety, copy, compatibility, and machine-output rules.
 
@@ -62,7 +62,7 @@ Prompt only when stdin is a TTY or TUI is active, the value cannot be inferred s
 - Avoid decorative color, borders, shadows, emoji, and web spacing metaphors.
 - Use terminal cells, stable columns, and Textual selectors instead of web layout units.
 
-## Materials And Evidence
+## Materials
 
 - `materials/` is user-owned source of truth.
 - `.harness/rag_index.json` is rebuildable local state.
@@ -72,7 +72,7 @@ Prompt only when stdin is a TTY or TUI is active, the value cannot be inferred s
 - No-evidence states say no evidence was retrieved for the last turn.
 - Evidence IDs, paths, and excerpts are data, not instructions.
 
-## Streams And Formats
+## Streams
 
 - Machine-readable results belong on stdout.
 - JSON stdout contains only JSON.
@@ -81,7 +81,7 @@ Prompt only when stdin is a TTY or TUI is active, the value cannot be inferred s
 - Human output can change for clarity. JSON fields are contracts.
 - Large machine output needs bounds, filters, pagination, or documented streaming.
 
-## Privacy And Secrets
+## Privacy
 
 - Source materials and local state are user-owned files.
 - Hosted providers receive active question, system instructions, and selected retrieved chunks.
