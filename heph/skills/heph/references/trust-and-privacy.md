@@ -1,4 +1,4 @@
-# Trust And Privacy
+# Trust
 
 Local-first trust contract.
 
