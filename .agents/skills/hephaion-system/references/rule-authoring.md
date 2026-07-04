@@ -5,6 +5,8 @@ Rules make agents consistent without freezing product evolution.
 ## Documentation Density
 
 - No filler in docs.
+- No slogans, proverbs, idioms, or aphorisms.
+- No AI cadence: avoid setup phrases, inflated contrasts, and motivational claims.
 - Use blunt, short sentences.
 - Keep claims exact. Do not trade accuracy for brevity.
 - Every line must route, constrain, define, or verify.
@@ -12,6 +14,13 @@ Rules make agents consistent without freezing product evolution.
 - Product `AGENTS.md`: 80 non-empty lines max unless product safety requires more.
 - Prefer route tables over explanatory prose.
 - Move examples, state machines, edge cases, and transcripts into skill references.
+
+## Banned Patterns
+
+- `The <noun> is the <noun>` slogan headings.
+- `At its core`, `more than`, `not just`, `whether you are`, `designed to`, `built to help`.
+- `seamless`, `effortless`, `robust`, `powerful`, `unlock`, `leverage`, `utilize`, `streamline`.
+- Motivational summaries that do not add a route, constraint, definition, or check.
 
 ## Write Applicable Rules
 
