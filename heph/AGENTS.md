@@ -2,8 +2,9 @@
 
 Product router for Heph. Read source first, then docs.
 
-## Density Contract
+## Documentation Contract
 
+- Follow root docs voice: no filler, blunt sentences, exact claims.
 - Keep this file under 80 non-empty lines.
 - Route here; put examples and edge cases in `skills/*/references/*`.
 - One Heph noun, command, state, or contract per rule.
