@@ -1,6 +1,6 @@
 # Hephaion Agent Guide
 
-Root router. Keep product rules inside product folders.
+Root router. Product folders own product rules.
 
 ## Documentation Contract
 
@@ -16,9 +16,10 @@ Root router. Keep product rules inside product folders.
 
 1. Inspect the task and repository.
 2. Identify the product from changed paths, commands, package names, docs, or UI surfaces.
-3. Heph work routes to `heph/AGENTS.md` before any Heph skill.
-4. Load the narrowest skill for the touched surface.
-5. Preserve public contracts unless a migration is requested and tested.
+3. If a product is known, load `<product>/AGENTS.md`.
+4. If no product is clear, inspect root folders and README files first.
+5. Let the product guide select product-specific skills.
+6. Preserve public contracts unless a migration is requested and tested.
 
 ## Authority
 
@@ -30,25 +31,30 @@ Root router. Keep product rules inside product folders.
 
 Source proves current behavior; guidance records intended behavior.
 
-## Routes
-
-| Task | Load |
-| --- | --- |
-| Heph work | `heph/AGENTS.md` |
-| Heph CLI/TUI, copy, commands, JSON, slash commands | `heph/skills/cli-ux/SKILL.md` |
-| Heph design, web, terminal styling, TUI layout | `heph/skills/design-engineering/SKILL.md` |
-| Heph operations, armories, materials, models, trust, SDK | `heph/skills/heph/SKILL.md` |
-| Root architecture or product packaging | `.agents/skills/hephaion-system/SKILL.md` |
-| Shared design-system architecture | `.agents/skills/hephaion-design/SKILL.md` |
-
-## Product Package
+## Repository Shape
 
 ```text
 <product>/AGENTS.md
 <product>/README.md
 <product>/skills/<skill>/SKILL.md
 <product>/skills/<skill>/references/*
+.agents/skills/<shared-skill>/SKILL.md
 ```
+
+## Known Products
+
+| Product | Entry |
+| --- | --- |
+| `heph/` | `heph/AGENTS.md` |
+
+## Shared Routes
+
+| Task | Load |
+| --- | --- |
+| Root architecture or product packaging | `.agents/skills/hephaion-system/SKILL.md` |
+| Shared design-system architecture | `.agents/skills/hephaion-design/SKILL.md` |
+
+## Ownership
 
 Root owns routing, safety, and package shape. Product folders own vocabulary, commands, runtime paths, UI rules, compatibility contracts, and verification gates.
 
