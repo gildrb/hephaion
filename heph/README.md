@@ -1,6 +1,6 @@
 # Package
 
-Agent documentation for this product.
+Agent documentation.
 
 Local document agent: indexes armory files, answers from them, and shows citations.
 
