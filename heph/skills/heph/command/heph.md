@@ -1,4 +1,4 @@
-# Heph Command Reference
+# Commands
 
 Common public commands. Check `heph --help` and `heph <command> --help` for current flags.
 
@@ -32,7 +32,7 @@ heph local revalidate <model-id>
 heph local stop
 ```
 
-## Trust, Config, SDK, And Automation
+## Trust, Config, SDK
 
 ```bash
 heph trust [path]
@@ -52,7 +52,7 @@ heph release status
 heph --version
 ```
 
-## Important Environment Variables
+## Env Vars
 
 ```bash
 HARNESS_API_KEY=<api-key>
