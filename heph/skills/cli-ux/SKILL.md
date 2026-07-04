@@ -1,6 +1,6 @@
 ---
 name: heph-cli-ux
-description: Use for CLI/TUI changes that affect command UX, slash commands, prompts, help, output, progress, errors, JSON/JSONL, stdout/stderr, agent behavior, copy, terminal styling, Textual layout, or tests.
+description: Use for CLI/TUI UX, output, prompts, help, errors, JSON/JSONL, stdout/stderr, copy, terminal styling, Textual layout, or tests.
 ---
 
 # CLI UX
@@ -9,7 +9,7 @@ Use this skill for CLI/TUI behavior that affects humans, scripts, or agents.
 
 ## Stance
 
-Work as a CLI product engineer for a local-first document agent.
+CLI product engineering for a local document agent.
 
 - Define user job, friction, outcome, success signal, and non-goals before choosing copy or layout.
 - Inspect source and tests before judging a shipped string.
