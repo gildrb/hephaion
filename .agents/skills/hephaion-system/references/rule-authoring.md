@@ -1,14 +1,17 @@
 # Rule Authoring
 
-Rules should make agents consistent without freezing product evolution.
+Rules make agents consistent without freezing product evolution.
 
-## Density
+## Documentation Density
 
+- No filler in docs.
+- Use blunt, short sentences.
+- Keep claims exact. Do not trade accuracy for brevity.
+- Every line must route, constrain, define, or verify.
 - Root `AGENTS.md`: 60 non-empty lines max unless routing truly requires more.
 - Product `AGENTS.md`: 80 non-empty lines max unless product safety requires more.
 - Prefer route tables over explanatory prose.
 - Move examples, state machines, edge cases, and transcripts into skill references.
-- One rule per line. Delete filler before adding rules.
 
 ## Write Applicable Rules
 
