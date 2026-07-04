@@ -20,9 +20,9 @@ Product router. Read source first, then docs.
 
 1. User goal and constraints.
 2. Verified source, tests, and runtime behavior.
-3. Product docs and design docs.
+3. Docs and design docs.
 4. This package.
-5. Adjacent product patterns, then general heuristics.
+5. Adjacent patterns, then general heuristics.
 
 ## Routes
 
