@@ -1,22 +1,22 @@
-# Heph Package
+# Package
 
-The Heph package contains product-specific agent guidance for Heph.
+Agent documentation for this product.
 
-Heph is a local document agent. It indexes files in an armory, answers from those files, and shows cited source passages.
+Local document agent: indexes armory files, answers from them, and shows citations.
 
 ## Quick Start
 
 ```text
-Read heph/AGENTS.md
-Choose the Heph skill for the task
-Inspect current Heph source and tests
-Apply the relevant Heph contracts
+Read AGENTS.md
+Choose the skill for the task
+Inspect current source and tests
+Apply product contracts
 Verify the changed surface
 ```
 
 ## Armory Layout
 
-Heph work uses local armories:
+Work uses local armories:
 
 ```text
 <armory>/
@@ -25,28 +25,28 @@ Heph work uses local armories:
 └── README.md
 ```
 
-`materials/` contains user source files. `.harness/` contains Heph local state: indexes, memory, chats, traces, usage snapshots, and ignore rules.
+`materials/` contains user source files. `.harness/` contains local state: indexes, memory, chats, traces, usage snapshots, and ignore rules.
 
-## Package Map
+## Map
 
 ```text
-heph/AGENTS.md
-  Heph product router.
+AGENTS.md
+  product router
 
-heph/skills/heph/
-  Heph operations, commands, troubleshooting, trust, SDK, and automation.
+skills/heph/
+  operations, commands, troubleshooting, trust, SDK, automation
 
-heph/skills/cli-ux/
-  Heph CLI/TUI UX, copy, command contracts, machine output, and verification.
+skills/cli-ux/
+  CLI/TUI UX, copy, command contracts, machine output, verification
 
-heph/skills/design-engineering/
-  Heph web, brand, terminal, and TUI design engineering.
+skills/design-engineering/
+  web, brand, terminal, TUI design
 ```
 
-## Source Of Truth
+## Source
 
-For Heph tasks, inspect the current Heph repository first. Use source, tests, docs, command help, and design docs as immediate truth. Update this package after confirming durable rules.
+Inspect current source first. Use tests, docs, command help, and design docs as immediate truth. Update this package after confirming durable rules.
 
 ## Safety
 
-Do not expose source document text, retrieved chunks, prompts, traces, API keys, credentials, or private user data unless the user asks for an inspection surface that should show it.
+Do not expose source text, retrieved chunks, prompts, traces, API keys, credentials, or private data unless the user asks for an inspection surface that should show it.
