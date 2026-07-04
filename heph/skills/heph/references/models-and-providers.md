@@ -1,21 +1,19 @@
 # Models And Providers
 
-Heph separates armories from compute. The model/provider choice can change without changing the user's materials.
+Armories are separate from compute. Model and provider can change without changing materials.
 
 ## Provider Types
 
-Heph may support hosted providers, custom endpoints, and local models. Verify current provider support in Heph source, docs, or command help before adding provider-specific guidance.
+Supported providers may include hosted providers, custom endpoints, and local models. Verify current support in source, docs, or command help before adding provider-specific guidance.
 
 ## Trust Boundary
 
 - Local models keep prompts, retrieved chunks, and tool calls on the user's machine after required assets are available.
-- Hosted providers receive the active question, system instructions, and selected retrieved chunks needed for the answer.
+- Hosted providers receive active question, system instructions, and selected retrieved chunks.
 - Custom endpoints receive the same request shape at the configured endpoint.
 - Diagnostics are separate from model prompts.
 
 ## Configure
-
-Inside Heph:
 
 ```text
 /login
@@ -32,11 +30,9 @@ HARNESS_BASE_URL=<url>
 HARNESS_MODEL=<provider-model-name>
 ```
 
-Provider-specific keys may exist. Check current Heph docs before naming them.
+Provider-specific keys may exist. Check current docs before naming them.
 
 ## Local Models
-
-Commands:
 
 ```bash
 heph local search [query]
@@ -48,20 +44,20 @@ heph local stop
 
 Rules:
 
-- Local install should show download size and recommended RAM.
-- Heph manages local model cache under its documented cache directory.
-- Models are usable only after Heph validation passes.
+- Install should show download size and recommended RAM.
+- Cache path must be documented.
+- Models are usable only after validation passes.
 - Failed models can remain downloaded and be revalidated.
 
-## Troubleshooting
+## Troubleshoot
 
-Model missing:
+Missing model:
 
 1. Check credentials.
 2. Use `/login`.
 3. Use `/models`.
 4. For local models, run `heph local status`.
-5. Revalidate local models with `heph local revalidate <model-id>`.
+5. Revalidate with `heph local revalidate <model-id>`.
 
 Slow responses:
 
