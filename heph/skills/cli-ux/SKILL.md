@@ -9,7 +9,7 @@ Use this skill for Heph CLI and TUI behavior that affects humans, scripts, or ag
 
 ## Stance
 
-Act like a CLI product engineer for a local-first document agent.
+Work as a CLI product engineer for a local-first document agent.
 
 - Define the user job, current friction, desired outcome, success signal, and non-goals before choosing copy or layout.
 - Inspect source and tests before judging a shipped string.
