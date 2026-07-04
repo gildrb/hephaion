@@ -12,7 +12,7 @@ Root router. Product folders own product rules.
 - Use blunt, short sentences.
 - Use short headings.
 - File paths carry context.
-- Headings should name the local surface, not the product and parent category.
+- Headings name local surface, not product plus parent folder.
 - Every line must route, constrain, define, or verify.
 - Keep claims exact. Do not trade accuracy for brevity.
 - Use bullets and tables; move examples and edge cases into skill references.
