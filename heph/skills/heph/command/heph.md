@@ -2,7 +2,7 @@
 
 Common public commands. Check `heph --help` and `heph <command> --help` for current flags.
 
-## App And Armories
+## App
 
 ```bash
 heph                         # open current armory or plain chat
@@ -12,7 +12,7 @@ heph armory init <name>      # create a named armory
 heph armory open <path>      # open and validate an armory
 ```
 
-## Materials And Indexing
+## Materials
 
 ```bash
 heph materials list <path>   # list material files
