@@ -1,6 +1,6 @@
 ---
 name: hephaion-design
-description: Use for shared design rules, accessibility, visual checks, or design package structure. Use product design skills for product tokens, components, or surfaces.
+description: Use for shared design rules, accessibility, visual checks, or design package structure.
 ---
 
 # Design
