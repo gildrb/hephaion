@@ -12,7 +12,7 @@ When changing CLI/TUI UX:
 - cover human and JSON/JSONL formats when both exist
 - cover stdout/stderr split for machine output
 - cover missing armory, empty materials, stale index, missing model, missing credentials, provider failure, and no evidence when relevant
-- cover local-first privacy boundaries when changing provider, diagnostics, trust, or local model surfaces
+- cover local privacy boundaries when changing provider, diagnostics, trust, or local model surfaces
 - cover no secret echo after API key, env value, or credential input
 - cover source text, retrieved chunks, prompts, and traces not leaking into ordinary output
 - cover narrow terminal width and long names when layout changes
