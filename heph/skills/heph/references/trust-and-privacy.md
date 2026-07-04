@@ -1,6 +1,6 @@
 # Trust
 
-Local-first trust contract.
+Trust contract for local files and compute boundaries.
 
 ## Local Ownership
 
