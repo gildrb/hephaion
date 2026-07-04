@@ -1,0 +1,99 @@
+---
+name: heph-cli-ux
+description: Use for Heph CLI or TUI changes that affect command UX, slash commands, prompts, help, output layout, progress, success, warnings, errors, JSON/JSONL/stdout/stderr contracts, non-interactive or agent behavior, copy, terminal styling, Textual layout, or tests for those surfaces. Do not load for implementation-only refactors with unchanged user surface.
+---
+
+# Heph CLI UX
+
+Canonical front door for making the Heph CLI and TUI consistent, quiet, evidence-forward, scriptable, and agent-ready.
+
+## Stance
+
+Act like a CLI product engineer for a local-first document agent.
+
+- Define the user job, current friction, desired outcome, success signal, and non-goals before choosing copy or layout.
+- Inspect source and tests before judging a shipped string.
+- Treat copy changes as symptoms. Check the surrounding flow, resolved state, side effects, privacy boundary, and tests.
+- Keep human output readable and machine output stable.
+- Treat agents as first-class users and untrusted input sources.
+- Preserve compatibility for commands, env vars, config keys, file layout, JSON fields, parseable stdout, and exit behavior.
+- Prefer existing terminal, palette, Textual, and command-family helpers.
+- Favor readability over micro-optimization.
+
+## Decision Authority
+
+Resolve conflicts in this order:
+
+1. The user's explicit goal and constraints.
+2. Verified Heph source and tests.
+3. Heph docs: `README.md`, `docs/*`, `cli-design.md`, and `design.md`.
+4. This skill and its references.
+5. Adjacent command-family patterns.
+6. General CLI and TUI heuristics.
+
+Do not let an old string override a better product contract. Do not let a generic CLI rule override Heph's privacy, evidence, or local-ownership model.
+
+## Workflow
+
+1. Outcome map: name the user, job, current behavior, desired outcome, success signal, and non-goals.
+2. Surface map: list help, flags, slash commands, prompts, progress, warnings, success, errors, tables, panels, JSON, JSONL, and non-interactive payloads.
+3. State map: name armory, cwd/path, materials, index state, evidence state, model, provider, credentials, diagnostics, memory, and local caches.
+4. Mode map: trace TTY, non-TTY, TUI, plain CLI, JSON, JSONL, CI, and agent/non-interactive behavior.
+5. Trust map: identify prompts, retrieved chunks, API keys, traces, analytics, crash reports, local models, and hosted-provider boundaries.
+6. Question audit: prove every prompt cannot be inferred and has a flag, slash path, payload, or non-interactive error.
+7. Mutation audit: identify local writes, remote/provider calls, cache downloads, model server starts, indexing, retries, idempotency, and confirmation needs.
+8. Transcript review: read the before/after terminal or TUI transcript for order, rhythm, duplicated concepts, privacy language, and next action.
+9. Regression lock: test changed paths and reject stale strings, stale product terms, broken stdout contracts, and design-doc drift.
+
+## When To Load References
+
+Load only what the task needs.
+
+| Task surface | Load |
+| --- | --- |
+| Any CLI or TUI UX/output change | `references/core.md` |
+| User-facing copy or copy review | `references/core.md` + `references/copy.md` |
+| Prompt, slash-command, setup, or armory flow | `copy.md` prompts + `core.md` flow rules + `command-contracts.md` when the flow is named there |
+| Output layout, progress, status, transcript, or terminal styling | `core.md` layout, progress, TUI, and terminal resilience sections |
+| Errors, trust, credentials, privacy, diagnostics, or provider failures | `copy.md` errors and warnings + `core.md` local-first, secrets, and streams sections |
+| JSON, JSONL, SDK, CI, or non-interactive paths | `core.md` streams, agent output, compatibility, and hardening sections |
+| Help, flags, env vars, config, or completions | `copy.md` help + `core.md` commands, flags, compatibility, and data mechanics sections |
+| Armory, materials, evidence, model, local-model, settings, update flows | `command-contracts.md` |
+| Tests, stale-copy sweeps, final review | `verification.md` |
+
+If you add durable guidance, put reusable behavior in `core.md`, wording rules in `copy.md`, command-only state machines in `command-contracts.md`, and test/review gates in `verification.md`.
+
+## Quality Bar
+
+Every changed flow should answer:
+
+- What armory, material set, model, provider, or local path did Heph resolve?
+- What will be read, written, sent, indexed, downloaded, or changed?
+- What evidence or state is available now?
+- What can the user or agent do next?
+
+Top-tier Heph flows:
+
+- make the common path short
+- ask only what cannot be inferred
+- show local and provider trust boundaries before sensitive action
+- keep source files, retrieved passages, prompts, and API keys out of logs and examples
+- make no-materials, stale-index, no-evidence, missing-model, and missing-credential states explicit
+- keep JSON/JSONL parseable and stdout-clean
+- expose exact next commands when useful
+- preserve armory portability and local ownership in wording
+- make cancellation and long-running indexing/model states recoverable
+
+## Minimum Done State
+
+A CLI/TUI UX change is not done until:
+
+- the before/after transcript is easier to scan
+- all directly coupled user-facing strings were reviewed, not only the edited line
+- prompt/result copy was checked with layout, order, and surrounding flow
+- local writes, provider calls, downloads, and diagnostics side effects are visible when they matter
+- every prompt has a non-interactive equivalent or failure message
+- JSON/JSONL output remains valid, bounded, and stdout-clean
+- source document text, secrets, prompts, and retrieved chunks are not leaked into human or machine output by default
+- stale Heph terms and vague copy are locked out by tests or review sweeps
+- focused tests pass, or unrelated failures are named with evidence
