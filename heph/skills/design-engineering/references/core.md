@@ -1,4 +1,4 @@
-# Design Rules
+# Core
 
 Reusable rules for web, brand, CLI, and TUI surfaces.
 
@@ -16,7 +16,7 @@ Surfaces should be:
 
 Avoid decorative color, gradient hero shortcuts, glass effects, oversized marketing cards, stock-feeling visuals, and ornamental animation. Show materials, evidence, armory, and trust boundary.
 
-## Source Boundaries
+## Sources
 
 Use the right contract:
 
@@ -39,7 +39,7 @@ Do not copy terminal cell dimensions into responsive web layout. Do not copy web
 - Make disabled and loading states explicit.
 - Keep critical IDs, paths, commands, and evidence references exact and copyable.
 
-## Evidence And Trust
+## Evidence, Trust
 
 Evidence and trust need visible UI state.
 
