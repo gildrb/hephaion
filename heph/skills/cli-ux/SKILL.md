@@ -5,17 +5,17 @@ description: Use for Heph CLI or TUI changes that affect command UX, slash comma
 
 # Heph CLI UX
 
-Canonical front door for making the Heph CLI and TUI consistent, quiet, evidence-forward, scriptable, and agent-ready.
+Use this skill for Heph CLI and TUI behavior that affects humans, scripts, or agents.
 
 ## Stance
 
-Act like a CLI product engineer for a local-first document agent.
+Work as a CLI product engineer for a local-first document agent.
 
 - Define the user job, current friction, desired outcome, success signal, and non-goals before choosing copy or layout.
 - Inspect source and tests before judging a shipped string.
 - Treat copy changes as symptoms. Check the surrounding flow, resolved state, side effects, privacy boundary, and tests.
 - Keep human output readable and machine output stable.
-- Treat agents as first-class users and untrusted input sources.
+- Treat agents as supported users and untrusted input sources.
 - Preserve compatibility for commands, env vars, config keys, file layout, JSON fields, parseable stdout, and exit behavior.
 - Prefer existing terminal, palette, Textual, and command-family helpers.
 
@@ -56,7 +56,7 @@ Resolve conflicts in this order:
 | Armory, materials, evidence, model, local-model, settings, update flows | `command-contracts.md` |
 | Tests, stale-copy sweeps, final review | `verification.md` |
 
-## Quality Bar
+## Done Questions
 
 Every changed flow should answer:
 

@@ -14,9 +14,9 @@ Apply the relevant Heph contracts
 Verify the changed surface
 ```
 
-## The Armory Is The Interface
+## Armory Layout
 
-Heph work is centered on local armories:
+Heph work uses local armories:
 
 ```text
 <armory>/
@@ -25,7 +25,7 @@ Heph work is centered on local armories:
 └── README.md
 ```
 
-`materials/` contains user source files. `.harness/` contains Heph local state such as indexes, memory, chats, traces, usage snapshots, and ignore rules.
+`materials/` contains user source files. `.harness/` contains Heph local state: indexes, memory, chats, traces, usage snapshots, and ignore rules.
 
 ## Package Map
 
@@ -45,8 +45,8 @@ heph/skills/design-engineering/
 
 ## Source Of Truth
 
-For a Heph task, inspect the current Heph repository first. Use Heph source, tests, docs, command help, and design docs as the immediate truth. This package records durable rules after they are confirmed.
+For Heph tasks, inspect the current Heph repository first. Use source, tests, docs, command help, and design docs as immediate truth. Update this package after confirming durable rules.
 
 ## Safety
 
-Do not expose source document text, retrieved chunks, prompts, traces, API keys, credentials, or private user data unless the user explicitly asks for an inspection surface that should show it.
+Do not expose source document text, retrieved chunks, prompts, traces, API keys, credentials, or private user data unless the user asks for an inspection surface that should show it.

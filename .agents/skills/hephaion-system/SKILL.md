@@ -9,7 +9,7 @@ Use this skill when the task changes the parent agent system rather than one pro
 
 ## Stance
 
-Act like a maintainer of an evolving product architecture.
+Maintain an evolving product architecture.
 
 - Keep the root small and durable.
 - Route product-specific work into product folders.

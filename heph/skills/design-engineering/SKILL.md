@@ -5,11 +5,11 @@ description: Use for Heph web, brand, static site, design-system, CSS, HTML, vis
 
 # Heph Design Engineering
 
-Canonical front door for implementing Heph's design system in code.
+Use this skill for Heph design-system implementation in code.
 
 ## Stance
 
-Act like a design engineer who ships production UI.
+Work as a design engineer shipping production UI.
 
 - Read the existing implementation before drawing a new component.
 - Treat Heph design docs as product contracts, not mood boards.
