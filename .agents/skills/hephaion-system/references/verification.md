@@ -1,6 +1,6 @@
-# Hephaion System Verification
+# System Verification
 
-Use these checks when changing root guidance, product package routing, or reusable skills.
+Use these checks when changing root guidance, product routing, or shared skills.
 
 ## Text Checks
 
@@ -8,6 +8,7 @@ Search for and remove:
 
 - filler, slogan headings, proverbs, idioms, and aphorisms
 - AI cadence patterns such as setup phrases, inflated contrasts, and motivational claims
+- repeated product names in product-folder headings
 - outside provenance statements
 - fixed repository owner/name strings
 - local machine paths
