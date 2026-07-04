@@ -1,13 +1,16 @@
 # Rule Authoring
 
-Rules make agents consistent without freezing product evolution.
+Rules make agents consistent without freezing product changes.
 
-## Documentation Density
+## Density
 
 - No filler in docs.
 - No slogans, proverbs, idioms, or aphorisms.
 - No AI cadence: avoid setup phrases, inflated contrasts, and motivational claims.
 - Use blunt, short sentences.
+- Use short headings.
+- File paths carry context.
+- Headings should name the local surface, not the product and parent category.
 - Keep claims exact. Do not trade accuracy for brevity.
 - Every line must route, constrain, define, or verify.
 - Root `AGENTS.md`: 60 non-empty lines max unless routing truly requires more.
@@ -18,11 +21,12 @@ Rules make agents consistent without freezing product evolution.
 ## Banned Patterns
 
 - `The <noun> is the <noun>` slogan headings.
+- Repeating product or parent folder names in product-folder headings.
 - `At its core`, `more than`, `not just`, `whether you are`, `designed to`, `built to help`.
 - `seamless`, `effortless`, `robust`, `powerful`, `unlock`, `leverage`, `utilize`, `streamline`.
 - Motivational summaries that do not add a route, constraint, definition, or check.
 
-## Write Applicable Rules
+## Applicable Rules
 
 Good rules include:
 
@@ -34,16 +38,16 @@ Good rules include:
 
 Avoid vague goals such as `make it nice`, `improve quality`, or `follow best practices` without checkable behavior.
 
-## Keep Layers Separate
+## Layers
 
-- Root: routing, safety, product package shape, shared verification.
-- Product package: commands, vocabulary, product UX, runtime paths, compatibility contracts.
+- Root: routing, safety, package shape, shared verification.
+- Product package: commands, vocabulary, UX, runtime paths, compatibility contracts.
 - Skill front door: when to load references and how to triage the task.
-- Reference files: durable rules, examples, contracts, and review gates.
+- References: durable rules, examples, contracts, and review gates.
 
-## Avoid Brittle Assumptions
+## Brittle Assumptions
 
-Do not hardcode repository owners, local clone paths, source attribution, or machine-specific locations. Use repository-relative paths for guidance files and product-runtime paths only when they are part of the product contract.
+Do not hardcode repository owners, local clone paths, source attribution, or machine-specific locations. Use repository-relative paths for guidance files and product-runtime paths only when they are product contracts.
 
 ## Examples
 

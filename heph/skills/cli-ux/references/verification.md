@@ -1,10 +1,10 @@
-# Heph CLI UX Verification
+# Verification
 
-Testing, stale-copy sweeps, and final review gates for Heph CLI and TUI work.
+Tests, stale-copy sweeps, and review gates for CLI/TUI work.
 
-## General Matrix
+## Matrix
 
-When changing CLI or TUI UX behavior:
+When changing CLI/TUI UX:
 
 - update direct expectations
 - add negative assertions for removed strings
@@ -12,12 +12,12 @@ When changing CLI or TUI UX behavior:
 - cover human and JSON/JSONL formats when both exist
 - cover stdout/stderr split for machine output
 - cover missing armory, empty materials, stale index, missing model, missing credentials, provider failure, and no evidence when relevant
-- cover local-first privacy boundaries when changing provider, diagnostics, trust, or local model surfaces
+- cover local privacy boundaries when changing provider, diagnostics, trust, or local model surfaces
 - cover no secret echo after API key, env value, or credential input
-- cover source document text, retrieved chunks, prompts, and traces not leaking into ordinary output
+- cover source text, retrieved chunks, prompts, and traces not leaking into ordinary output
 - cover narrow terminal width and long names when layout changes
 
-## Stale-Copy Sweeps
+## Stale Copy
 
 Run relevant sweeps on touched source and tests:
 
@@ -28,17 +28,17 @@ rg -n "\b(seamlessly|effortlessly|leverage|utilize|streamline|robust|powerful)\b
 rg -n "workspace|knowledge base|docs corpus|source files" <paths>
 ```
 
-Classify every match. Legacy compatibility strings may remain when tests prove they are intentional.
+Classify every match. Legacy compatibility strings may remain when tests prove intent.
 
-## Review Checklist
+## Review
 
 Reject or fix changes that:
 
 - add inferable prompts
 - ask the same concept twice
-- ask vague setup or open intent after an explicit command
+- ask vague setup or open intent after explicit command
 - hide local writes, provider calls, downloads, or diagnostics side effects when they matter
-- use non-Heph nouns where canonical nouns apply
+- use noncanonical nouns
 - mix human output into JSON or JSONL stdout
 - break non-TTY, CI, or non-interactive behavior
 - expose API keys, env values, prompts, source text, retrieved chunks, traces, usage snapshots, or crash data
@@ -46,13 +46,13 @@ Reject or fix changes that:
 - rely on color alone for required state
 - leave no-materials, no-evidence, missing-model, or stale-index states without next action
 - suggest blind retry for provider calls, downloads, indexing, or local model installs before status inspection when duplicate work is risky
-- review only the edited string instead of the whole supplied command surface
+- review only the edited string instead of the whole command surface
 
-## Design Drift Gate
+## Design Drift
 
 When CLI/TUI styling changes:
 
-- compare implementation tokens to the palette contract in the Heph source
+- compare implementation tokens to palette contract in source
 - compare terminal helper behavior to source helpers
-- compare Textual CSS and display text to the Heph CLI design docs
+- compare Textual CSS and display text to design docs
 - run focused TUI/palette tests touched by the change

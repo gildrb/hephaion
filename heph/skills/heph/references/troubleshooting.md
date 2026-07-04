@@ -1,8 +1,8 @@
-# Heph Troubleshooting
+# Troubleshooting
 
-Start with the concrete state: armory, materials, index, model, provider, trust boundary.
+Start with state: armory, materials, index, model, provider, trust boundary.
 
-## No Armory Or Wrong Armory
+## Wrong Armory
 
 ```bash
 heph armory open <path>
@@ -17,8 +17,6 @@ Check:
 - `HARNESS_ARMORY_HOME` if named armories do not appear
 
 ## No Materials
-
-Add files:
 
 ```bash
 cp <file> ~/.armories/<name>/materials/
@@ -47,9 +45,7 @@ Common causes:
 - material disabled in `/materials`
 - question needs a different model after retrieval succeeds
 
-## Missing Model Or Credentials
-
-Inside Heph:
+## Missing Model
 
 ```text
 /login
@@ -64,7 +60,7 @@ HARNESS_API_KEY=<api-key>
 HARNESS_MODEL=<provider-model-name>
 ```
 
-## Local Model Fails
+## Local Model
 
 ```bash
 heph local status
@@ -72,9 +68,9 @@ heph local revalidate <model-id>
 heph local stop
 ```
 
-A downloaded local model is not usable until Heph validation passes.
+A downloaded local model is not usable until validation passes.
 
-## Privacy Questions
+## Privacy
 
 ```bash
 heph trust <path>
@@ -87,7 +83,7 @@ Explain:
 - local models keep prompts local after required assets are available
 - diagnostics are opt-in and separate from prompts
 
-## Update Problems
+## Updates
 
 ```bash
 heph release status

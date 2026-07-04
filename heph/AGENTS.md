@@ -1,28 +1,28 @@
-# Heph Agent Guide
+# Agent Guide
 
-Product router for Heph. Read source first, then docs.
+Product router. Read source first, then docs.
 
 ## Documentation Contract
 
 - Follow root docs voice: no filler, blunt sentences, exact claims.
 - Keep this file under 80 non-empty lines.
 - Route here; put examples and edge cases in `skills/*/references/*`.
-- One Heph noun, command, state, or contract per rule.
+- One noun, command, state, or contract per rule.
 
 ## Start
 
-1. Inspect Heph source and tests before changing behavior.
+1. Inspect source and tests before changing behavior.
 2. Identify the surface: CLI/TUI, design, operations, docs, or release.
-3. Load one matching Heph skill.
+3. Load one matching skill.
 4. Preserve public contracts unless a migration is requested and tested.
 
 ## Authority
 
 1. User goal and constraints.
-2. Verified Heph source, tests, and runtime behavior.
-3. Heph docs and design docs.
+2. Verified source, tests, and runtime behavior.
+3. Docs and design docs.
 4. This package.
-5. Adjacent Heph patterns, then general heuristics.
+5. Adjacent patterns, then general heuristics.
 
 ## Routes
 

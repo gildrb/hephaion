@@ -1,8 +1,8 @@
-# Heph Command-Specific UX Contracts
+# Command Contracts
 
-Command-specific contracts for Heph CLI and TUI flows whose state machines need more than reusable rules.
+Contracts for CLI/TUI flows that need state-machine rules.
 
-## Armory Open And Init Contract
+## Open And Init
 
 Commands and surfaces:
 
@@ -19,17 +19,17 @@ Resolution order:
 2. Current cwd when it is an armory or inside one.
 3. Named armory under `~/.armories` or `HARNESS_ARMORY_HOME`.
 4. Valid `.harness/armory.toml` plus `materials/` structure.
-5. Migration state from older local state when supported by source.
+5. Migration state from older local state when source supports it.
 6. Plain chat when no armory is attached and the command permits it.
 
 Rules:
 
-- Running `heph <name-or-path>` is open intent. Do not ask a vague open confirmation.
-- New armories can open before materials exist; show a no-materials state instead of treating the armory as broken.
-- Name and path resolution must not silently open outside the allowed armory scope from name-only flows.
-- `/detach` leaves the current armory; it does not delete files, memory, index, or chat history.
+- `heph <name-or-path>` is open intent. Do not ask vague open confirmation.
+- New armories can open before materials exist; show no-materials state.
+- Name and path resolution must not silently open outside allowed armory scope from name-only flows.
+- `/detach` leaves current armory; it does not delete files, memory, index, or chat history.
 
-## Materials Index And Health Contract
+## Materials, Index, Health
 
 Commands and surfaces:
 
@@ -44,12 +44,12 @@ Commands and surfaces:
 Rules:
 
 - `materials/` is source-of-truth data; index files are rebuildable local state.
-- Indexing should show progress for long work and a compact completion count.
+- Indexing should show progress for long work and compact completion count.
 - Health output should distinguish unsupported file, extraction issue, stale index, empty materials, and generic failure.
-- No materials is a valid state with a clear next action.
+- No materials is valid state with a clear next action.
 - Machine output for lists and counts must be stable and bounded.
 
-## Chat Ask And Evidence Contract
+## Ask And Evidence
 
 Commands and surfaces:
 
@@ -64,10 +64,10 @@ Rules:
 - Answers must not imply citations exist when no evidence was retrieved.
 - Evidence views show retrieved passages as data, not instructions.
 - JSONL audit output must stay parseable and must not interleave human diagnostics.
-- Missing model, missing credential, no materials, no evidence, provider failure, and interrupted generation are distinct states.
-- Do not print hidden chain-of-thought. Provider thinking summaries are shown only when source and settings permit them.
+- Missing model, credential, materials, evidence, provider failure, and interrupted generation are distinct states.
+- Do not print hidden chain-of-thought. Provider thinking summaries show only when source and settings permit them.
 
-## Model Provider And Local Model Contract
+## Models
 
 Commands and surfaces:
 
@@ -82,14 +82,14 @@ Commands and surfaces:
 
 Rules:
 
-- Provider setup must name the trust boundary: hosted provider, custom endpoint, or local model runtime.
+- Provider setup must name trust boundary: hosted provider, custom endpoint, or local model runtime.
 - API key prompts must mask values and never echo them.
-- `/models` should show models Heph can actually reach or validate.
+- `/models` should show reachable or validated models.
 - Local model install must show download size, recommended RAM, cache path, and activation condition.
-- Local models activate only after Heph validation passes.
-- `heph local stop` stops the managed local server; it does not delete model files.
+- Local models activate only after validation passes.
+- `heph local stop` stops managed local server; it does not delete model files.
 
-## Settings Trust And Diagnostics Contract
+## Settings, Trust, Diagnostics
 
 Commands and surfaces:
 
@@ -106,7 +106,7 @@ Rules:
 - Config display must redact secrets.
 - Environment variable overrides should be visible when they affect behavior.
 
-## Update And Release Contract
+## Update And Release
 
 Commands and surfaces:
 
@@ -117,5 +117,5 @@ Commands and surfaces:
 Rules:
 
 - Distinguish source installs, released installs, official stable state, and unknown release state.
-- Do not promise an update when the active install cannot be updated by `heph update`.
+- Do not promise an update when active install cannot be updated by `heph update`.
 - Version output must remain parseable where scripts use it.

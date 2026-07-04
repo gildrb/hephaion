@@ -1,26 +1,24 @@
-# Getting Started With Heph
+# Getting Started
 
 ## Install
 
-Heph requires Python 3.13+.
-
-Recommended install:
+Requires Python 3.13+.
 
 ```bash
 uv tool install heph@latest
 heph --version
 ```
 
-Source install for development:
+Development install:
 
 ```bash
 uv sync --frozen --group dev
 uv run heph
 ```
 
-Run source commands from the Heph repository root.
+Run source commands from the repository root.
 
-## Create An Armory
+## Create Armory
 
 ```bash
 heph armory init <name>
@@ -28,30 +26,30 @@ cp <file> ~/.armories/<name>/materials/
 heph <name>
 ```
 
-A new armory can open before documents are added. Heph should show a no-materials state until files are present in `materials/`.
+A new armory can open before documents are added. Show a no-materials state until files exist in `materials/`.
 
-## Configure A Model
+## Configure Model
 
-Inside Heph, use:
+Inside the app:
 
 ```text
 /login
 /models
 ```
 
-Provider setup can use `/login`, saved settings, a custom endpoint, local model setup, or supported environment variables. Check current Heph docs and CLI help for provider-specific keys.
+Provider setup can use `/login`, saved settings, a custom endpoint, local model setup, or supported env vars. Check current docs and CLI help for provider-specific keys.
 
-## Ask Questions
+## Ask
 
-Ask questions about the materials in the active armory. Heph retrieves relevant passages, generates an answer, shows citations, and saves armory-scoped memory.
+Ask questions about active armory materials. The app retrieves passages, answers, shows citations, and saves armory-scoped memory.
 
-Use `/evidence` to inspect what was retrieved for the last answer.
+Use `/evidence` to inspect last-answer retrieval.
 
-## First Checks When Setup Fails
+## Setup Fails
 
-1. Confirm the armory path and `materials/` folder.
+1. Confirm armory path and `materials/`.
 2. Run `heph index <path>`.
 3. Run `heph health <path>`.
-4. Use `/login` or configured provider credentials.
+4. Use `/login` or configured credentials.
 5. Use `/models` to pick a reachable model.
 6. Use `/trust` or `heph trust <path>` to inspect ownership and data flow.

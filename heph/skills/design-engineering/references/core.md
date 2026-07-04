@@ -1,32 +1,28 @@
-# Core Heph Design Engineering Rules
+# Core
 
-Reusable design-engineering rules for Heph web, brand, CLI, and TUI surfaces.
+Reusable rules for web, brand, CLI, and TUI surfaces.
 
-## Product Traits
+## Targets
 
-Heph surfaces should be:
+- Show the product object: armory, materials, evidence, model, provider, path, state, or trust boundary.
+- Keep dense surfaces scannable.
+- Keep paths, commands, IDs, and evidence references copyable.
+- Use quiet color and clear hierarchy.
+- Mark missing, disabled, unverified, loading, and error states with text.
 
-- private
-- precise
-- quiet
-- local-first
-- evidence-forward
-- fast
-- easy to scan
+Avoid decorative color, gradient-only heroes, glass effects, oversized cards, generic stock visuals, and ornamental animation.
 
-Avoid decorative color, gradient hero shortcuts, glass effects, oversized marketing cards, stock-feeling visuals, and ornamental animation. Show the user's materials, evidence, armory, and trust boundary.
+## Sources
 
-## Source Boundaries
-
-Use the right contract for the surface:
+Use the right contract:
 
 - CLI design docs: terminal cells, Textual CSS, ANSI styles, one-line status bars, fixed-width side panels, TUI copy density.
 - Web design docs: browser layout, responsive spacing, radius, media, native forms, focus states, static web stack, brand expression.
-- Heph source and tests: immediate truth when docs drift.
+- Source and tests: immediate truth when docs drift.
 
-Do not copy terminal cell dimensions into responsive web layout. Do not copy web radius, cards, and shadows into terminal surfaces.
+Do not copy terminal cell dimensions into responsive web layout. Do not copy web radius, cards, or shadows into terminal surfaces.
 
-## Implementation Principles
+## Implementation
 
 - Read existing implementation before adding UI.
 - Use semantic tokens before raw values.
@@ -39,7 +35,7 @@ Do not copy terminal cell dimensions into responsive web layout. Do not copy web
 - Make disabled and loading states explicit.
 - Keep critical IDs, paths, commands, and evidence references exact and copyable.
 
-## Evidence And Trust Components
+## Evidence, Trust
 
 Evidence and trust need visible UI state.
 

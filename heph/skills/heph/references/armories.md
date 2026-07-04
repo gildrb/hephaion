@@ -1,13 +1,13 @@
 # Armories
 
-An armory is Heph's local workspace. It is a normal directory with source files, chat history, retrieval index, traces, usage snapshots, and local memory.
+An armory is a local workspace with source files, chat history, retrieval index, traces, usage snapshots, and memory.
 
 ## Structure
 
 ```text
 ~/.armories/<name>/
   materials/        source documents
-  .harness/         Heph local state
+  .harness/         local state
     armory.toml     armory marker
     rag_index.json  retrieval index
     memory.json     armory memory
@@ -20,25 +20,25 @@ An armory is Heph's local workspace. It is a normal directory with source files,
 
 ## Ownership
 
-- `materials/` is the source of truth.
-- `.harness/` is local Heph state.
+- `materials/` is source of truth.
+- `.harness/` is local state.
 - Index files are rebuildable.
-- Provider credentials stay machine-local and are not stored in `.armories`.
+- Provider credentials stay machine-local.
 - Copy or sync `.armories` to move work between machines.
 
-## Creating
+## Create
 
 ```bash
 heph armory init <name>
 ```
 
-Use descriptive names such as `research-course` or `q3-reports`. Avoid opaque names that make later selection ambiguous.
+Use names such as `research-course` or `q3-reports`. Avoid opaque names.
 
-## Moving
+## Move
 
-Copy the armory folder or the whole armory home with normal file tools. On another machine, install Heph, place the folder under the armory home, configure provider credentials, and run `heph <name>`.
+Copy the armory folder or armory home. On another machine, install the app, place the folder under armory home, configure provider credentials, and run `heph <name>`.
 
-## Maintenance
+## Maintain
 
 - Add files to `materials/`.
 - Use `.harness/ignore` for ignore patterns.
@@ -46,11 +46,9 @@ Copy the armory folder or the whole armory home with normal file tools. On anoth
 - Run `heph health <path>` when retrieval quality is poor.
 - Use `/evidence` to inspect retrieval for a turn.
 
-## Recovery
-
-If an armory does not open:
+## Recover
 
 1. Check that `materials/` exists.
 2. Check `.harness/armory.toml`.
-3. Check for legacy state if the armory came from an older release.
+3. Check legacy state if the armory came from an older release.
 4. Avoid guessing when two state directories conflict.

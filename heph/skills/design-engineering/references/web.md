@@ -1,8 +1,8 @@
-# Heph Web Design Engineering
+# Web System
 
-Browser and brand rules for Heph.
+Browser and brand rules.
 
-## Stack Contract
+## Stack
 
 Default stack:
 
@@ -15,11 +15,11 @@ Default stack:
 - no bundler by default
 - static files by default
 
-Do not introduce a framework, component library, router, CSS framework, preprocessor, or build system unless the product direction explicitly requires it.
+Do not introduce a framework, component library, router, CSS framework, preprocessor, or build system unless product direction requires it.
 
-## Theme And Tokens
+## Tokens
 
-Use exact values from Heph design docs or implementation source. Do not invent adjacent shades in component code.
+Use exact values from design docs or source. Do not invent adjacent shades in component code.
 
 Required token meanings:
 
@@ -37,13 +37,13 @@ Required token meanings:
 
 ## Typography
 
-- Use the product font stack from Heph design docs.
+- Use product font stack from design docs.
 - Use mono for commands, code, paths, IDs, metrics, evidence IDs, and timestamps.
 - Letter spacing is 0.
 - Do not animate or change font weight on hover, focus, active, or selected states.
 - Use tabular numbers for counters, timers, metrics, and totals.
 
-## Layout And Components
+## Layout
 
 - Use responsive constraints, not viewport-scaled font sizes.
 - Do not create card-in-card layouts.
@@ -51,17 +51,17 @@ Required token meanings:
 - Use native `<button>` elements for actions.
 - Icon-only buttons need `aria-label`.
 - Inputs need labels and correct types.
-- Use `<table>` for truly tabular data.
+- Use `<table>` for tabular data.
 - Evidence panels must show source identity and missing/unverified state with text.
 
-## Media And Motion
+## Media
 
 - Use real images for inspectable images.
 - Provide useful alt text for meaningful images.
 - Mark decorative images with empty alt text.
-- Frequent interactions should avoid extraneous animation.
+- Frequent interactions should avoid extra animation.
 - Respect reduced motion.
 
-## Web Review Gates
+## Review
 
 Before shipping web UI, verify desktop and mobile widths, keyboard operation, focus visibility, text fit, no layout shift, contrast, and no framework/build-step drift.

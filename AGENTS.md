@@ -1,4 +1,4 @@
-# Hephaion Agent Guide
+# Agent Guide
 
 Root router. Product folders own product rules.
 
@@ -10,6 +10,9 @@ Root router. Product folders own product rules.
 - Keep root `AGENTS.md` under 60 non-empty lines.
 - Keep product `AGENTS.md` under 80 non-empty lines.
 - Use blunt, short sentences.
+- Use short headings.
+- File paths carry context.
+- Headings name local surface, not product plus parent folder.
 - Every line must route, constrain, define, or verify.
 - Keep claims exact. Do not trade accuracy for brevity.
 - Use bullets and tables; move examples and edge cases into skill references.
@@ -28,7 +31,7 @@ Root router. Product folders own product rules.
 1. User goal and constraints.
 2. Verified source, tests, and runtime behavior.
 3. Relevant product package.
-4. Reusable Hephaion guidance.
+4. Reusable guidance.
 5. Adjacent patterns, then general heuristics.
 
 When source and guidance differ, inspect source and tests first. Update guidance after confirming intended behavior.

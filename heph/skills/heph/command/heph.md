@@ -1,8 +1,8 @@
-# Heph Command Reference
+# Commands
 
 Common public commands. Check `heph --help` and `heph <command> --help` for current flags.
 
-## App And Armories
+## App
 
 ```bash
 heph                         # open current armory or plain chat
@@ -12,7 +12,7 @@ heph armory init <name>      # create a named armory
 heph armory open <path>      # open and validate an armory
 ```
 
-## Materials And Indexing
+## Materials
 
 ```bash
 heph materials list <path>   # list material files
@@ -32,7 +32,7 @@ heph local revalidate <model-id>
 heph local stop
 ```
 
-## Trust, Config, SDK, And Automation
+## Trust, Config, SDK
 
 ```bash
 heph trust [path]
@@ -52,7 +52,7 @@ heph release status
 heph --version
 ```
 
-## Important Environment Variables
+## Env Vars
 
 ```bash
 HARNESS_API_KEY=<api-key>

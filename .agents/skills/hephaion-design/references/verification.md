@@ -1,6 +1,6 @@
-# Shared Design Verification
+# Design Verification
 
-Use these checks for cross-product visual and interaction work.
+Use these checks for shared visual and interaction work.
 
 ## Matrix
 
@@ -26,5 +26,5 @@ Verify:
 - layout shift on hover or selection
 - custom controls without semantics
 - decorative UI that hides the product object
-- hardcoded values that bypass the product design system
+- hardcoded values that bypass product tokens
 - stale design docs after changing public tokens or selectors

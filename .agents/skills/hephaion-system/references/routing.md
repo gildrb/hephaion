@@ -1,30 +1,26 @@
 # Product Routing
 
-Hephaion routes work from root guidance to product packages.
+Route work from root guidance to product packages.
 
 ## Root Routing
 
-Root `AGENTS.md` should answer only:
+Root `AGENTS.md` answers:
 
 - Which product package owns this task?
-- Which skill inside that product package should be loaded?
-- Which universal safety and compatibility rules apply before product rules?
+- Which product guide should load next?
+- Which shared safety rules apply first?
 
-Root files should not explain a product's full command set, UI copy, design tokens, or runtime paths.
+Root files must not explain product command sets, copy, tokens, or runtime paths.
 
-## Product Discovery
-
-To identify the product:
+## Discovery
 
 1. Check changed paths.
-2. Check task wording for product names, command names, package names, UI surfaces, and docs names.
-3. Inspect root folders for matching product package names.
-4. Load the product package `AGENTS.md` after a product is identified.
-5. If more than one product is touched, load each relevant product package.
+2. Check task wording for product names, commands, package names, UI surfaces, and docs names.
+3. Inspect root folders for matching product packages.
+4. Load `<product>/AGENTS.md` after identifying the product.
+5. Load each relevant product guide for multi-product work.
 
-## Product Package Shape
-
-A product package should use this shape:
+## Package Shape
 
 ```text
 <product>/
@@ -36,8 +32,8 @@ A product package should use this shape:
         └── references/
 ```
 
-Product packages may add command, design, operations, review, or release skills as needed.
+Product packages may add command, design, operations, review, or release skills.
 
-## Cross-Product Changes
+## Cross-Product Work
 
-A rule belongs at root only when it applies to every product package without product vocabulary. If the rule names product commands, product files, product runtime paths, or product-specific UI surfaces, put it in the product package.
+A rule belongs at root only when it applies without product vocabulary. If it names product commands, files, runtime paths, or UI surfaces, put it in the product package.
