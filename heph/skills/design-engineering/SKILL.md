@@ -1,44 +1,42 @@
 ---
-name: heph-design-engineering
-description: Use for Heph web, brand, static site, design-system, CSS, HTML, visual UI, accessibility, responsive layout, palette, typography, forms, media, motion, CLI/TUI styling, Textual layout, or design-doc changes.
+name: heph-design
+description: Use for web, brand, static site, design system, CSS, HTML, visual UI, accessibility, responsive layout, palette, typography, forms, media, motion, CLI/TUI styling, Textual layout, or design-doc changes.
 ---
 
-# Heph Design Engineering
+# Design
 
-Use this skill for Heph design-system implementation in code.
+Use this skill for design-system implementation in code.
 
 ## Stance
 
 Work as a design engineer shipping production UI.
 
-- Read the existing implementation before drawing a new component.
-- Treat Heph design docs as product contracts, not mood boards.
+- Read existing implementation before drawing a new component.
+- Treat design docs as product contracts.
 - Use native platform behavior before custom interaction.
-- Make the real product object visible: armories, materials, evidence, models, paths, citations, trust boundaries.
+- Show product objects: armories, materials, evidence, models, paths, citations, trust boundaries.
 - Prefer dense, scannable product surfaces over marketing composition.
-- Keep visual hierarchy mostly in typography, spacing, neutral color, and content structure.
+- Keep hierarchy in typography, spacing, neutral color, and content structure.
 
-## Decision Authority
+## Authority
 
-Resolve conflicts in this order:
-
-1. The user's explicit goal and constraints.
-2. Verified Heph source, tests, and screenshots.
-3. Heph design docs in the target repository.
-4. `heph/AGENTS.md` and this skill.
-5. Existing Heph implementation patterns.
+1. User goal and constraints.
+2. Verified source, tests, and screenshots.
+3. Design docs.
+4. `AGENTS.md` and this skill.
+5. Existing implementation patterns.
 6. General accessibility, web, terminal, and design-system heuristics.
 
-## When To Load References
+## References
 
-| Task surface | Load |
+| Task | Load |
 | --- | --- |
-| Any design engineering work | `references/core.md` |
+| Design work | `references/core.md` |
 | Web, brand, static pages, CSS, HTML, browser components | `references/core.md` + `references/web.md` |
 | CLI/TUI styling, Textual layout, palette roles, terminal components | `references/core.md` + `references/tui.md` |
 | Visual QA, accessibility, screenshots, design-doc drift | `references/verification.md` |
-| Copy inside terminal or TUI UI | `../cli-ux/references/copy.md` |
+| Terminal or TUI copy | `../cli-ux/references/copy.md` |
 
-## Minimum Done State
+## Done
 
-A design change is not done until it uses Heph tokens and semantic roles, respects the web versus CLI/TUI boundary, includes relevant states, keeps text fitting, and verifies accessibility and documentation drift.
+A design change is done when it uses product tokens and semantic roles, respects web versus CLI/TUI boundaries, includes relevant states, keeps text fitting, and verifies accessibility and documentation drift.
