@@ -1,4 +1,4 @@
-# Models And Providers
+# Models
 
 Armories are separate from compute. Model and provider can change without changing materials.
 
