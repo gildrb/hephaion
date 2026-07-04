@@ -37,7 +37,7 @@ EVIDENCE none yet
 STATE current
 ```
 
-## Textual Layout
+## Layout
 
 Respect existing full-height vertical screen and source selectors. Use terminal cells and content width rules, not web spacing units. Do not import web card, radius, or shadow patterns.
 
@@ -50,6 +50,6 @@ Respect existing full-height vertical screen and source selectors. Use terminal 
 - Disabled material state uses muted text, not error color.
 - Error rows use error text plus readable state.
 
-## Review Gates
+## Review
 
 Before shipping terminal changes, verify semantic palette use, dark/light behavior when relevant, narrow terminal behavior, focus/selection states, uppercase labels, value preservation, and design-doc drift.
