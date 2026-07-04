@@ -1,4 +1,4 @@
-# SDK And Automation
+# SDK
 
 Automation surfaces for scripts and native apps.
 
