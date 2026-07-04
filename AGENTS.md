@@ -53,8 +53,8 @@ When source and guidance differ, inspect source and tests first. Update guidance
 
 | Task | Load |
 | --- | --- |
-| Root architecture or product packaging | `.agents/skills/hephaion-system/SKILL.md` |
-| Shared design-system architecture | `.agents/skills/hephaion-design/SKILL.md` |
+| Root routing or product packaging | `.agents/skills/hephaion-system/SKILL.md` |
+| Shared design-system rules | `.agents/skills/hephaion-design/SKILL.md` |
 
 ## Ownership
 
