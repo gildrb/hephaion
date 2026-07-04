@@ -1,26 +1,26 @@
 ---
 name: hephaion-design
-description: Use for design-system guidance shared across product packages, reusable design-engineering rules, accessibility standards, visual verification patterns, or design-package structure. Use product design skills for product-specific tokens, components, or surfaces.
+description: Use for shared design rules, accessibility, visual checks, or design package structure. Use product design skills for product tokens, components, or surfaces.
 ---
 
-# Hephaion Design
+# Design
 
-Reusable design-engineering guidance for product packages.
+Shared design guidance for product packages.
 
 ## Stance
 
 - Keep shared design rules product-neutral.
 - Put product vocabulary, tokens, component names, and screenshots in product folders.
-- Prefer accessible native behavior before custom interaction.
-- Verify layout, states, and text fit instead of relying on taste alone.
+- Prefer native accessible behavior before custom interaction.
+- Verify layout, states, and text fit.
 
 ## References
 
-- `references/core.md`: universal design-engineering rules.
-- `references/verification.md`: cross-product visual and accessibility checks.
+- `references/core.md`: shared rules.
+- `references/verification.md`: visual and accessibility checks.
 
-## Done State
+## Done
 
-- Shared rules do not name a product's private tokens or commands.
-- Product-specific design decisions live in the product package.
-- Accessibility and verification rules remain reusable.
+- Shared rules do not name private product tokens or commands.
+- Product decisions live in product packages.
+- Accessibility and verification rules stay reusable.
