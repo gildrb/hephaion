@@ -1,6 +1,6 @@
 ---
 name: hephaion-system
-description: Use for root routing, product packages, rule authoring, shared guidance, hardening, or verification rules that apply across product folders.
+description: Use for root routing, product packages, rule authoring, shared guidance, hardening, or shared verification.
 ---
 
 # System
@@ -9,7 +9,7 @@ Use this skill when the task changes root rules instead of one product's command
 
 ## Stance
 
-Maintain product package rules.
+Maintain routing and package rules.
 
 - Keep the root small.
 - Route product work into product folders.
