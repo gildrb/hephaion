@@ -1,6 +1,14 @@
 # Rule Authoring
 
-Rules should make agents more consistent without freezing product evolution.
+Rules should make agents consistent without freezing product evolution.
+
+## Density
+
+- Root `AGENTS.md`: 60 non-empty lines max unless routing truly requires more.
+- Product `AGENTS.md`: 80 non-empty lines max unless product safety requires more.
+- Prefer route tables over explanatory prose.
+- Move examples, state machines, edge cases, and transcripts into skill references.
+- One rule per line. Delete filler before adding rules.
 
 ## Write Applicable Rules
 
@@ -12,7 +20,7 @@ Good rules include:
 - exception: when not to apply it
 - verification: how to know it worked
 
-Avoid vague goals such as `make it nice`, `improve quality`, or `follow best practices` without a checkable behavior.
+Avoid vague goals such as `make it nice`, `improve quality`, or `follow best practices` without checkable behavior.
 
 ## Keep Layers Separate
 
@@ -27,7 +35,7 @@ Do not hardcode repository owners, local clone paths, source attribution, or mac
 
 ## Examples
 
-Prefer examples with placeholders when the value is not a product contract:
+Use placeholders when a value is not a product contract:
 
 ```text
 <path>
