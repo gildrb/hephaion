@@ -37,7 +37,7 @@ Resolve conflicts in this order:
 | Web, brand, static pages, CSS, HTML, browser components | `references/core.md` + `references/web.md` |
 | CLI/TUI styling, Textual layout, palette roles, terminal components | `references/core.md` + `references/tui.md` |
 | Visual QA, accessibility, screenshots, design-doc drift | `references/verification.md` |
-| Copy inside terminal or TUI UI | `../cli-ux/references/copy.md` |
+| Copy inside terminal or TUI UI | `../cli-ux/references/copy.md` from `heph/skills/` context or `heph/skills/cli-ux/references/copy.md` from repository root |
 
 ## Minimum Done State
 
