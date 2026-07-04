@@ -26,7 +26,7 @@ Practical, calm, exact, evidence-first.
 | Empty | Neutral, useful | `No materials found. Add files to materials/.` |
 | Trust boundary | Plain, precise | `Hosted providers receive the active question and selected retrieved chunks.` |
 
-Avoid marketing, apology theater, jokes in errors, fake enthusiasm, and celebration for routine work.
+Avoid marketing, unneeded apologies, jokes in errors, fake enthusiasm, and celebration for routine work.
 
 ## Clarity
 
