@@ -2,12 +2,15 @@
 
 Root router. Keep product rules inside product folders.
 
-## Density Contract
+## Documentation Contract
 
+- No filler anywhere in docs.
 - Keep root `AGENTS.md` under 60 non-empty lines.
 - Keep product `AGENTS.md` under 80 non-empty lines.
+- Use blunt, short sentences.
+- Every line must route, constrain, define, or verify.
+- Keep claims exact. Do not trade accuracy for brevity.
 - Use bullets and tables; move examples and nuance into skill references.
-- One rule per line. Delete filler before adding sections.
 
 ## Start
 
