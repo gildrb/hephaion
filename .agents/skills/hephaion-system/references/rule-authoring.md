@@ -9,7 +9,8 @@ Rules make agents consistent without freezing product changes.
 - No AI cadence: avoid setup phrases, inflated contrasts, and motivational claims.
 - Use blunt, short sentences.
 - Use short headings.
-- Do not repeat product names inside product-folder headings.
+- File paths carry context.
+- Headings should name the local surface, not the product and parent category.
 - Keep claims exact. Do not trade accuracy for brevity.
 - Every line must route, constrain, define, or verify.
 - Root `AGENTS.md`: 60 non-empty lines max unless routing truly requires more.
@@ -20,6 +21,7 @@ Rules make agents consistent without freezing product changes.
 ## Banned Patterns
 
 - `The <noun> is the <noun>` slogan headings.
+- Repeating product or parent folder names in product-folder headings.
 - `At its core`, `more than`, `not just`, `whether you are`, `designed to`, `built to help`.
 - `seamless`, `effortless`, `robust`, `powerful`, `unlock`, `leverage`, `utilize`, `streamline`.
 - Motivational summaries that do not add a route, constraint, definition, or check.
