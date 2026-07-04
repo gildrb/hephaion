@@ -2,19 +2,15 @@
 
 Reusable rules for web, brand, CLI, and TUI surfaces.
 
-## Traits
+## Targets
 
-Surfaces should be:
+- Show the product object: armory, materials, evidence, model, provider, path, state, or trust boundary.
+- Keep dense surfaces scannable.
+- Keep paths, commands, IDs, and evidence references copyable.
+- Use quiet color and clear hierarchy.
+- Mark missing, disabled, unverified, loading, and error states with text.
 
-- private
-- precise
-- quiet
-- local-first
-- evidence-forward
-- fast
-- easy to scan
-
-Avoid decorative color, gradient hero shortcuts, glass effects, oversized marketing cards, stock-feeling visuals, and ornamental animation. Show materials, evidence, armory, and trust boundary.
+Avoid decorative color, gradient-only heroes, glass effects, oversized cards, generic stock visuals, and ornamental animation.
 
 ## Sources
 
