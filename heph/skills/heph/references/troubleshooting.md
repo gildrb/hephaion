@@ -1,6 +1,6 @@
-# Heph Troubleshooting
+# Troubleshooting
 
-Start with the concrete state: armory, materials, index, model, provider, trust boundary.
+Start with state: armory, materials, index, model, provider, trust boundary.
 
 ## No Armory Or Wrong Armory
 
@@ -17,8 +17,6 @@ Check:
 - `HARNESS_ARMORY_HOME` if named armories do not appear
 
 ## No Materials
-
-Add files:
 
 ```bash
 cp <file> ~/.armories/<name>/materials/
@@ -49,8 +47,6 @@ Common causes:
 
 ## Missing Model Or Credentials
 
-Inside Heph:
-
 ```text
 /login
 /models
@@ -72,7 +68,7 @@ heph local revalidate <model-id>
 heph local stop
 ```
 
-A downloaded local model is not usable until Heph validation passes.
+A downloaded local model is not usable until validation passes.
 
 ## Privacy Questions
 
