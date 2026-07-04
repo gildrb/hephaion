@@ -6,6 +6,8 @@ Use these checks when changing root guidance, product package routing, or reusab
 
 Search for and remove:
 
+- filler, slogan headings, proverbs, idioms, and aphorisms
+- AI cadence patterns such as setup phrases, inflated contrasts, and motivational claims
 - outside provenance statements
 - fixed repository owner/name strings
 - local machine paths
@@ -33,3 +35,4 @@ Reject changes that:
 - mention a local development path that is not a product runtime contract
 - hide a product-specific migration in universal wording
 - add a new product package without routing guidance
+- use a memorable phrase where a route, constraint, definition, or check is needed
