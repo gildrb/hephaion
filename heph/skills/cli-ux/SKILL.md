@@ -9,7 +9,7 @@ Use this skill for CLI/TUI behavior that affects humans, scripts, or agents.
 
 ## Stance
 
-CLI product engineering for a local document agent.
+CLI/TUI rules for a local document agent.
 
 - Define user job, friction, outcome, success signal, and non-goals before choosing copy or layout.
 - Inspect source and tests before judging a shipped string.
@@ -46,13 +46,13 @@ CLI product engineering for a local document agent.
 | --- | --- |
 | CLI/TUI UX or output | `references/core.md` |
 | Copy | `references/core.md` + `references/copy.md` |
-| Prompts, slash commands, setup, armory flow | `copy.md` + `core.md` + `command-contracts.md` when named there |
-| Layout, progress, status, transcript, styling | `core.md` |
-| Errors, trust, credentials, privacy, diagnostics, provider failures | `copy.md` + `core.md` |
-| JSON, JSONL, SDK, CI, non-interactive paths | `core.md` |
-| Help, flags, env vars, config, completions | `copy.md` + `core.md` |
-| Armory, materials, evidence, model, local model, settings, update flows | `command-contracts.md` |
-| Tests, stale-copy sweeps, final review | `verification.md` |
+| Prompts, slash commands, setup, armory flow | `references/copy.md` + `references/core.md` + `references/command-contracts.md` when named there |
+| Layout, progress, status, transcript, styling | `references/core.md` |
+| Errors, trust, credentials, privacy, diagnostics, provider failures | `references/copy.md` + `references/core.md` |
+| JSON, JSONL, SDK, CI, non-interactive paths | `references/core.md` |
+| Help, flags, env vars, config, completions | `references/copy.md` + `references/core.md` |
+| Armory, materials, evidence, model, local model, settings, update flows | `references/command-contracts.md` |
+| Tests, stale-copy sweeps, final review | `references/verification.md` |
 
 ## Done Questions
 
