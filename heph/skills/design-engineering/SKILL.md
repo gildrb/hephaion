@@ -9,7 +9,7 @@ Use this skill for design-system implementation in code.
 
 ## Stance
 
-Production UI implementation.
+UI implementation rules.
 
 - Read existing implementation before drawing a new component.
 - Treat design docs as product contracts.
