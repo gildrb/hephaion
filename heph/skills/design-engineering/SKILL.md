@@ -1,6 +1,6 @@
 ---
 name: heph-design
-description: Use for web, brand, static site, design system, CSS, HTML, visual UI, accessibility, responsive layout, palette, typography, forms, media, motion, CLI/TUI styling, Textual layout, or design-doc changes.
+description: Use for web, brand, visual UI, accessibility, responsive layout, palette, typography, media, CLI/TUI styling, Textual layout, or design docs.
 ---
 
 # Design
@@ -9,7 +9,7 @@ Use this skill for design-system implementation in code.
 
 ## Stance
 
-Work as a design engineer shipping production UI.
+Production UI implementation.
 
 - Read existing implementation before drawing a new component.
 - Treat design docs as product contracts.
