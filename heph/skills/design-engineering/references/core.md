@@ -2,9 +2,9 @@
 
 Reusable design-engineering rules for Heph web, brand, CLI, and TUI surfaces.
 
-## Product Feeling
+## Product Traits
 
-Heph should feel like a focused reading and thinking instrument:
+Heph surfaces should be:
 
 - private
 - precise
@@ -14,7 +14,7 @@ Heph should feel like a focused reading and thinking instrument:
 - fast
 - easy to scan
 
-Avoid decorative color, gradient hero shortcuts, glass effects, oversized marketing cards, stock-feeling visuals, and ornamental animation. The interface should make the user's materials, evidence, armory, and trust boundary legible.
+Avoid decorative color, gradient hero shortcuts, glass effects, oversized marketing cards, stock-feeling visuals, and ornamental animation. Show the user's materials, evidence, armory, and trust boundary.
 
 ## Source Boundaries
 
@@ -41,7 +41,7 @@ Do not copy terminal cell dimensions into responsive web layout. Do not copy web
 
 ## Evidence And Trust Components
 
-Evidence and trust are first-class product objects.
+Evidence and trust need visible UI state.
 
 Evidence surfaces should show evidence ID or citation marker, source path or material name, relevant excerpt when inspection is intended, and missing/unverified state with text.
 
