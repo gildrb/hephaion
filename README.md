@@ -1,8 +1,8 @@
 # Hephaion
 
-Hephaion is an agent architecture system for source-grounded product work.
+Hephaion is agent documentation for source-grounded product work.
 
-Start at the root. Identify the product. Load the product package that owns the command, copy, design, workflow, and verification rules.
+Agents start at the root, identify the product, load the product package, apply the product rules, and verify the changed surface.
 
 ## Quick Start
 
