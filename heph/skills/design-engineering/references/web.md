@@ -17,7 +17,7 @@ Default stack:
 
 Do not introduce a framework, component library, router, CSS framework, preprocessor, or build system unless product direction requires it.
 
-## Theme And Tokens
+## Tokens
 
 Use exact values from design docs or source. Do not invent adjacent shades in component code.
 
@@ -43,7 +43,7 @@ Required token meanings:
 - Do not animate or change font weight on hover, focus, active, or selected states.
 - Use tabular numbers for counters, timers, metrics, and totals.
 
-## Layout And Components
+## Layout
 
 - Use responsive constraints, not viewport-scaled font sizes.
 - Do not create card-in-card layouts.
@@ -54,7 +54,7 @@ Required token meanings:
 - Use `<table>` for tabular data.
 - Evidence panels must show source identity and missing/unverified state with text.
 
-## Media And Motion
+## Media
 
 - Use real images for inspectable images.
 - Provide useful alt text for meaningful images.
@@ -62,6 +62,6 @@ Required token meanings:
 - Frequent interactions should avoid extra animation.
 - Respect reduced motion.
 
-## Review Gates
+## Review
 
 Before shipping web UI, verify desktop and mobile widths, keyboard operation, focus visibility, text fit, no layout shift, contrast, and no framework/build-step drift.
