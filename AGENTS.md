@@ -5,12 +5,14 @@ Root router. Product folders own product rules.
 ## Documentation Contract
 
 - No filler anywhere in docs.
+- No slogans, proverbs, idioms, or aphorisms.
+- No AI cadence: avoid setup phrases, inflated contrasts, and motivational claims.
 - Keep root `AGENTS.md` under 60 non-empty lines.
 - Keep product `AGENTS.md` under 80 non-empty lines.
 - Use blunt, short sentences.
 - Every line must route, constrain, define, or verify.
 - Keep claims exact. Do not trade accuracy for brevity.
-- Use bullets and tables; move examples and nuance into skill references.
+- Use bullets and tables; move examples and edge cases into skill references.
 
 ## Start
 
@@ -29,7 +31,7 @@ Root router. Product folders own product rules.
 4. Reusable Hephaion guidance.
 5. Adjacent patterns, then general heuristics.
 
-Source proves current behavior; guidance records intended behavior.
+When source and guidance differ, inspect source and tests first. Update guidance after confirming intended behavior.
 
 ## Repository Shape
 
