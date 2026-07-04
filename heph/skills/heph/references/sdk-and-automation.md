@@ -1,6 +1,6 @@
 # SDK And Automation
 
-Heph exposes automation surfaces for scripts and native apps.
+Automation surfaces for scripts and native apps.
 
 ## Commands
 
@@ -11,9 +11,7 @@ heph sdk serve
 heph sdk capabilities
 ```
 
-## JSONL Rules
-
-For automation:
+## JSONL
 
 - stdout must stay parseable
 - one complete JSON object per line
@@ -22,9 +20,9 @@ For automation:
 - events should be bounded and documented
 - secrets, prompts, source text, retrieved chunks, and traces should not appear unless the mode explicitly includes them
 
-## Capability Discovery
+## Capabilities
 
-Use `heph sdk capabilities` to inspect current SDK contracts instead of hardcoding fields when possible.
+Use `heph sdk capabilities` instead of hardcoding fields when possible.
 
 ## Agent Workflow
 
@@ -42,4 +40,4 @@ Use `heph sdk capabilities` to inspect current SDK contracts instead of hardcodi
 - No materials: add files and index.
 - Missing model: configure `/login` and `/models` or env vars.
 - Provider failure: inspect provider status and credentials before retry.
-- JSON parse failure: check that no human output was mixed into stdout and file a bug if Heph caused it.
+- JSON parse failure: check stdout for human output and file a bug if the product caused it.
