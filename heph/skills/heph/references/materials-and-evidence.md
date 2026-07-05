@@ -1,6 +1,6 @@
 # Materials
 
-Materials are user-owned source files in an armory. Evidence is the retrieved passage set for a turn.
+Materials are user-owned files in an armory. Evidence is the retrieved passage set for a turn.
 
 ## Material Types
 

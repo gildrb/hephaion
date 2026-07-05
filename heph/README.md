@@ -25,7 +25,7 @@ Work uses local armories:
 └── README.md
 ```
 
-`materials/` contains user source files. `.harness/` contains local state: indexes, memory, chats, traces, usage snapshots, and ignore rules.
+`materials/` contains user materials. `.harness/` contains local state: indexes, memory, chats, traces, usage snapshots, and ignore rules.
 
 ## Map
 
@@ -39,8 +39,17 @@ skills/heph/
 skills/cli-ux/
   CLI/TUI UX, copy, command contracts, machine output, verification
 
-skills/design-engineering/
+skills/design/
   web, brand, terminal, TUI design
+
+design.md
+  web and brand contract
+
+cli-design.md
+  terminal and Textual contract
+
+scripts/check_design_docs.py
+  design-doc drift checker against a Heph source tree
 ```
 
 ## Source
@@ -49,4 +58,4 @@ Inspect current source first. Use tests, docs, command help, and design docs as 
 
 ## Safety
 
-Do not expose source text, retrieved chunks, prompts, traces, API keys, credentials, or private data unless the user asks for an inspection surface that should show it.
+Do not expose material text, retrieved chunks, prompts, traces, API keys, credentials, or private data unless the user asks for an inspection surface that should show it.

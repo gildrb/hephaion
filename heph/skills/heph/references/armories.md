@@ -1,6 +1,6 @@
 # Armories
 
-An armory is a local workspace with source files, chat history, retrieval index, traces, usage snapshots, and memory.
+An armory is a local folder with materials, chat history, retrieval index, traces, usage snapshots, and memory.
 
 ## Structure
 

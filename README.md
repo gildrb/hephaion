@@ -53,7 +53,7 @@ Add a root-level folder:
 └── skills/
 ```
 
-The package must define routing, skills, source files, public contracts, and verification gates.
+The package must define routing, skills, implementation sources, public contracts, and verification gates.
 
 ## Safety
 

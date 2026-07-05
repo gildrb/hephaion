@@ -30,7 +30,7 @@ Product router. Read source first, then docs.
 | --- | --- |
 | Usage, commands, armories, materials, models, trust, SDK, updates, troubleshooting | `skills/heph/SKILL.md` |
 | CLI/TUI copy, prompts, output, help, errors, JSON/JSONL, slash commands | `skills/cli-ux/SKILL.md` |
-| Web, brand, design tokens, terminal styling, TUI layout, accessibility | `skills/design-engineering/SKILL.md` |
+| Web, brand, design tokens, terminal styling, TUI layout, accessibility | `skills/design/SKILL.md` |
 
 ## Vocabulary
 

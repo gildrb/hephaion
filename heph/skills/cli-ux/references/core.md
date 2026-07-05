@@ -10,8 +10,8 @@ Local document agent for accurate, cited answers. Voice: quiet, practical, priva
 
 Canonical nouns:
 
-- `armory`: local workspace folder
-- `materials`: source files used for retrieval
+- `armory`: local folder
+- `materials`: user-owned files used for retrieval
 - `evidence`: retrieved passages for a turn
 - `citations`: answer references to evidence
 - `memory`: local armory-scoped memory

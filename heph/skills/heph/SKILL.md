@@ -14,7 +14,7 @@ Use installed `heph --help` for new or obscure flags. If this skill and CLI help
 An armory is a local folder:
 
 ```text
-materials/      user source files
+materials/      user materials
 .harness/       state: index, memory, chats, traces, usage, ignore rules
 README.md       optional notes
 ```
@@ -56,7 +56,7 @@ Inside the app:
 
 ## Avoid
 
-- Treating an armory like a hosted workspace.
+- Treating an armory like a hosted armory service.
 - Copying `.harness/` paths into examples when the user only needs `materials/`.
 - Assuming hosted providers receive the whole armory.
 - Forgetting `heph index` or `heph health` after material changes.

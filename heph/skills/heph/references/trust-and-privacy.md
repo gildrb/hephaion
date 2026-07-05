@@ -12,7 +12,7 @@ The user owns:
 - chats, traces, and usage snapshots under `.harness/`
 - provider choice and compute boundary
 
-Do not imply a hosted document workspace unless the product adds one.
+Do not imply a hosted armory service unless the product adds one.
 
 ## Cache Paths
 
