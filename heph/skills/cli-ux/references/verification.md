@@ -7,7 +7,8 @@ Tests, stale-copy sweeps, and review gates for CLI/TUI work.
 When changing CLI/TUI UX:
 
 - update direct expectations
-- add negative assertions for removed strings
+- prefer expected-output and contract checks over phrase, tool, or stack blocklists
+- reserve blocking checks for safety, privacy, protocol, and compatibility boundaries
 - cover TTY/TUI and non-interactive paths when both exist
 - cover human and JSON/JSONL formats when both exist
 - cover stdout/stderr split for machine output
@@ -17,18 +18,17 @@ When changing CLI/TUI UX:
 - cover source text, retrieved chunks, prompts, and traces not leaking into ordinary output
 - cover narrow terminal width and long names when layout changes
 
-## Stale Copy
+## Copy Expectations
 
-Run relevant sweeps on touched source and tests:
+Prefer exact expectations for the surface that changed.
 
-```bash
-rg -n "\b(successfully|Unable to|Oops|Whoops|Uh-oh|Please try again|An error occurred|Something went wrong)\b" <paths>
-rg -n "Do you want to|Would you like to|click here|Submit|Confirm" <paths>
-rg -n "\b(seamlessly|effortlessly|leverage|utilize|streamline|robust|powerful)\b|In order to|At this time" <paths>
-rg -n "workspace|knowledge base|docs corpus|source files" <paths>
-```
+- Assert the generated help, prompt, status, warning, error, JSON, or JSONL shape.
+- Assert machine output with parsed JSON or JSONL, not substring scans.
+- Assert visible labels and actions as a complete block when layout matters.
+- Assert privacy-sensitive output by checking the redacted or summarized shape.
+- Keep compatibility strings only when tests prove the compatibility path.
 
-Classify every match. Legacy compatibility strings may remain when tests prove intent.
+Use text sweeps as investigation tools, then convert findings into direct expectations.
 
 ## Review
 

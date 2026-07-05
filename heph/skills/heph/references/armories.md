@@ -32,7 +32,7 @@ An armory is a local folder with materials, chat history, retrieval index, trace
 heph armory init <name>
 ```
 
-Use names such as `research-course` or `q3-reports`. Avoid opaque names.
+Use names that describe the material set, such as `research-course` or `q3-reports`.
 
 ## Move
 
@@ -51,4 +51,4 @@ Copy the armory folder or armory home. On another machine, install the app, plac
 1. Check that `materials/` exists.
 2. Check `.harness/armory.toml`.
 3. Check legacy state if the armory came from an older release.
-4. Avoid guessing when two state directories conflict.
+4. Inspect both state directories when they conflict before choosing one.

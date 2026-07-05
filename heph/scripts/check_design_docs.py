@@ -9,16 +9,6 @@ from pathlib import Path
 REPO_ROOT = Path(__file__).resolve().parents[1]
 CLI_DESIGN_PATH = REPO_ROOT / "cli-design.md"
 WEB_DESIGN_PATH = REPO_ROOT / "design.md"
-BANNED_WEB_STACK_RECOMMENDATIONS = (
-    "Next.js",
-    "shadcn",
-    "Radix",
-    "Tailwind",
-    "React",
-    "Vue",
-    "Svelte",
-    "Astro",
-)
 EXPECTED_WEB_COLOR_SOURCES: dict[str, str] = {
     "colors.primary": "dark.brand_primary",
     "colors.secondary": "dark.text_secondary",
@@ -307,11 +297,6 @@ def design_doc_errors(heph_repo: Path) -> list[str]:
         != EXPECTED_LIGHT_CSS_VARIABLES
     ):
         errors.append("design.md light CSS variables do not match web color contract")
-    errors.extend(
-        f"design.md contains framework-specific stack recommendation: {phrase}"
-        for phrase in BANNED_WEB_STACK_RECOMMENDATIONS
-        if phrase in web_text
-    )
     return errors
 
 

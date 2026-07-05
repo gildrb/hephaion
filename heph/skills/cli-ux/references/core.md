@@ -20,7 +20,7 @@ Canonical nouns:
 - `.harness`: local state inside an armory
 - `local state`: inspectable product files
 
-Avoid generic alternates: workspace, knowledge base, docs corpus, sources, app, project, cloud workspace.
+Use these nouns consistently in user-facing Heph copy.
 
 ## Commands And Flags
 
@@ -59,8 +59,8 @@ Prompt only when stdin is a TTY or TUI is active, the value cannot be inferred s
 - UI-owned values are lowercase.
 - Preserve provider IDs, model names, paths, commands, evidence IDs, and user values exactly.
 - Do not use color alone for state.
-- Avoid decorative color, borders, shadows, emoji, and web spacing metaphors.
-- Use terminal cells, stable columns, and Textual selectors instead of web layout units.
+- Use semantic color for status and selection.
+- Keep terminal layout in terminal cells, stable columns, and Textual selectors.
 
 ## Materials
 

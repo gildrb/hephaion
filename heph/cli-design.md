@@ -36,12 +36,12 @@ the same palette through `packages/interfaces/src/interfaces/tui/style.py`.
 - `interfaces.palette.Theme` is the canonical CLI color contract.
 - Concrete colors must stay centralized in `interfaces.palette`.
 - TUI and terminal code should use semantic roles such as `text_primary`,
-  `text_secondary`, and `action_primary_bg`; do not add ad hoc hex values in render code.
+  `text_secondary`, and `action_primary_bg`.
 - Labels are uppercase; values are lowercase.
 - Preserve literal user, model, file, and path values when correctness requires it. For
   example, status currently preserves a model name such as `Test-MODEL`.
-- Do not use color alone to communicate state. Pair state with text such as `STATE
-  current`, `api missing`, `error:`, evidence IDs, or material enablement.
+- Pair color with text such as `STATE current`, `api missing`, `error:`, evidence IDs,
+  or material enablement.
 - The dark theme is intentionally transparent for root/background surfaces so the terminal
   owns the base canvas.
 - The CLI has no radius, shadows, or web line-height. Use terminal cells, padding columns,
@@ -91,7 +91,7 @@ intent = "Inverse text role for solid action fills."
 [cli_theme_tokens.border_subtle]
 dark = "#3d3d3d"
 light = "#d9d9d9"
-intent = "Reserved subtle border role; current TUI avoids visible borders."
+intent = "Reserved subtle border role; current TUI uses visible borders sparingly."
 
 [cli_theme_tokens.brand_primary]
 dark = "#ffffff"
@@ -563,9 +563,9 @@ in the CLI is the source:
 - Specific, not ornamental: `Index refreshed: 3 sources, 42 chunks`.
 - Learning-oriented where relevant: `Type your answer, then rate your recall.`
 
-Do not use marketing copy in the terminal. Prefer short sentences that name the state and
-the next available action. Use `error:` and `info:` prefixes for terminal command output.
-Avoid `successfully`; use the concrete result instead.
+Use short terminal copy that names the state and next available action. Use `error:` and
+`info:` prefixes for terminal command output. Name concrete results such as
+`Index refreshed: 3 sources, 42 chunks`.
 
 ## Agent Usage Guide
 
@@ -573,7 +573,7 @@ When changing CLI/TUI design:
 
 1. Read `interfaces.palette.Theme` before changing any color.
 2. Update `cli-design.md` in the same change as any palette or semantic styling change.
-3. Use semantic roles in code. Do not add a hex value to TUI render code.
+3. Use semantic roles in TUI render code.
 4. Keep `labels uppercase, values lowercase` unless the value is a user-owned identifier,
    model name, path, command, or evidence ID that must preserve case.
 5. Run `python3 heph/scripts/check_design_docs.py --heph-repo <path-to-heph>`.

@@ -9,8 +9,7 @@ Reusable rules for web, brand, CLI, and TUI surfaces.
 - Keep paths, commands, IDs, and evidence references copyable.
 - Use quiet color and clear hierarchy.
 - Mark missing, disabled, unverified, loading, and error states with text.
-
-Avoid decorative color, gradient-only heroes, glass effects, oversized cards, generic stock visuals, and ornamental animation.
+- Use product objects, real media, restrained color, compact hierarchy, and necessary motion.
 
 ## Sources
 
@@ -20,7 +19,7 @@ Use the right contract:
 - Web design docs: browser layout, responsive spacing, radius, media, native forms, focus states, static web stack, brand expression.
 - Source and tests: immediate truth when docs drift.
 
-Do not copy terminal cell dimensions into responsive web layout. Do not copy web radius, cards, or shadows into terminal surfaces.
+Keep terminal sizing in terminal surfaces and browser layout in browser surfaces.
 
 ## Implementation
 
@@ -29,8 +28,8 @@ Do not copy terminal cell dimensions into responsive web layout. Do not copy web
 - Use native HTML controls before custom controls.
 - Use Textual and terminal helpers before hand-rolled ANSI or cursor behavior.
 - Keep interaction predictable and reversible where possible.
-- Avoid layout shift on hover, focus, or selected states.
-- Do not animate font weight.
+- Keep hover, focus, and selected states stable.
+- Keep font weight stable across interaction states.
 - Respect reduced motion.
 - Make disabled and loading states explicit.
 - Keep critical IDs, paths, commands, and evidence references exact and copyable.

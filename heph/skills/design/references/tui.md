@@ -7,11 +7,10 @@ Terminal and Textual rules.
 - Default theme and valid presets come from source and design docs.
 - Concrete colors stay centralized in palette implementation.
 - TUI and terminal code should use semantic roles.
-- Do not add ad hoc hex values in render code.
 - Labels are uppercase.
 - UI-owned values are lowercase.
 - Preserve literal user, model, file, path, provider, and evidence values when correctness requires it.
-- Do not use color alone to communicate state.
+- Pair color with text state.
 - CLI has no radius, shadows, or web line-height.
 
 ## Label Grammar
@@ -39,7 +38,7 @@ STATE current
 
 ## Layout
 
-Respect existing full-height vertical screen and source selectors. Use terminal cells and content width rules, not web spacing units. Do not import web card, radius, or shadow patterns.
+Respect existing full-height vertical screen and source selectors. Use terminal cells and content width rules.
 
 ## Components
 

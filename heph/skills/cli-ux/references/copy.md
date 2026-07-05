@@ -2,7 +2,7 @@
 
 Voice and language rules for user-facing CLI/TUI copy.
 
-Do not polish a string before establishing command behavior, resolved target, trust boundary, consequence, and recovery path.
+Establish command behavior, resolved target, trust boundary, consequence, and recovery path before polishing a string.
 
 ## Quick Triage
 
@@ -26,12 +26,12 @@ Practical, calm, exact, evidence-first.
 | Empty | Neutral, useful | `No materials found. Add files to materials/.` |
 | Trust boundary | Plain, precise | `Hosted providers receive the active question and selected retrieved chunks.` |
 
-Avoid marketing, unneeded apologies, jokes in errors, fake enthusiasm, and celebration for routine work.
+Keep routine work factual. Reserve apologies for product fault or meaningful disruption.
 
 ## Clarity
 
 - Use active voice by default.
-- Name the thing: `Open armory`, not `Open workspace`.
+- Name the thing with the canonical product noun: `Open armory`.
 - Use one canonical noun per concept.
 - Keep action and result verbs aligned: `Index materials` -> `Index refreshed`, not `Updated files`.
 - Use fragments for labels and statuses. Use full sentences for explanations and errors.
@@ -51,14 +51,14 @@ Avoid marketing, unneeded apologies, jokes in errors, fake enthusiasm, and celeb
 - Ask for one concept with the shortest concrete noun: `Armory?`, `Model?`, `Provider?`, `Materials?`, `Reasoning?`.
 - Ask only when the value cannot be inferred safely.
 - Use yes/no only for a concrete previewed action.
-- Avoid `Do you want to...` and `Would you like to...`.
+- Use direct prompts for concrete choices: `Delete local memory for this armory?`
 - Mask API keys and sensitive values. Do not echo them after entry.
 
 ### Errors And Warnings
 
 Errors include failure, known cause or constraint, and recovery step when one exists.
 
-- Avoid generic fallback lines unless no classified failure is available.
+- Prefer classified failures with a cause and recovery step.
 - Never print raw provider errors as the whole message.
 - Warnings state nonfatal condition, why it matters, and fix when one exists.
 - Do not use humor, exclamation marks, or apology preambles in errors.
@@ -70,15 +70,14 @@ Errors include failure, known cause or constraint, and recovery step when one ex
 - Empty model list: point to `/login`, credentials, or local model setup depending on state.
 - Empty search results: name the query or filter when it caused the empty state.
 
-## Banned Language
+## Direct Copy
 
-Avoid hype, filler, generic failure copy, and vague actions:
+Use concrete nouns and results.
 
-- `successfully`, `seamlessly`, `effortlessly`, `robust`, `powerful`, `leverage`, `utilize`, `streamline`
-- `just`, `simply`, `actually`, `in order to`, `at this time`
-- `Unable to`, `An error occurred`, `Something went wrong` except a true last-resort fallback
-- `Oops`, `Uh-oh`, `Whoops`, `Yay`, `Yikes`, `Heads up`
-- `OK`, `Submit`, `Confirm`, bare `Yes` or `No`, `click here`
+- State the result: `Index refreshed: 3 sources, 42 chunks`.
+- State the action: `Open armory`, `Index materials`, `Choose model`.
+- State the recovery step: `No model configured. Use /models to select one.`
+- Use action labels that name the object: `Save settings`, `Delete memory`, `Open evidence`.
 
 Use `please` or an apology only for inconvenient favors, meaningful disruption, or product fault.
 

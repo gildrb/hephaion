@@ -54,16 +54,16 @@ Inside the app:
 - Failures and recovery: `references/troubleshooting.md`
 - Raw commands: `command/heph.md`
 
-## Avoid
+## Operating Boundaries
 
-- Treating an armory like a hosted armory service.
-- Copying `.harness/` paths into examples when the user only needs `materials/`.
-- Assuming hosted providers receive the whole armory.
-- Forgetting `heph index` or `heph health` after material changes.
-- Choosing `/models` before `/login` or credentials exist.
-- Assuming a local model works before validation passes.
-- Printing API keys or secrets in suggested commands.
-- Mixing human prose into JSONL stdout.
+- Treat armories as local folders.
+- Use `materials/` examples for user files and `.harness/` examples only for state inspection.
+- State hosted-provider context precisely: active question, system instructions, and selected retrieved chunks.
+- Check `heph index` and `heph health` after material changes.
+- Configure credentials before model selection.
+- Validate local models before treating them as active.
+- Use placeholders for API keys and secrets in suggested commands.
+- Keep JSONL stdout parseable.
 
 ## Safety
 

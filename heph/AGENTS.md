@@ -8,6 +8,7 @@ Product router. Read source first, then docs.
 - Keep this file under 80 non-empty lines.
 - Route here; put examples and edge cases in `skills/*/references/*`.
 - One noun, command, state, or contract per rule.
+- Prefer expected-output and contract checks over blocklists. Use blocking checks only for safety, privacy, protocol, or compatibility boundaries.
 
 ## Start
 

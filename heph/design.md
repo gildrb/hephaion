@@ -32,16 +32,15 @@ answers. The website and brand should feel thematically aligned with the CLI: pr
 precise, quiet, local-first, evidence-forward, fast, and easy to scan.
 
 This file is for browser and brand surfaces. The CLI is specified separately in
-`cli-design.md`. Keep the two systems semantically aligned, but do not copy terminal-only
-rules into the web. The web needs responsive layout, real HTML semantics, focus rings,
-form states, images, and browser typography; the CLI needs terminal cells and Textual
-selectors.
+`cli-design.md`. Keep the two systems semantically aligned. Browser surfaces use
+responsive layout, real HTML semantics, focus rings, form states, images, and browser
+typography; CLI surfaces use terminal cells and Textual selectors.
 
 ## Core Rules
 
-- Build with plain HTML, CSS, and vanilla JavaScript or tiny TypeScript.
-- Do not assume a framework, component library, router, CSS framework, preprocessor, or
-  build system.
+- Start with plain HTML, CSS, and vanilla JavaScript or tiny TypeScript.
+- Treat framework, component-library, router, CSS-framework, preprocessor, and build-system
+  choices as explicit product architecture decisions.
 - Default brand theme is dark.
 - Use Geist Sans for interface, headings, and prose.
 - Use Geist Mono for code, command examples, metrics, paths, evidence IDs, and timestamps.
@@ -50,8 +49,8 @@ selectors.
 - Use color sparingly. Most hierarchy comes from neutral text roles, whitespace, borders,
   and strong content structure.
 - Accent color is for primary action, warning emphasis, and selected action affordances.
-- Do not use gradients, glassmorphism, decorative glow fields, or stock marketing layout
-  shortcuts.
+- Use restrained product visuals: real surfaces, real media, clear hierarchy, and quiet
+  interaction.
 - Use CSS custom properties for foundational tokens.
 - Keep the implementation static-file friendly by default.
 
@@ -78,9 +77,9 @@ interface_guidelines = "https://github.com/raunofreiberg/interfaces"
 [web_development.principles]
 fast = true
 accessible = true
-framework_free = true
+static_first = true
 native_controls_first = true
-decorative_effects = "avoid"
+decorative_effects = "minimal"
 motion = "minimal"
 ```
 
@@ -423,8 +422,8 @@ Typography implementation rules:
 - Apply `-moz-osx-font-smoothing: grayscale` where useful.
 - Apply `text-rendering: optimizeLegibility`.
 - Apply `-webkit-text-size-adjust: 100%`.
-- Do not use font weights below `400`.
-- Do not change font weight on hover, focus, active, or selected states.
+- Use font weights `400` and above.
+- Keep font weight stable on hover, focus, active, and selected states.
 - Use `font-variant-numeric: tabular-nums` for counters, timers, metrics, and totals.
 - Use `clamp()` only where a display heading genuinely needs to adapt across viewports.
 
@@ -453,7 +452,7 @@ Use a 4px spacing base:
 
 Use 8px inside compact groups, 16px between related groups, and 32-40px between major
 sections. Product app surfaces should be dense and scannable; public pages can breathe
-more, but should still avoid oversized empty decoration.
+more while keeping empty space purposeful.
 
 Reference the `gildrb.com` rhythm when a static page needs portfolio-like restraint:
 
@@ -479,8 +478,8 @@ Recommended breakpoints:
 
 ## Radius
 
-The CLI has no roundedness. The website needs a restrained radius system. Avoid heavy
-rounded marketing surfaces; cards should stay at 8px or less.
+The CLI has no roundedness. The website needs a restrained radius system. Keep rounded
+surfaces quiet; cards should stay at 8px or less.
 
 - `radius.xs`
   - value: 3px
@@ -536,11 +535,11 @@ Most interactions should feel instant. Use `0ms` when no motion is needed. Honor
 
 Motion rules:
 
-- Frequent interactions should avoid extraneous animation.
-- Theme switching should not trigger broad transitions.
+- Frequent interactions should stay still or use minimal motion.
+- Theme switching should be immediate.
 - Hover states belong inside `@media (hover: hover)`.
-- Touch press states should not leave controls looking hovered.
-- Do not animate font weight.
+- Touch press states should reset cleanly.
+- Keep font weight stable during motion and interaction.
 - Pause or remove looping animation when off-screen.
 - Use `will-change` and GPU hints only for measured rendering problems.
 
@@ -609,7 +608,7 @@ actions would be harmful. Icon-only controls need explicit `aria-label`s and sho
 Use native form semantics. Wrap related inputs in a `<form>` so Enter submits naturally.
 Clicking an input label should focus the input. Use the correct input `type`. Use native
 validation attributes such as `required` when they match the actual requirement. Keep input
-font sizes at 16px or larger on touch layouts to avoid iOS zooming.
+font sizes at 16px or larger on touch layouts to prevent iOS zooming.
 
 ### Card
 
@@ -752,7 +751,7 @@ Render material names with `@name` on product surfaces to match the CLI.
 - Lazy-load non-critical images.
 - Preload only truly critical first-viewport assets.
 - Use `muted` and `playsinline` for autoplaying video.
-- Avoid many autoplaying videos, especially on iOS.
+- Keep autoplaying video rare, especially on iOS.
 
 ## Voice
 
@@ -760,8 +759,8 @@ Heph copy should sound practical, private, and verification-first:
 
 - Say what is true, then what the user can do next.
 - Prefer concrete nouns: armory, materials, evidence, citations, model, memory.
-- Avoid hype, filler, and vague success language.
-- Do not say `successfully`; name the result.
+- Use concrete nouns, exact state, and the result of the action.
+- Name the result directly.
 - Errors should explain what happened and the next action.
 - Empty states should point to the first meaningful step.
 - Keep provider-specific copy optional unless the flow requires it.
@@ -783,11 +782,11 @@ When using this design in a web implementation:
 2. Use this file for browser-only decisions: typography, radius, layout, forms, focus,
    media, motion, and responsive behavior.
 3. Build with HTML, CSS, and vanilla JavaScript or tiny TypeScript.
-4. Do not introduce a framework, component library, router, or bundler by default.
+4. Start with the current static stack; broaden it only for product and implementation need.
 5. Implement colors as CSS custom properties with the token names in this file.
 6. Keep labels uppercase and UI-owned values lowercase.
 7. Use native controls before custom controls.
-8. Do not copy terminal dimensions such as `38 columns` into responsive browser layout.
+8. Translate terminal dimensions into responsive browser layout constraints.
 9. If a web component represents an existing CLI concept, map its colors through the
    component sections above.
 10. After changing palette semantics, update both `cli-design.md` and `design.md`, then run
