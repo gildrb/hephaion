@@ -1,0 +1,216 @@
+from __future__ import annotations
+
+import argparse
+import json
+import re
+import sys
+from pathlib import Path
+
+PACKAGE_ROOT = Path(__file__).resolve().parents[1]
+HEPHAION_ROOT = PACKAGE_ROOT.parent
+
+REQUIRED_PACKAGE_FILES = (
+    "AGENTS.md",
+    "README.md",
+    "design.md",
+    "case-studies.md",
+    "skills/gildrb-portfolio/SKILL.md",
+    "skills/gildrb-design/SKILL.md",
+    "skills/gildrb-publishing/SKILL.md",
+)
+
+REQUIRED_DESIGN_PHRASES = (
+    "Designing brands, interfaces, and the systems that connect them.",
+    "Gil Rodrigues → Filen",
+    "Gil Rodrigues → mL7",
+    "Case-specific letter spacing is always `0`.",
+    "Do not use middle-dot separators.",
+    "Do not crop process images.",
+    "Page title desktop: `40px`, weight `600`, line height `48px`.",
+    "Page title mobile: `32px`, weight `600`, line height `40px`.",
+)
+
+REQUIRED_CASE_ROUTES = ("/filen", "/ml7")
+REQUIRED_SKILL_REFERENCES = {
+    "skills/gildrb-portfolio/SKILL.md": (
+        "references/homepage.md",
+        "references/case-study.md",
+        "references/routing.md",
+        "references/verification.md",
+    ),
+    "skills/gildrb-design/SKILL.md": (
+        "references/typography-and-spacing.md",
+        "references/shell-and-navigation.md",
+        "references/media-and-interaction.md",
+        "references/verification.md",
+    ),
+    "skills/gildrb-publishing/SKILL.md": (
+        "references/preview.md",
+        "references/release.md",
+    ),
+}
+
+
+def _read(path: Path) -> str:
+    return path.read_text(encoding="utf-8")
+
+
+def _frontmatter_valid(text: str) -> bool:
+    match = re.match(r"\A---\n(.*?)\n---\n", text, re.DOTALL)
+    if not match:
+        return False
+    block = match.group(1)
+    return bool(
+        re.search(r"^name: [a-z0-9-]+$", block, re.MULTILINE)
+        and re.search(r"^description: .+$", block, re.MULTILINE)
+    )
+
+
+def _filled_lines(path: Path) -> int:
+    return sum(bool(line.strip()) for line in _read(path).splitlines())
+
+
+def _package_errors() -> list[str]:
+    errors: list[str] = []
+    for relative in REQUIRED_PACKAGE_FILES:
+        if not (PACKAGE_ROOT / relative).is_file():
+            errors.append(f"missing package file: gildrb/{relative}")
+
+    design_path = PACKAGE_ROOT / "design.md"
+    case_path = PACKAGE_ROOT / "case-studies.md"
+    if design_path.is_file():
+        design = _read(design_path)
+        for phrase in REQUIRED_DESIGN_PHRASES:
+            if phrase not in design:
+                errors.append(f"design.md missing contract: {phrase}")
+    if case_path.is_file():
+        case_studies = _read(case_path)
+        for route in REQUIRED_CASE_ROUTES:
+            if f"`{route}`" not in case_studies:
+                errors.append(f"case-studies.md missing route: {route}")
+
+    agent_path = PACKAGE_ROOT / "AGENTS.md"
+    if agent_path.is_file() and _filled_lines(agent_path) > 80:
+        errors.append("gildrb/AGENTS.md exceeds 80 filled lines")
+
+    root_agent = _read(HEPHAION_ROOT / "AGENTS.md")
+    root_readme = _read(HEPHAION_ROOT / "README.md")
+    if "gildrb/AGENTS.md" not in root_agent:
+        errors.append("root AGENTS.md does not route gildrb work")
+    if "`gildrb/`" not in root_readme:
+        errors.append("root README.md does not list gildrb")
+
+    for skill_relative, references in REQUIRED_SKILL_REFERENCES.items():
+        skill_path = PACKAGE_ROOT / skill_relative
+        if not skill_path.is_file():
+            continue
+        skill = _read(skill_path)
+        if not _frontmatter_valid(skill):
+            errors.append(f"invalid skill frontmatter: gildrb/{skill_relative}")
+        for reference in references:
+            if reference not in skill:
+                errors.append(f"{skill_relative} does not route {reference}")
+            if not (skill_path.parent / reference).is_file():
+                errors.append(f"missing skill reference: {skill_relative}/{reference}")
+    return errors
+
+
+def _portfolio_errors(portfolio_repo: Path) -> list[str]:
+    errors: list[str] = []
+    required = (
+        "src/styles/10-base.css",
+        "src/styles/50-case-study.css",
+        "src/sections/profile-summary.html",
+        "src/sections/portfolio-filen.html",
+        "src/sections/portfolio-ml7.html",
+        "scripts/build-page.mjs",
+        "scripts/verify-page.mjs",
+        "vercel.json",
+    )
+    for relative in required:
+        if not (portfolio_repo / relative).is_file():
+            errors.append(f"portfolio source missing: {relative}")
+    if errors:
+        return errors
+
+    base_css = _read(portfolio_repo / "src/styles/10-base.css")
+    case_css = _read(portfolio_repo / "src/styles/50-case-study.css")
+    profile = _read(portfolio_repo / "src/sections/profile-summary.html")
+    filen = _read(portfolio_repo / "src/sections/portfolio-filen.html")
+    ml7 = _read(portfolio_repo / "src/sections/portfolio-ml7.html")
+    builder = _read(portfolio_repo / "scripts/build-page.mjs")
+    vercel = json.loads(_read(portfolio_repo / "vercel.json"))
+
+    expected_tokens = {
+        "--bg": "#000000",
+        "--text-primary": "#ffffff",
+        "--text-secondary": "#808080",
+        "--sidebar-column": "280px",
+        "--layout-gap": "48px",
+        "--media-radius": "22px",
+    }
+    for name, value in expected_tokens.items():
+        if not re.search(rf"{re.escape(name)}:\s*{re.escape(value)}\s*;", base_css):
+            errors.append(f"portfolio token drift: {name} must be {value}")
+
+    required_case_rules = (
+        "font-size: 40px;",
+        "line-height: 48px;",
+        "font-size: 32px;",
+        "line-height: 40px;",
+        "letter-spacing: 0;",
+    )
+    for rule in required_case_rules:
+        if rule not in case_css:
+            errors.append(f"case CSS missing rule: {rule}")
+    for banned in ("object-fit: cover", "border-top:", "border-bottom:"):
+        if banned in case_css:
+            errors.append(f"case CSS contains banned rule: {banned}")
+
+    biography = "Designing brands, interfaces, and the systems that connect them."
+    if biography not in " ".join(profile.split()):
+        errors.append("homepage biography does not match the gildrb contract")
+    if 'href="/filen"' not in filen:
+        errors.append("Filen homepage image does not route to /filen")
+    if 'href="/ml7"' not in ml7:
+        errors.append("mL7 homepage image does not route to /ml7")
+    for project in ("filen", "ml7"):
+        if f'path.join(root, "{project}/index.html")' not in builder:
+            errors.append(f"builder does not generate /{project}")
+    redirect_pairs = {
+        (item.get("source"), item.get("destination"), item.get("permanent"))
+        for item in vercel.get("redirects", [])
+    }
+    if ("/index/filen", "/filen", True) not in redirect_pairs:
+        errors.append("missing permanent /index/filen to /filen redirect")
+    return errors
+
+
+def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
+    parser = argparse.ArgumentParser(
+        description="Check the gildrb product package and optional portfolio checkout.",
+    )
+    parser.add_argument(
+        "--portfolio-repo",
+        type=Path,
+        help="Path to a local gildrb portfolio checkout.",
+    )
+    return parser.parse_args(argv)
+
+
+def main(argv: list[str] | None = None) -> int:
+    args = parse_args(argv)
+    errors = _package_errors()
+    if args.portfolio_repo:
+        errors.extend(_portfolio_errors(args.portfolio_repo.expanduser().resolve()))
+    if errors:
+        for error in errors:
+            print(f"error: {error}", file=sys.stderr)
+        return 1
+    scope = "package and portfolio" if args.portfolio_repo else "package"
+    print(f"ok: gildrb {scope} contracts verified")
+    return 0
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())

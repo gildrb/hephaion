@@ -1,0 +1,4 @@
+interface:
+  display_name: "Gildrb Portfolio"
+  short_description: "Build and maintain the gildrb portfolio system"
+  default_prompt: "Use $gildrb-portfolio to update portfolio structure, routes, and case studies."

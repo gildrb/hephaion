@@ -33,6 +33,7 @@ A product package contains product-owned agent rules:
 | Product | Entry |
 | --- | --- |
 | `heph/` | `heph/AGENTS.md` |
+| `gildrb/` | `gildrb/AGENTS.md` |
 
 ### Root Responsibilities
 

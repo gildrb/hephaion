@@ -15,7 +15,7 @@ Root router. Product folders own product rules.
 
 - Root diff: `git diff -- AGENTS.md README.md .agents/skills`.
 - Line budget: `awk 'NF{c++} END{print c}' AGENTS.md`.
-- Route check: `test -f heph/AGENTS.md && test -f heph/README.md`.
+- Route check: `test -f heph/AGENTS.md && test -f heph/README.md && test -f gildrb/AGENTS.md && test -f gildrb/README.md`.
 - Product work: run product guide checks and touched-surface tests.
 - Public contract work: verify source, tests, docs, and runtime behavior.
 
@@ -51,6 +51,7 @@ Root router. Product folders own product rules.
 | Task | Load |
 | --- | --- |
 | `heph/` product work | `heph/AGENTS.md` |
+| `gildrb/` portfolio, case studies, design, or publishing | `gildrb/AGENTS.md` |
 | Root routing or package shape | `.agents/skills/hephaion-system/SKILL.md` |
 | Shared design rules | `.agents/skills/hephaion-design/SKILL.md` |
 

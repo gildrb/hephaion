@@ -1,0 +1,4 @@
+interface:
+  display_name: "Gildrb Publishing"
+  short_description: "Publish protected gildrb previews safely"
+  default_prompt: "Use $gildrb-publishing to validate and publish a protected portfolio preview."
