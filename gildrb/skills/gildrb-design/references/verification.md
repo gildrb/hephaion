@@ -12,6 +12,8 @@ Verify mobile and desktop:
 - keyboard focus
 - theme toggle
 - home navigation
+- identical profile and contact links on every route
+- working email copy action on case routes
 - project image navigation
 - secondary labels, primary resting links, and secondary link hover in both themes
 - console errors

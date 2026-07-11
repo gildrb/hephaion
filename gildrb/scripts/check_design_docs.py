@@ -30,6 +30,7 @@ REQUIRED_DESIGN_PHRASES = (
     "Page title mobile: `32px`, weight `600`, line height `40px`.",
     "Actionable text links use `--text-primary` at rest.",
     "Text-link hover uses `--text-secondary`",
+    "The same sidebar content persists on the homepage and every case-study route",
 )
 
 REQUIRED_CASE_ROUTES = ("/filen", "/ml7")
@@ -125,6 +126,12 @@ def _portfolio_errors(portfolio_repo: Path) -> list[str]:
         "src/sections/profile-summary.html",
         "src/sections/portfolio-filen.html",
         "src/sections/portfolio-ml7.html",
+        "src/partials/sidebar-links.html",
+        "src/partials/sidebar.html",
+        "src/partials/theme-toggle.html",
+        "src/filen.template.html",
+        "src/ml7.template.html",
+        "src/n0thing.template.html",
         "scripts/build-page.mjs",
         "scripts/verify-page.mjs",
         "vercel.json",
@@ -141,6 +148,11 @@ def _portfolio_errors(portfolio_repo: Path) -> list[str]:
     filen = _read(portfolio_repo / "src/sections/portfolio-filen.html")
     ml7 = _read(portfolio_repo / "src/sections/portfolio-ml7.html")
     builder = _read(portfolio_repo / "scripts/build-page.mjs")
+    sidebar_links = _read(portfolio_repo / "src/partials/sidebar-links.html")
+    homepage_sidebar = _read(portfolio_repo / "src/partials/sidebar.html")
+    filen_template = _read(portfolio_repo / "src/filen.template.html")
+    ml7_template = _read(portfolio_repo / "src/ml7.template.html")
+    n0thing_template = _read(portfolio_repo / "src/n0thing.template.html")
     vercel = json.loads(_read(portfolio_repo / "vercel.json"))
 
     expected_tokens = {
@@ -167,7 +179,8 @@ def _portfolio_errors(portfolio_repo: Path) -> list[str]:
             errors.append(f"portfolio semantic color drift: {message}")
 
     case_color_rules = (
-        (r"\.case-home-link\s*\{[^}]*color:\s*var\(--text-primary\)", "case home link must use --text-primary at rest"),
+        (r"\.case-home-link\s*\{[^}]*color:\s*var\(--text-secondary\)", "case home link must use --text-secondary at rest"),
+        (r"\.case-location span:last-child\s*\{[^}]*color:\s*var\(--text-primary\)", "current case project must use --text-primary"),
         (r"\.case-footer a\s*\{[^}]*color:\s*var\(--text-primary\)", "case footer links must use --text-primary at rest"),
         (r"\.case-home-link:hover,[^}]*\.case-footer a:hover\s*\{[^}]*color:\s*var\(--text-secondary\)", "case link hover must use --text-secondary"),
     )
@@ -199,6 +212,33 @@ def _portfolio_errors(portfolio_repo: Path) -> list[str]:
     for project in ("filen", "ml7"):
         if f'path.join(root, "{project}/index.html")' not in builder:
             errors.append(f"builder does not generate /{project}")
+    required_sidebar_links = (
+        "https://behance.net/gildrb",
+        "https://github.com/gildrb",
+        "https://www.goodreads.com/gildrb",
+        "https://letterboxd.com/gildrb/",
+        "https://www.linkedin.com/in/gildrb/",
+        "hi@gildrb.com",
+        "https://signal.me/",
+    )
+    for link in required_sidebar_links:
+        if link not in sidebar_links:
+            errors.append(f"shared sidebar missing profile or contact target: {link}")
+    if "<!-- @include:partials/sidebar-links.html -->" not in homepage_sidebar:
+        errors.append("homepage does not include the shared sidebar links")
+    if "<!-- @include:partials/theme-toggle.html -->" not in homepage_sidebar:
+        errors.append("homepage does not include the shared theme control")
+    for template_name, template in (
+        ("Filen", filen_template),
+        ("mL7", ml7_template),
+        ("n0thing", n0thing_template),
+    ):
+        if "<!-- @include:partials/sidebar-links.html -->" not in template:
+            errors.append(f"{template_name} does not include the shared sidebar links")
+        if "<!-- @include:partials/theme-toggle.html -->" not in template:
+            errors.append(f"{template_name} does not include the shared theme control")
+    if '["10-core.js", "20-theme.js", "30-email.js"]' not in builder:
+        errors.append("case-page script bundle does not include shared email behavior")
     redirect_pairs = {
         (item.get("source"), item.get("destination"), item.get("permanent"))
         for item in vercel.get("redirects", [])

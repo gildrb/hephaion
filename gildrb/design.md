@@ -150,6 +150,9 @@ Do not add arbitrary values when an existing step expresses the relationship. Wi
 - Layout uses a `280px` sidebar and flexible content column.
 - Layout gap is `48px`, reduced to `32px` below `1400px`.
 - Sidebar is sticky at `top: 0`, height `100vh`, with `64px` vertical padding.
+- The same sidebar content persists on the homepage and every case-study route: location, Links group, Contact group, email action, Signal link, and theme control.
+- Keep the Links and Contact markup in one shared source partial. Case templates must include it instead of maintaining route-specific copies.
+- The homepage location is `Gil Rodrigues`; case routes replace only that location row with `Gil Rodrigues → <Project>`.
 - Main content uses `64px` vertical padding.
 - `Gil Rodrigues` begins at the same wrapper coordinate on every route.
 
@@ -159,6 +162,7 @@ Do not add arbitrary values when an existing step expresses the relationship. Wi
 - Wrapper uses `12px` inline padding.
 - Layout uses `32px` vertical padding.
 - Sidebar and content use `display: contents` so the same elements enter the shared mobile grid.
+- Do not hide or silently remove the shared Links or Contact groups on case-study routes.
 - Persistent location occupies column one and order one.
 - Theme toggle occupies column two and order one.
 - Main article occupies both columns after the location row.
@@ -183,8 +187,9 @@ Rules:
 
 - Keep the location in the exact `.name` position used by the homepage.
 - Render the full location at `19px` with inherited line height and weight.
-- Link only `Gil Rodrigues` to `/`.
-- Render the arrow and current project in `--text-secondary`.
+- Link only `Gil Rodrigues` to `/` and render it in `--text-secondary`.
+- Render the arrow in `--text-secondary`.
+- Render the current project in `--text-primary` so the active location is the strongest part of the row.
 - Current project text is not a link.
 - Use an arrow, not a middle dot, slash, breadcrumb chevron component, or Index button.
 - Do not add separate `Index`, `Back`, or `Return to index` navigation.
@@ -260,7 +265,8 @@ Rules:
 - Image preview controls remain native buttons.
 - Case-study entry images remain native anchors.
 - Labels use `--text-secondary`. This includes `Links`, `Contact`, `References`, `About`, project titles, metadata terms, captions, and other text that names a group or field without acting.
-- Actionable text links use `--text-primary` at rest. This includes profile links, reference links, email, the case-study home link, and case-study footer links.
+- Actionable text links use `--text-primary` at rest. This includes profile links, reference links, email, and case-study footer links.
+- The case-study home link is the location exception: it remains `--text-secondary` beside the secondary arrow while the current project is `--text-primary`.
 - Text-link hover uses `--text-secondary`; it never becomes brighter than its resting state.
 - Link arrows inherit the link color so the complete link changes as one unit.
 - Icon controls use `--text-primary` at rest and `--text-secondary` on hover unless a documented component state requires otherwise.
@@ -328,5 +334,6 @@ For every design change:
 13. Check browser console errors.
 14. Confirm preview protection before sharing.
 15. Confirm labels are secondary, actionable text links are primary at rest, and text-link hover is secondary in both themes.
+16. Confirm every generated route contains the same shared profile and contact links, and that email copy works on case pages.
 
 Reject a change that introduces crop, arbitrary type sizes, negative case letter spacing, a second navigation system, editorial divider rules, stale generated output, broken metadata, or an unprotected unfinished preview.

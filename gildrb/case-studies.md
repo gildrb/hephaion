@@ -35,7 +35,7 @@ Gil Rodrigues → <Project>
 ```
 
 - `Gil Rodrigues` links to `/`.
-- Arrow and project are quiet text.
+- `Gil Rodrigues` and the arrow are secondary gray; the current project is primary.
 - All three parts share the same inherited `19px` size and weight.
 - The project name preserves its public casing, including `mL7`.
 - Do not add Index navigation.
