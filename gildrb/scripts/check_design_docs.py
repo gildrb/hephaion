@@ -123,6 +123,7 @@ def _portfolio_errors(portfolio_repo: Path) -> list[str]:
     required = (
         "src/styles/10-base.css",
         "src/styles/50-case-study.css",
+        "src/styles/90-responsive.css",
         "src/sections/profile-summary.html",
         "src/sections/portfolio-filen.html",
         "src/sections/portfolio-ml7.html",
@@ -144,6 +145,7 @@ def _portfolio_errors(portfolio_repo: Path) -> list[str]:
 
     base_css = _read(portfolio_repo / "src/styles/10-base.css")
     case_css = _read(portfolio_repo / "src/styles/50-case-study.css")
+    responsive_css = _read(portfolio_repo / "src/styles/90-responsive.css")
     profile = _read(portfolio_repo / "src/sections/profile-summary.html")
     filen = _read(portfolio_repo / "src/sections/portfolio-filen.html")
     ml7 = _read(portfolio_repo / "src/sections/portfolio-ml7.html")
@@ -181,8 +183,7 @@ def _portfolio_errors(portfolio_repo: Path) -> list[str]:
     case_color_rules = (
         (r"\.case-home-link\s*\{[^}]*color:\s*var\(--text-secondary\)", "case home link must use --text-secondary at rest"),
         (r"\.case-location span:last-child\s*\{[^}]*color:\s*var\(--text-primary\)", "current case project must use --text-primary"),
-        (r"\.case-footer a\s*\{[^}]*color:\s*var\(--text-primary\)", "case footer links must use --text-primary at rest"),
-        (r"\.case-home-link:hover,[^}]*\.case-footer a:hover\s*\{[^}]*color:\s*var\(--text-secondary\)", "case link hover must use --text-secondary"),
+        (r"\.case-home-link:hover\s*\{[^}]*color:\s*var\(--text-secondary\)", "case home-link hover must use --text-secondary"),
     )
     for pattern, message in case_color_rules:
         if not re.search(pattern, case_css, re.DOTALL):
@@ -237,6 +238,20 @@ def _portfolio_errors(portfolio_repo: Path) -> list[str]:
             errors.append(f"{template_name} does not include the shared sidebar links")
         if "<!-- @include:partials/theme-toggle.html -->" not in template:
             errors.append(f"{template_name} does not include the shared theme control")
+        if 'class="case-footer"' in template:
+            errors.append(f"{template_name} repeats the sidebar email as a footer call to action")
+    if not re.search(
+        r"\.case-page \.links\s*\{[^}]*order:\s*6\s*;",
+        responsive_css,
+        re.DOTALL,
+    ):
+        errors.append("shared Links and Contact wrapper does not follow the article in the mobile layout")
+    if not re.search(
+        r"\.content > \*\s*\{[^}]*order:\s*5\s*;",
+        responsive_css,
+        re.DOTALL,
+    ):
+        errors.append("mobile article content does not precede the shared Links and Contact wrapper")
     if '["10-core.js", "20-theme.js", "30-email.js"]' not in builder:
         errors.append("case-page script bundle does not include shared email behavior")
     redirect_pairs = {

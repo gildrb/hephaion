@@ -14,6 +14,8 @@ Verify mobile and desktop:
 - home navigation
 - identical profile and contact links on every route
 - working email copy action on case routes
+- case article before shared links on mobile
+- no repeated case-study email footer
 - project image navigation
 - secondary labels, primary resting links, and secondary link hover in both themes
 - console errors

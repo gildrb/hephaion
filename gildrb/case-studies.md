@@ -113,7 +113,7 @@ Explain what each artifact proves. Do not use images as decoration.
 - Homepage entry: approved mL7 logo image.
 - Make that logo image the designated case-study link.
 - Location: `Gil Rodrigues → mL7`.
-- Reuse the Filen shell, type steps, media treatment, section spacing, footer behavior, theme behavior, and responsive layout.
+- Reuse the Filen shell, type steps, media treatment, section spacing, shared sidebar behavior, theme behavior, and responsive layout.
 - Replace only project content and evidence.
 - Do not copy Filen-specific claims into mL7.
 - If evidence is incomplete, write only what the visible artifacts establish and leave further sections for later evidence.

@@ -162,7 +162,8 @@ Do not add arbitrary values when an existing step expresses the relationship. Wi
 - Wrapper uses `12px` inline padding.
 - Layout uses `32px` vertical padding.
 - Sidebar and content use `display: contents` so the same elements enter the shared mobile grid.
-- Do not hide or silently remove the shared Links or Contact groups on case-study routes.
+- On case-study routes, render the article immediately after the location row and move the shared Links and Contact groups after the article.
+- Do not hide or silently remove the shared Links or Contact groups; change only their mobile order.
 - Persistent location occupies column one and order one.
 - Theme toggle occupies column two and order one.
 - Main article occupies both columns after the location row.
@@ -242,7 +243,7 @@ Rules:
 
 - Reuse `.wrapper`, `.layout`, `.sidebar`, `.content`, `.name`, and `.theme-toggle`.
 - Keep article copy left-aligned within the content column.
-- Copy, intro, and footer maximum width: `720px`.
+- Copy and intro maximum width: `720px`.
 - Deck maximum width: `680px`.
 - Code maximum width: `880px`.
 - Full media spans the available content column.
@@ -265,7 +266,7 @@ Rules:
 - Image preview controls remain native buttons.
 - Case-study entry images remain native anchors.
 - Labels use `--text-secondary`. This includes `Links`, `Contact`, `References`, `About`, project titles, metadata terms, captions, and other text that names a group or field without acting.
-- Actionable text links use `--text-primary` at rest. This includes profile links, reference links, email, and case-study footer links.
+- Actionable text links use `--text-primary` at rest. This includes profile links, reference links, and email.
 - The case-study home link is the location exception: it remains `--text-secondary` beside the secondary arrow while the current project is `--text-primary`.
 - Text-link hover uses `--text-secondary`; it never becomes brighter than its resting state.
 - Link arrows inherit the link color so the complete link changes as one unit.
@@ -335,5 +336,6 @@ For every design change:
 14. Confirm preview protection before sharing.
 15. Confirm labels are secondary, actionable text links are primary at rest, and text-link hover is secondary in both themes.
 16. Confirm every generated route contains the same shared profile and contact links, and that email copy works on case pages.
+17. Confirm case studies do not repeat an email footer and that shared Links and Contact follow the article on mobile.
 
 Reject a change that introduces crop, arbitrary type sizes, negative case letter spacing, a second navigation system, editorial divider rules, stale generated output, broken metadata, or an unprotected unfinished preview.
