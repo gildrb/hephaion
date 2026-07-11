@@ -8,6 +8,9 @@
 - Preserve intrinsic dimensions.
 - Use the existing `22px` media radius.
 - Keep anchors for navigation and buttons for preview actions.
+- Keep labels secondary gray, actionable text links primary, and text-link hover secondary gray.
+- Let link arrows inherit the link color.
+- Keep icon controls primary at rest and secondary on hover.
 - Put hover inside `@media (hover: hover)`.
 - Keep focus visible.
 - Keep theme changes immediate.

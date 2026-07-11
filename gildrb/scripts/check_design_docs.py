@@ -28,6 +28,8 @@ REQUIRED_DESIGN_PHRASES = (
     "Do not crop process images.",
     "Page title desktop: `40px`, weight `600`, line height `48px`.",
     "Page title mobile: `32px`, weight `600`, line height `40px`.",
+    "Actionable text links use `--text-primary` at rest.",
+    "Text-link hover uses `--text-secondary`",
 )
 
 REQUIRED_CASE_ROUTES = ("/filen", "/ml7")
@@ -152,6 +154,26 @@ def _portfolio_errors(portfolio_repo: Path) -> list[str]:
     for name, value in expected_tokens.items():
         if not re.search(rf"{re.escape(name)}:\s*{re.escape(value)}\s*;", base_css):
             errors.append(f"portfolio token drift: {name} must be {value}")
+
+    semantic_color_rules = (
+        (r"\.links-label\s*\{[^}]*color:\s*var\(--text-secondary\)", "labels must use --text-secondary"),
+        (r"\.external-link,\s*\n\.reference-link\s*\{[^}]*color:\s*var\(--text-primary\)", "text links must use --text-primary at rest"),
+        (r"\.external-link:hover,\s*\n\s*\.reference-link:hover\s*\{[^}]*color:\s*var\(--text-secondary\)", "text-link hover must use --text-secondary"),
+        (r"\.email\s*\{[^}]*color:\s*var\(--text-primary\)", "email must use --text-primary at rest"),
+        (r"\.theme-toggle\s*\{[^}]*color:\s*var\(--text-primary\)", "icon controls must use --text-primary at rest"),
+    )
+    for pattern, message in semantic_color_rules:
+        if not re.search(pattern, base_css, re.DOTALL):
+            errors.append(f"portfolio semantic color drift: {message}")
+
+    case_color_rules = (
+        (r"\.case-home-link\s*\{[^}]*color:\s*var\(--text-primary\)", "case home link must use --text-primary at rest"),
+        (r"\.case-footer a\s*\{[^}]*color:\s*var\(--text-primary\)", "case footer links must use --text-primary at rest"),
+        (r"\.case-home-link:hover,[^}]*\.case-footer a:hover\s*\{[^}]*color:\s*var\(--text-secondary\)", "case link hover must use --text-secondary"),
+    )
+    for pattern, message in case_color_rules:
+        if not re.search(pattern, case_css, re.DOTALL):
+            errors.append(f"portfolio semantic color drift: {message}")
 
     required_case_rules = (
         "font-size: 40px;",

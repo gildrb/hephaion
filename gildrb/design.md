@@ -259,7 +259,12 @@ Rules:
 - Links navigate. Buttons act.
 - Image preview controls remain native buttons.
 - Case-study entry images remain native anchors.
-- Resting links use `--text-secondary` when quiet and `--text-primary` when primary.
+- Labels use `--text-secondary`. This includes `Links`, `Contact`, `References`, `About`, project titles, metadata terms, captions, and other text that names a group or field without acting.
+- Actionable text links use `--text-primary` at rest. This includes profile links, reference links, email, the case-study home link, and case-study footer links.
+- Text-link hover uses `--text-secondary`; it never becomes brighter than its resting state.
+- Link arrows inherit the link color so the complete link changes as one unit.
+- Icon controls use `--text-primary` at rest and `--text-secondary` on hover unless a documented component state requires otherwise.
+- Image-entry hover may continue to use opacity because its navigation target is communicated by the linked image rather than text color.
 - Hover changes color or image opacity without changing size or weight.
 - Put hover behavior inside `@media (hover: hover)`.
 - Use `:focus-visible` with a visible primary-color outline.
@@ -322,5 +327,6 @@ For every design change:
 12. Confirm theme switching and home navigation.
 13. Check browser console errors.
 14. Confirm preview protection before sharing.
+15. Confirm labels are secondary, actionable text links are primary at rest, and text-link hover is secondary in both themes.
 
 Reject a change that introduces crop, arbitrary type sizes, negative case letter spacing, a second navigation system, editorial divider rules, stale generated output, broken metadata, or an unprotected unfinished preview.

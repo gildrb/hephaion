@@ -36,6 +36,7 @@ Portfolio router. Read implementation first, then these contracts.
 - Keep the homepage image-led.
 - Keep case studies authored, specific, and evidence-bound.
 - Use the existing Inter font, colors, spacing, image radius, and responsive shell.
+- Render labels in `--text-secondary`, actionable text links in `--text-primary`, and link hover states in `--text-secondary`.
 - Keep `Gil Rodrigues` at the same top-left location on every page.
 - Case location is `Gil Rodrigues → <Project>`; only `Gil Rodrigues` links home.
 - Use zero letter spacing in case-study-specific styles.

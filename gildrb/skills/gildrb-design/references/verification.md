@@ -13,4 +13,5 @@ Verify mobile and desktop:
 - theme toggle
 - home navigation
 - project image navigation
+- secondary labels, primary resting links, and secondary link hover in both themes
 - console errors
