@@ -15,6 +15,7 @@ Verify mobile and desktop:
 - identical profile and contact links on every route
 - working email copy action on case routes
 - case article before shared links on mobile
+- no CSS-only reordering of focusable case navigation; the visible mobile instance follows the article in the DOM
 - no repeated case-study email footer
 - project image navigation
 - secondary labels, primary resting links, and secondary link hover in both themes

@@ -133,6 +133,7 @@ def _portfolio_errors(portfolio_repo: Path) -> list[str]:
         "src/filen.template.html",
         "src/ml7.template.html",
         "src/n0thing.template.html",
+        "src/scripts/30-email.js",
         "scripts/build-page.mjs",
         "scripts/verify-page.mjs",
         "vercel.json",
@@ -155,6 +156,7 @@ def _portfolio_errors(portfolio_repo: Path) -> list[str]:
     filen_template = _read(portfolio_repo / "src/filen.template.html")
     ml7_template = _read(portfolio_repo / "src/ml7.template.html")
     n0thing_template = _read(portfolio_repo / "src/n0thing.template.html")
+    email_script = _read(portfolio_repo / "src/scripts/30-email.js")
     vercel = json.loads(_read(portfolio_repo / "vercel.json"))
 
     expected_tokens = {
@@ -236,10 +238,21 @@ def _portfolio_errors(portfolio_repo: Path) -> list[str]:
     ):
         if "<!-- @include:partials/sidebar-links.html -->" not in template:
             errors.append(f"{template_name} does not include the shared sidebar links")
+        if template.count("<!-- @include:partials/sidebar-links.html -->") != 2:
+            errors.append(f"{template_name} must reuse the shared links partial in desktop and mobile placements")
+        if not (
+            'class="case-desktop-links"' in template
+            and 'class="case-mobile-links"' in template
+            and template.find("</main>") >= 0
+            and template.find('class="case-mobile-links"') > template.find("</main>")
+        ):
+            errors.append(f"{template_name} mobile links do not follow the article in DOM order")
         if "<!-- @include:partials/theme-toggle.html -->" not in template:
             errors.append(f"{template_name} does not include the shared theme control")
         if 'class="case-footer"' in template:
             errors.append(f"{template_name} repeats the sidebar email as a footer call to action")
+    # Both wrappers use display: contents on mobile, so explicit grid order must
+    # preserve the already-correct DOM and focus order instead of reversing it.
     if not re.search(
         r"\.case-page \.links\s*\{[^}]*order:\s*6\s*;",
         responsive_css,
@@ -252,8 +265,18 @@ def _portfolio_errors(portfolio_repo: Path) -> list[str]:
         re.DOTALL,
     ):
         errors.append("mobile article content does not precede the shared Links and Contact wrapper")
+    responsive_visibility_rules = (
+        (case_css, r"\.case-mobile-links\s*\{[^}]*display:\s*none\s*;", "mobile case links must be hidden on desktop"),
+        (responsive_css, r"\.case-desktop-links\s*\{[^}]*display:\s*none\s*;", "desktop case links must be hidden on mobile"),
+        (responsive_css, r"\.case-mobile-links\s*\{[^}]*display:\s*contents\s*;", "mobile case links must be present after the article"),
+    )
+    for stylesheet, pattern, message in responsive_visibility_rules:
+        if not re.search(pattern, stylesheet, re.DOTALL):
+            errors.append(message)
     if '["10-core.js", "20-theme.js", "30-email.js"]' not in builder:
         errors.append("case-page script bundle does not include shared email behavior")
+    if 'querySelectorAll(".email")' not in email_script:
+        errors.append("shared email behavior does not bind every responsive email control")
     redirect_pairs = {
         (item.get("source"), item.get("destination"), item.get("permanent"))
         for item in vercel.get("redirects", [])

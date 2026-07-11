@@ -162,7 +162,8 @@ Do not add arbitrary values when an existing step expresses the relationship. Wi
 - Wrapper uses `12px` inline padding.
 - Layout uses `32px` vertical padding.
 - Sidebar and content use `display: contents` so the same elements enter the shared mobile grid.
-- On case-study routes, render the article immediately after the location row and move the shared Links and Contact groups after the article.
+- On case-study routes, keep the desktop Links and Contact group in the sidebar. On mobile, render the article immediately after the location row and place the mobile instance of that same shared partial after the article so DOM, focus, and visual order agree.
+- The mobile grid still requires article order `5` and shared navigation order `6`: `display: contents` exposes both sets of descendants to the wrapper grid, so these values preserve the same order already established in the DOM rather than contradicting it.
 - Do not hide or silently remove the shared Links or Contact groups; change only their mobile order.
 - Persistent location occupies column one and order one.
 - Theme toggle occupies column two and order one.

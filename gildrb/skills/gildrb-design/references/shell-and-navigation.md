@@ -10,5 +10,5 @@
 - Do not add Index, Back, breadcrumb components, or a tiny kicker.
 - Desktop sidebar stays sticky with `64px` vertical padding.
 - Mobile uses the existing two-column grid and `display: contents` collapse.
-- On case routes, place the article before the shared Links and Contact groups on mobile.
+- On case routes, use the same shared partial for the desktop sidebar and the mobile post-article placement. Hide the inactive instance with `display: none` so DOM, focus, and visual order agree.
 - Do not repeat the email as a case-study footer call to action.
