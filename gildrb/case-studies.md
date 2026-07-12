@@ -37,7 +37,7 @@ Gil Rodrigues
 ```
 
 - `Gil Rodrigues` links to `/`.
-- `Gil Rodrigues` and the arrow are secondary gray; the current project is primary.
+- `Gil Rodrigues` and the arrow are tertiary gray; the current project is primary.
 - All three parts share the same inherited `19px` size and weight.
 - The project name preserves its public casing, including `mL7`.
 - Do not add Index navigation.

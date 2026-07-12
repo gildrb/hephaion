@@ -65,13 +65,14 @@ The live portfolio token names remain authoritative.
 :root {
   --bg: #000000;
   --text-primary: #ffffff;
-  --text-secondary: #808080;
+  --text-secondary: #b3b3b3;
+  --text-tertiary: #767676;
   --section-gap: 24px;
   --section-content-gap: 6px;
   --link-line-height: 24px;
   --theme-toggle-size: 32px;
-  --sidebar-column: 280px;
-  --content-column: 720px;
+  --sidebar-column: 240px;
+  --content-column: 760px;
   --layout-gap: 48px;
   --media-radius: 22px;
 }
@@ -80,10 +81,12 @@ The live portfolio token names remain authoritative.
   --bg: #ffffff;
   --text-primary: #000000;
   --text-secondary: #4d4d4d;
+  --text-tertiary: #767676;
 }
 ```
 
-Use `--bg`, `--text-primary`, and `--text-secondary` for every new portfolio color. Do not create project color palettes, gradients, translucent panels, glow effects, or decorative fills.
+Use `--bg`, `--text-primary`, `--text-secondary`, and `--text-tertiary` for every new portfolio color. Primary is authored content, secondary is labels and supporting metadata, and tertiary is inactive or actionable navigation. Do not create project color palettes, gradients, translucent panels, glow effects, or decorative fills.
+Text selection uses `--text-primary` over `--text-tertiary`; never use the lighter label token as the selection background.
 
 ## Typography
 
@@ -134,7 +137,7 @@ Use the existing 4px-derived rhythm and homepage constants.
 - Image/grid gap: `20px`.
 - Related group gap: `24px` or `32px`.
 - Major internal gap: `48px` or `64px`.
-- Desktop section gap: `120px`.
+- Desktop section gap: `80px`.
 - Mobile section gap: `80px`.
 - Desktop wrapper padding: `48px`.
 - Wrapper padding below `1400px`: `32px`.
@@ -148,16 +151,16 @@ Do not add arbitrary values when an existing step expresses the relationship. Wi
 
 - Wrapper maximum width: `1900px`.
 - Wrapper centers with auto inline margins.
-- Layout uses a `280px` sidebar and a `720px` content column.
+- Layout uses a `240px` sidebar and a `760px` content column. This preserves the previous combined column width while transferring `40px` from navigation to reading space.
 - At `1100px` and below, the sidebar is `240px`; with `32px` wrapper padding and a `32px` gap, the available content width is `calc(100vw - 336px)`.
 - Center the complete desktop composition—sidebar, gap, and content—as one unit so the outer whitespace is equal.
 - Layout gap is `48px`, reduced to `32px` below `1400px`.
-- Sidebar is sticky at `top: 0`, height `100vh`, with `64px` vertical padding.
+- Sidebar is sticky at `top: 0`, height `100vh`, with `48px` vertical padding.
 - The same sidebar content persists on the homepage and every case-study route: location, Links group, Contact group, email action, Signal link, and theme control.
 - On desktop, reserve two `24px` location lines before the shared `24px` section gap so the Links group begins at the same coordinate on homepage and case routes.
 - Keep the Links and Contact markup in one shared source partial. Case templates must include it instead of maintaining route-specific copies.
 - The homepage location is `Gil Rodrigues`; case routes replace only that location row with a two-line `Gil Rodrigues` then `→ <Project>` location.
-- Main content uses `64px` vertical padding.
+- Main content uses `48px` vertical padding.
 - `Gil Rodrigues` begins at the same wrapper coordinate on every route.
 
 ### Mobile
@@ -196,8 +199,8 @@ Rules:
 
 - Keep the location in the exact `.name` position used by the homepage.
 - Render the full location at `19px` with inherited line height and weight.
-- Link only `Gil Rodrigues` to `/` and render it in `--text-secondary`.
-- Render the arrow in `--text-secondary`.
+- Link only `Gil Rodrigues` to `/` and render it in `--text-tertiary`.
+- Render the arrow in `--text-tertiary`.
 - Render the current project in `--text-primary` so the active location is the strongest part of the row.
 - Use no additional vertical gap between the two location lines; the inherited line height provides their separation.
 - Current project text is not a link.
@@ -208,7 +211,7 @@ Rules:
 ## Homepage
 
 - Keep biography first and concise.
-- Keep the homepage content and every project image inside the same centered `720px` content boundary used by case studies.
+- Keep the homepage content and every project image inside the same centered `760px` content boundary used by case studies.
 - Approved biography: `Designing brands, interfaces, and the systems that connect them.`
 - Render the approved biography in `--text-primary`; it is authored content, not a label.
 - Keep project titles plain text unless explicitly specified.
@@ -238,7 +241,7 @@ Rules:
 - Never upscale beyond the source width.
 - Strip unnecessary metadata.
 - Use `srcset` and `sizes` so mobile avoids desktop payloads.
-- Full-width media uses `(max-width: 768px) calc(100vw - 24px), (max-width: 1100px) calc(100vw - 336px), 720px`; two-column media uses the matching `350px` cap and `calc(50vw - 178px)` intermediate width.
+- Full-width media uses `(max-width: 768px) calc(100vw - 24px), (max-width: 1100px) calc(100vw - 336px), 760px`; two-column media uses the matching `370px` cap and `calc(50vw - 178px)` intermediate width.
 - Keep intrinsic `width` and `height` attributes to prevent layout shift.
 - Use `loading="lazy"` below the first viewport.
 - Use `decoding="async"` for raster media.
@@ -255,15 +258,15 @@ Rules:
 
 - Reuse `.wrapper`, `.layout`, `.sidebar`, `.content`, `.name`, and `.theme-toggle`.
 - Keep article copy left-aligned within the content column.
-- Copy and intro maximum width: `720px`.
+- Copy and intro maximum width: `760px`.
 - Center the intro and every prose block within the available case-study content column with auto inline margins. Keep the text itself left-aligned; “centered” describes the reading column, not centered typography.
 - Deck maximum width: `680px`.
-- Case article maximum width: `720px`, centered within the available content column. This is the outer blog-width boundary for headings, media, grids, and code.
+- Case article maximum width: `760px`, centered within the available content column. This is the outer blog-width boundary for headings, media, grids, and code.
 - Code maximum width: `880px`.
-- Full media spans the same `720px` case article as the prose, never the entire post-sidebar viewport.
+- Full media spans the same `760px` case article as the prose, never the entire post-sidebar viewport.
 - Two-image comparisons use two equal columns and the existing `20px` gap.
 - At mobile width, media grids collapse to one column.
-- Keep major sections at `120px` desktop and `80px` mobile spacing.
+- Keep major sections at `80px` desktop and mobile spacing.
 
 ## Dividers
 
@@ -279,13 +282,14 @@ Rules:
 - Links navigate. Buttons act.
 - Image preview controls remain native buttons.
 - Case-study entry images remain native anchors.
+- Authored prose uses `--text-primary`. This includes the homepage biography, case decks, paragraphs, and list items.
 - Labels use `--text-secondary`. This includes `Links`, `Contact`, `References`, `About`, project titles, metadata terms, captions, and other text that names a group or field without acting.
-- Actionable text links use `--text-primary` at rest. This includes profile links, reference links, and email.
-- The case-study home link is the location exception: it remains `--text-secondary` beside the secondary arrow while the current project is `--text-primary`.
+- Actionable text links use `--text-tertiary` at rest. This includes profile links, reference links, and email.
+- The case-study home link remains `--text-tertiary` beside the tertiary arrow while the current project is `--text-primary`.
 - On hover-capable devices, the case-study home link becomes `--text-primary` to make the return action explicit.
-- Text-link hover uses `--text-secondary`; it never becomes brighter than its resting state.
+- Text-link hover uses `--text-primary`, promoting an actionable item from light gray to white in dark mode.
 - Link arrows inherit the link color so the complete link changes as one unit.
-- Icon controls use `--text-primary` at rest and `--text-secondary` on hover unless a documented component state requires otherwise.
+- Icon controls use `--text-tertiary` at rest and `--text-primary` on hover unless a documented component state requires otherwise.
 - Image-entry hover may continue to use opacity because its navigation target is communicated by the linked image rather than text color.
 - Hover changes color or image opacity without changing size or weight.
 - Put hover behavior inside `@media (hover: hover)`.
@@ -349,7 +353,7 @@ For every design change:
 12. Confirm theme switching and home navigation.
 13. Check browser console errors.
 14. Confirm preview protection before sharing.
-15. Confirm labels are secondary, actionable text links are primary at rest, and text-link hover is secondary in both themes.
+15. Confirm authored text is primary, labels are secondary, actionable text links are tertiary at rest, and text-link hover is primary in both themes.
 16. Confirm every generated route contains the same shared profile and contact links, and that email copy works on case pages.
 17. Confirm case studies do not repeat an email footer and that shared Links and Contact follow the article on mobile.
 

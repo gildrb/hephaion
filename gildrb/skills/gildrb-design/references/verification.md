@@ -18,8 +18,8 @@ Verify mobile and desktop:
 - no CSS-only reordering of focusable case navigation; the visible mobile instance follows the article in the DOM
 - no repeated case-study email footer
 - centered, left-aligned case intro and prose columns inside the wider media container
-- centered `720px` maximum case article with all images and grids contained inside it
-- secondary case home link at rest and primary on hover
+- centered `760px` maximum case article with all images and grids contained inside it
+- tertiary case home link at rest and primary on hover
 - project image navigation
-- secondary labels, primary resting links, and secondary link hover in both themes
+- primary authored text, secondary labels, tertiary resting links, and primary link hover in both themes
 - console errors

@@ -28,8 +28,8 @@ REQUIRED_DESIGN_PHRASES = (
     "Do not crop process images.",
     "Page title desktop: `40px`, weight `600`, line height `48px`.",
     "Page title mobile: `32px`, weight `600`, line height `40px`.",
-    "Actionable text links use `--text-primary` at rest.",
-    "Text-link hover uses `--text-secondary`",
+    "Actionable text links use `--text-tertiary` at rest.",
+    "Text-link hover uses `--text-primary`",
     "The same sidebar content persists on the homepage and every case-study route",
 )
 
@@ -171,35 +171,39 @@ def _portfolio_errors(portfolio_repo: Path) -> list[str]:
     expected_tokens = {
         "--bg": "#000000",
         "--text-primary": "#ffffff",
-        "--text-secondary": "#808080",
-        "--sidebar-column": "280px",
-        "--content-column": "720px",
+        "--text-secondary": "#b3b3b3",
+        "--text-tertiary": "#767676",
+        "--sidebar-column": "240px",
+        "--content-column": "760px",
         "--layout-gap": "48px",
         "--media-radius": "22px",
     }
     for name, value in expected_tokens.items():
         if not re.search(rf"{re.escape(name)}:\s*{re.escape(value)}\s*;", base_css):
             errors.append(f"portfolio token drift: {name} must be {value}")
+    if not re.search(r"::selection\s*\{[^}]*color:\s*var\(--text-primary\)[^}]*background:\s*var\(--text-tertiary\)", base_css, re.DOTALL):
+        errors.append("text selection must preserve primary-on-tertiary contrast")
 
     semantic_color_rules = (
         (r"\.links-label\s*\{[^}]*color:\s*var\(--text-secondary\)", "labels must use --text-secondary"),
-        (r"\.external-link,\s*\n\.reference-link\s*\{[^}]*color:\s*var\(--text-primary\)", "text links must use --text-primary at rest"),
-        (r"\.external-link:hover,\s*\n\s*\.reference-link:hover\s*\{[^}]*color:\s*var\(--text-secondary\)", "text-link hover must use --text-secondary"),
-        (r"\.email\s*\{[^}]*color:\s*var\(--text-primary\)", "email must use --text-primary at rest"),
-        (r"\.theme-toggle\s*\{[^}]*color:\s*var\(--text-primary\)", "icon controls must use --text-primary at rest"),
+        (r"\.external-link,\s*\n\.reference-link\s*\{[^}]*color:\s*var\(--text-tertiary\)", "text links must use --text-tertiary at rest"),
+        (r"\.external-link:hover,\s*\n\s*\.reference-link:hover\s*\{[^}]*color:\s*var\(--text-primary\)", "text-link hover must use --text-primary"),
+        (r"\.email\s*\{[^}]*color:\s*var\(--text-tertiary\)", "email must use --text-tertiary at rest"),
+        (r"\.theme-toggle\s*\{[^}]*color:\s*var\(--text-tertiary\)", "icon controls must use --text-tertiary at rest"),
     )
     for pattern, message in semantic_color_rules:
         if not re.search(pattern, base_css, re.DOTALL):
             errors.append(f"portfolio semantic color drift: {message}")
 
     case_color_rules = (
-        (r"\.case-home-link\s*\{[^}]*color:\s*var\(--text-secondary\)", "case home link must use --text-secondary at rest"),
+        (r"\.case-home-link\s*\{[^}]*color:\s*var\(--text-tertiary\)", "case home link must use --text-tertiary at rest"),
+        (r"\.case-arrow\s*\{[^}]*color:\s*var\(--text-tertiary\)", "case location arrow must use --text-tertiary"),
         (r"\.case-location span:last-child\s*\{[^}]*color:\s*var\(--text-primary\)", "current case project must use --text-primary"),
         (r"\.case-home-link:hover\s*\{[^}]*color:\s*var\(--text-primary\)", "case home-link hover must use --text-primary"),
         (r"\.case-location\s*\{[^}]*flex-wrap:\s*wrap", "case location must wrap onto two lines"),
         (r"\.case-home-link\s*\{[^}]*flex-basis:\s*100%", "case home link must occupy the first location line"),
         (r"\.case-location\s*\{[^}]*row-gap:\s*0", "case location lines must not add an extra vertical gap"),
-        (r"\.case-article article\s*\{[^}]*width:\s*min\(100%,\s*720px\)\s*;[^}]*margin-right:\s*auto\s*;[^}]*margin-left:\s*auto\s*;", "case article must use the centered 720px blog-width boundary"),
+        (r"\.case-article article\s*\{[^}]*width:\s*min\(100%,\s*760px\)\s*;[^}]*margin-right:\s*auto\s*;[^}]*margin-left:\s*auto\s*;", "case article must use the centered 760px blog-width boundary"),
         (r"\.case-intro,\s*\n\.case-copy\s*\{[^}]*margin-right:\s*auto\s*;[^}]*margin-left:\s*auto\s*;", "case prose columns must be centered inside the media container"),
     )
     for pattern, message in case_color_rules:
@@ -207,9 +211,15 @@ def _portfolio_errors(portfolio_repo: Path) -> list[str]:
             errors.append(f"portfolio semantic color drift: {message}")
 
     if not re.search(r"\.layout\s*\{[^}]*max-width:\s*calc\(\s*var\(--sidebar-column\) \+ var\(--layout-gap\) \+ var\(--content-column\)\s*\)[^}]*margin:\s*0 auto", base_css, re.DOTALL):
-        errors.append("desktop layout must center the sidebar and 720px content column as one unit")
+        errors.append("desktop layout must center the sidebar and 760px content column as one unit")
     if not re.search(r"\.content\s*\{[^}]*max-width:\s*var\(--content-column\)", portfolio_css, re.DOTALL):
-        errors.append("homepage content must use the shared 720px content boundary")
+        errors.append("homepage content must use the shared 760px content boundary")
+    if not re.search(r"\.content\s*\{[^}]*padding:\s*48px 0", portfolio_css, re.DOTALL):
+        errors.append("desktop content must use the compact 48px vertical padding")
+    if not re.search(r"\.case-copy p,\s*\n\.case-copy li\s*\{[^}]*color:\s*var\(--text-primary\)", case_css, re.DOTALL):
+        errors.append("authored case prose must use --text-primary")
+    if not re.search(r"\.case-section\s*\{[^}]*margin-top:\s*80px", case_css, re.DOTALL):
+        errors.append("case sections must use the compact 80px rhythm")
     if not re.search(r"\.name\s*\{[^}]*line-height:\s*var\(--link-line-height\)[^}]*min-height:\s*calc\(var\(--link-line-height\) \* 2\)", base_css, re.DOTALL):
         errors.append("desktop location must reserve two lines so shared links never move")
     preview_css = _read(portfolio_repo / "src/styles/40-preview-content.css")
@@ -237,10 +247,10 @@ def _portfolio_errors(portfolio_repo: Path) -> list[str]:
         errors.append("Filen homepage image does not route to /filen")
     if 'href="/ml7"' not in ml7:
         errors.append("mL7 homepage image does not route to /ml7")
-    responsive_full_size = "(max-width: 768px) calc(100vw - 24px), (max-width: 1100px) calc(100vw - 336px), 720px"
+    responsive_full_size = "(max-width: 768px) calc(100vw - 24px), (max-width: 1100px) calc(100vw - 336px), 760px"
     for source_name, source in (("homepage preload", _read(portfolio_repo / "src/page.template.html")), ("Filen homepage media", filen), ("mL7 homepage media", ml7)):
         if responsive_full_size not in source:
-            errors.append(f"{source_name} must use the responsive 720px media boundary")
+            errors.append(f"{source_name} must use the responsive 760px media boundary")
     for project in ("filen", "ml7"):
         if f'path.join(root, "{project}/index.html")' not in builder:
             errors.append(f"builder does not generate /{project}")
