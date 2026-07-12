@@ -12,3 +12,4 @@
 - Mobile uses the existing two-column grid and `display: contents` collapse.
 - On case routes, use the same shared partial for the desktop sidebar and the mobile post-article placement. Hide the inactive instance with `display: none` so DOM, focus, and visual order agree.
 - Do not repeat the email as a case-study footer call to action.
+- Keep the inactive home location secondary at rest and return it to primary on hover.

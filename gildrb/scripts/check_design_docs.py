@@ -185,7 +185,9 @@ def _portfolio_errors(portfolio_repo: Path) -> list[str]:
     case_color_rules = (
         (r"\.case-home-link\s*\{[^}]*color:\s*var\(--text-secondary\)", "case home link must use --text-secondary at rest"),
         (r"\.case-location span:last-child\s*\{[^}]*color:\s*var\(--text-primary\)", "current case project must use --text-primary"),
-        (r"\.case-home-link:hover\s*\{[^}]*color:\s*var\(--text-secondary\)", "case home-link hover must use --text-secondary"),
+        (r"\.case-home-link:hover\s*\{[^}]*color:\s*var\(--text-primary\)", "case home-link hover must use --text-primary"),
+        (r"\.case-article article\s*\{[^}]*width:\s*min\(100%,\s*720px\)\s*;[^}]*margin-right:\s*auto\s*;[^}]*margin-left:\s*auto\s*;", "case article must use the centered 720px blog-width boundary"),
+        (r"\.case-intro,\s*\n\.case-copy\s*\{[^}]*margin-right:\s*auto\s*;[^}]*margin-left:\s*auto\s*;", "case prose columns must be centered inside the media container"),
     )
     for pattern, message in case_color_rules:
         if not re.search(pattern, case_css, re.DOTALL):

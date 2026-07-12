@@ -245,9 +245,11 @@ Rules:
 - Reuse `.wrapper`, `.layout`, `.sidebar`, `.content`, `.name`, and `.theme-toggle`.
 - Keep article copy left-aligned within the content column.
 - Copy and intro maximum width: `720px`.
+- Center the intro and every prose block within the available case-study content column with auto inline margins. Keep the text itself left-aligned; “centered” describes the reading column, not centered typography.
 - Deck maximum width: `680px`.
+- Case article maximum width: `720px`, centered within the available content column. This is the outer blog-width boundary for headings, media, grids, and code.
 - Code maximum width: `880px`.
-- Full media spans the available content column.
+- Full media spans the same `720px` case article as the prose, never the entire post-sidebar viewport.
 - Two-image comparisons use two equal columns and the existing `20px` gap.
 - At mobile width, media grids collapse to one column.
 - Keep major sections at `120px` desktop and `80px` mobile spacing.
@@ -269,6 +271,7 @@ Rules:
 - Labels use `--text-secondary`. This includes `Links`, `Contact`, `References`, `About`, project titles, metadata terms, captions, and other text that names a group or field without acting.
 - Actionable text links use `--text-primary` at rest. This includes profile links, reference links, and email.
 - The case-study home link is the location exception: it remains `--text-secondary` beside the secondary arrow while the current project is `--text-primary`.
+- On hover-capable devices, the case-study home link becomes `--text-primary` to make the return action explicit.
 - Text-link hover uses `--text-secondary`; it never becomes brighter than its resting state.
 - Link arrows inherit the link color so the complete link changes as one unit.
 - Icon controls use `--text-primary` at rest and `--text-secondary` on hover unless a documented component state requires otherwise.
