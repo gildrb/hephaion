@@ -128,6 +128,7 @@ def _portfolio_errors(portfolio_repo: Path) -> list[str]:
     required = (
         "src/styles/10-base.css",
         "src/styles/20-portfolio-media.css",
+        "src/styles/40-preview-content.css",
         "src/styles/50-case-study.css",
         "src/styles/90-responsive.css",
         "src/sections/profile-summary.html",
@@ -197,6 +198,7 @@ def _portfolio_errors(portfolio_repo: Path) -> list[str]:
         (r"\.case-home-link:hover\s*\{[^}]*color:\s*var\(--text-primary\)", "case home-link hover must use --text-primary"),
         (r"\.case-location\s*\{[^}]*flex-wrap:\s*wrap", "case location must wrap onto two lines"),
         (r"\.case-home-link\s*\{[^}]*flex-basis:\s*100%", "case home link must occupy the first location line"),
+        (r"\.case-location\s*\{[^}]*row-gap:\s*0", "case location lines must not add an extra vertical gap"),
         (r"\.case-article article\s*\{[^}]*width:\s*min\(100%,\s*720px\)\s*;[^}]*margin-right:\s*auto\s*;[^}]*margin-left:\s*auto\s*;", "case article must use the centered 720px blog-width boundary"),
         (r"\.case-intro,\s*\n\.case-copy\s*\{[^}]*margin-right:\s*auto\s*;[^}]*margin-left:\s*auto\s*;", "case prose columns must be centered inside the media container"),
     )
@@ -208,6 +210,11 @@ def _portfolio_errors(portfolio_repo: Path) -> list[str]:
         errors.append("desktop layout must center the sidebar and 720px content column as one unit")
     if not re.search(r"\.content\s*\{[^}]*max-width:\s*var\(--content-column\)", portfolio_css, re.DOTALL):
         errors.append("homepage content must use the shared 720px content boundary")
+    if not re.search(r"\.name\s*\{[^}]*line-height:\s*var\(--link-line-height\)[^}]*min-height:\s*calc\(var\(--link-line-height\) \* 2\)", base_css, re.DOTALL):
+        errors.append("desktop location must reserve two lines so shared links never move")
+    preview_css = _read(portfolio_repo / "src/styles/40-preview-content.css")
+    if not re.search(r"\.profile-copy\s*\{[^}]*color:\s*var\(--text-primary\)", preview_css, re.DOTALL):
+        errors.append("homepage biography must use --text-primary")
 
     required_case_rules = (
         "font-size: 40px;",

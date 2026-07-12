@@ -154,6 +154,7 @@ Do not add arbitrary values when an existing step expresses the relationship. Wi
 - Layout gap is `48px`, reduced to `32px` below `1400px`.
 - Sidebar is sticky at `top: 0`, height `100vh`, with `64px` vertical padding.
 - The same sidebar content persists on the homepage and every case-study route: location, Links group, Contact group, email action, Signal link, and theme control.
+- On desktop, reserve two `24px` location lines before the shared `24px` section gap so the Links group begins at the same coordinate on homepage and case routes.
 - Keep the Links and Contact markup in one shared source partial. Case templates must include it instead of maintaining route-specific copies.
 - The homepage location is `Gil Rodrigues`; case routes replace only that location row with a two-line `Gil Rodrigues` then `→ <Project>` location.
 - Main content uses `64px` vertical padding.
@@ -198,6 +199,7 @@ Rules:
 - Link only `Gil Rodrigues` to `/` and render it in `--text-secondary`.
 - Render the arrow in `--text-secondary`.
 - Render the current project in `--text-primary` so the active location is the strongest part of the row.
+- Use no additional vertical gap between the two location lines; the inherited line height provides their separation.
 - Current project text is not a link.
 - Use an arrow, not a middle dot, slash, breadcrumb chevron component, or Index button.
 - Do not add separate `Index`, `Back`, or `Return to index` navigation.
@@ -208,6 +210,7 @@ Rules:
 - Keep biography first and concise.
 - Keep the homepage content and every project image inside the same centered `720px` content boundary used by case studies.
 - Approved biography: `Designing brands, interfaces, and the systems that connect them.`
+- Render the approved biography in `--text-primary`; it is authored content, not a label.
 - Keep project titles plain text unless explicitly specified.
 - A project with a case study exposes one designated clickable image.
 - Do not append `Read the case study`, `View project`, summaries, tags, roles, or marketing copy.
