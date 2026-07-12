@@ -28,6 +28,6 @@ Maintain the image-led index and authored case-study system.
 
 - Homepage stays concise and image-led.
 - Each case-study logo uses one clear internal route.
-- Persistent location reads `Gil Rodrigues → <Project>`.
+- Persistent location uses two lines: `Gil Rodrigues` then `→ <Project>`.
 - Generated output and metadata agree.
 - Evidence is complete, uncropped, optimized, and explained.

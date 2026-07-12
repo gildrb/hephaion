@@ -71,6 +71,7 @@ The live portfolio token names remain authoritative.
   --link-line-height: 24px;
   --theme-toggle-size: 32px;
   --sidebar-column: 280px;
+  --content-column: 720px;
   --layout-gap: 48px;
   --media-radius: 22px;
 }
@@ -147,12 +148,14 @@ Do not add arbitrary values when an existing step expresses the relationship. Wi
 
 - Wrapper maximum width: `1900px`.
 - Wrapper centers with auto inline margins.
-- Layout uses a `280px` sidebar and flexible content column.
+- Layout uses a `280px` sidebar and a `720px` content column.
+- At `1100px` and below, the sidebar is `240px`; with `32px` wrapper padding and a `32px` gap, the available content width is `calc(100vw - 336px)`.
+- Center the complete desktop composition—sidebar, gap, and content—as one unit so the outer whitespace is equal.
 - Layout gap is `48px`, reduced to `32px` below `1400px`.
 - Sidebar is sticky at `top: 0`, height `100vh`, with `64px` vertical padding.
 - The same sidebar content persists on the homepage and every case-study route: location, Links group, Contact group, email action, Signal link, and theme control.
 - Keep the Links and Contact markup in one shared source partial. Case templates must include it instead of maintaining route-specific copies.
-- The homepage location is `Gil Rodrigues`; case routes replace only that location row with `Gil Rodrigues → <Project>`.
+- The homepage location is `Gil Rodrigues`; case routes replace only that location row with a two-line `Gil Rodrigues` then `→ <Project>` location.
 - Main content uses `64px` vertical padding.
 - `Gil Rodrigues` begins at the same wrapper coordinate on every route.
 
@@ -181,8 +184,11 @@ Gil Rodrigues
 Project page:
 
 ```text
-Gil Rodrigues → Filen
-Gil Rodrigues → mL7
+Gil Rodrigues
+→ Filen
+
+Gil Rodrigues
+→ mL7
 ```
 
 Rules:
@@ -200,6 +206,7 @@ Rules:
 ## Homepage
 
 - Keep biography first and concise.
+- Keep the homepage content and every project image inside the same centered `720px` content boundary used by case studies.
 - Approved biography: `Designing brands, interfaces, and the systems that connect them.`
 - Keep project titles plain text unless explicitly specified.
 - A project with a case study exposes one designated clickable image.
@@ -228,6 +235,7 @@ Rules:
 - Never upscale beyond the source width.
 - Strip unnecessary metadata.
 - Use `srcset` and `sizes` so mobile avoids desktop payloads.
+- Full-width media uses `(max-width: 768px) calc(100vw - 24px), (max-width: 1100px) calc(100vw - 336px), 720px`; two-column media uses the matching `350px` cap and `calc(50vw - 178px)` intermediate width.
 - Keep intrinsic `width` and `height` attributes to prevent layout shift.
 - Use `loading="lazy"` below the first viewport.
 - Use `decoding="async"` for raster media.

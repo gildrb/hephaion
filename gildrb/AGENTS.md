@@ -39,7 +39,7 @@ Portfolio router. Read implementation first, then these contracts.
 - Render labels in `--text-secondary`, actionable text links in `--text-primary`, and link hover states in `--text-secondary`.
 - Keep `Gil Rodrigues` at the same top-left location on every page.
 - Keep profile links, contact links, email action, and theme control in one shared sidebar partial used by the homepage and every case route.
-- Case location is `Gil Rodrigues → <Project>`; only `Gil Rodrigues` links home.
+- Case location uses two lines: `Gil Rodrigues` then `→ <Project>`; only `Gil Rodrigues` links home.
 - Use zero letter spacing in case-study-specific styles.
 - Use documented type steps. Do not add fluid or arbitrary text sizes.
 - Do not add middle-dot separators, horizontal-rule dividers, gradients, cards, or shadows.

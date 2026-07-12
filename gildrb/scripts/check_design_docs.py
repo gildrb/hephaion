@@ -21,8 +21,8 @@ REQUIRED_PACKAGE_FILES = (
 
 REQUIRED_DESIGN_PHRASES = (
     "Designing brands, interfaces, and the systems that connect them.",
-    "Gil Rodrigues → Filen",
-    "Gil Rodrigues → mL7",
+    "Gil Rodrigues\n→ Filen",
+    "Gil Rodrigues\n→ mL7",
     "Case-specific letter spacing is always `0`.",
     "Do not use middle-dot separators.",
     "Do not crop process images.",
@@ -115,6 +115,11 @@ def _package_errors() -> list[str]:
                 errors.append(f"{skill_relative} does not route {reference}")
             if not (skill_path.parent / reference).is_file():
                 errors.append(f"missing skill reference: {skill_relative}/{reference}")
+    two_line_location = "two lines: `Gil Rodrigues` then `→ <Project>`"
+    for relative in ("AGENTS.md", "case-studies.md", "skills/gildrb-portfolio/SKILL.md", "skills/gildrb-design/references/shell-and-navigation.md"):
+        path = PACKAGE_ROOT / relative
+        if path.is_file() and two_line_location not in _read(path):
+            errors.append(f"{relative} does not preserve the two-line case location")
     return errors
 
 
@@ -122,6 +127,7 @@ def _portfolio_errors(portfolio_repo: Path) -> list[str]:
     errors: list[str] = []
     required = (
         "src/styles/10-base.css",
+        "src/styles/20-portfolio-media.css",
         "src/styles/50-case-study.css",
         "src/styles/90-responsive.css",
         "src/sections/profile-summary.html",
@@ -131,6 +137,7 @@ def _portfolio_errors(portfolio_repo: Path) -> list[str]:
         "src/partials/sidebar.html",
         "src/partials/theme-toggle.html",
         "src/filen.template.html",
+        "src/page.template.html",
         "src/ml7.template.html",
         "src/n0thing.template.html",
         "src/scripts/30-email.js",
@@ -145,6 +152,7 @@ def _portfolio_errors(portfolio_repo: Path) -> list[str]:
         return errors
 
     base_css = _read(portfolio_repo / "src/styles/10-base.css")
+    portfolio_css = _read(portfolio_repo / "src/styles/20-portfolio-media.css")
     case_css = _read(portfolio_repo / "src/styles/50-case-study.css")
     responsive_css = _read(portfolio_repo / "src/styles/90-responsive.css")
     profile = _read(portfolio_repo / "src/sections/profile-summary.html")
@@ -164,6 +172,7 @@ def _portfolio_errors(portfolio_repo: Path) -> list[str]:
         "--text-primary": "#ffffff",
         "--text-secondary": "#808080",
         "--sidebar-column": "280px",
+        "--content-column": "720px",
         "--layout-gap": "48px",
         "--media-radius": "22px",
     }
@@ -186,12 +195,19 @@ def _portfolio_errors(portfolio_repo: Path) -> list[str]:
         (r"\.case-home-link\s*\{[^}]*color:\s*var\(--text-secondary\)", "case home link must use --text-secondary at rest"),
         (r"\.case-location span:last-child\s*\{[^}]*color:\s*var\(--text-primary\)", "current case project must use --text-primary"),
         (r"\.case-home-link:hover\s*\{[^}]*color:\s*var\(--text-primary\)", "case home-link hover must use --text-primary"),
+        (r"\.case-location\s*\{[^}]*flex-wrap:\s*wrap", "case location must wrap onto two lines"),
+        (r"\.case-home-link\s*\{[^}]*flex-basis:\s*100%", "case home link must occupy the first location line"),
         (r"\.case-article article\s*\{[^}]*width:\s*min\(100%,\s*720px\)\s*;[^}]*margin-right:\s*auto\s*;[^}]*margin-left:\s*auto\s*;", "case article must use the centered 720px blog-width boundary"),
         (r"\.case-intro,\s*\n\.case-copy\s*\{[^}]*margin-right:\s*auto\s*;[^}]*margin-left:\s*auto\s*;", "case prose columns must be centered inside the media container"),
     )
     for pattern, message in case_color_rules:
         if not re.search(pattern, case_css, re.DOTALL):
             errors.append(f"portfolio semantic color drift: {message}")
+
+    if not re.search(r"\.layout\s*\{[^}]*max-width:\s*calc\(\s*var\(--sidebar-column\) \+ var\(--layout-gap\) \+ var\(--content-column\)\s*\)[^}]*margin:\s*0 auto", base_css, re.DOTALL):
+        errors.append("desktop layout must center the sidebar and 720px content column as one unit")
+    if not re.search(r"\.content\s*\{[^}]*max-width:\s*var\(--content-column\)", portfolio_css, re.DOTALL):
+        errors.append("homepage content must use the shared 720px content boundary")
 
     required_case_rules = (
         "font-size: 40px;",
@@ -214,6 +230,10 @@ def _portfolio_errors(portfolio_repo: Path) -> list[str]:
         errors.append("Filen homepage image does not route to /filen")
     if 'href="/ml7"' not in ml7:
         errors.append("mL7 homepage image does not route to /ml7")
+    responsive_full_size = "(max-width: 768px) calc(100vw - 24px), (max-width: 1100px) calc(100vw - 336px), 720px"
+    for source_name, source in (("homepage preload", _read(portfolio_repo / "src/page.template.html")), ("Filen homepage media", filen), ("mL7 homepage media", ml7)):
+        if responsive_full_size not in source:
+            errors.append(f"{source_name} must use the responsive 720px media boundary")
     for project in ("filen", "ml7"):
         if f'path.join(root, "{project}/index.html")' not in builder:
             errors.append(f"builder does not generate /{project}")

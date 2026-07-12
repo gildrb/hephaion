@@ -29,9 +29,11 @@ Current routes:
 ## Persistent Location
 
 Each case page starts in the exact homepage name position:
+The location uses two lines: `Gil Rodrigues` then `→ <Project>`.
 
 ```text
-Gil Rodrigues → <Project>
+Gil Rodrigues
+→ <Project>
 ```
 
 - `Gil Rodrigues` links to `/`.
@@ -104,7 +106,7 @@ Explain what each artifact proves. Do not use images as decoration.
 - Required process evidence: complete exploration board.
 - The board must never be cropped.
 - Do not link to `filen.io` from the case page.
-- Location: `Gil Rodrigues → Filen`.
+- Location uses two lines: `Gil Rodrigues` then `→ Filen`.
 
 ## mL7
 
@@ -112,7 +114,7 @@ Explain what each artifact proves. Do not use images as decoration.
 - Route: `/ml7`.
 - Homepage entry: approved mL7 logo image.
 - Make that logo image the designated case-study link.
-- Location: `Gil Rodrigues → mL7`.
+- Location uses two lines: `Gil Rodrigues` then `→ mL7`.
 - Reuse the Filen shell, type steps, media treatment, section spacing, shared sidebar behavior, theme behavior, and responsive layout.
 - Replace only project content and evidence.
 - Do not copy Filen-specific claims into mL7.
