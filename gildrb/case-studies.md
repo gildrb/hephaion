@@ -50,7 +50,7 @@ Gil Rodrigues
 Use this sequence when evidence supports it:
 
 1. Decision-led title.
-2. Factual deck.
+2. Optional factual deck.
 3. Compact contribution, scope, and context metadata.
 4. Primary result image.
 5. Problem and constraints.
@@ -69,7 +69,7 @@ Do not force a section when evidence does not exist. Add an explicit author plac
 - Keep `src/<project>.template.html` structural. It contains the shell and one `<!-- @case-markdown:<project> -->` insertion token, not authored article prose.
 - Keep responsive image markup in `src/case-media/<project>/<media-id>.html` so writing never requires editing `srcset`, dimensions, loading behavior, or layout HTML.
 - Reference those assets from Markdown with `![Caption](media:<media-id>)`. Consecutive media references form the existing two-column grid.
-- Begin every file with one `#` title, one `>` deck, and exactly three `- **Label:** Value` metadata rows.
+- Begin every file with one `#` title and exactly three `- **Label:** Value` metadata rows. A `>` deck may appear between them, but authors may omit it rather than inventing introductory copy.
 - Generate the static route with `node scripts/build-page.mjs`; never edit `<project>/index.html` directly.
 - Preserve ordinary Markdown support for `##` and `###` headings, paragraphs, lists, emphasis, strong text, inline code, external links, and fenced code blocks.
 - Keep `content/README.md` synchronized with the supported authoring syntax.
