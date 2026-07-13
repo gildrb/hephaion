@@ -211,6 +211,7 @@ Rules:
 ## Homepage
 
 - Keep biography first and concise.
+- Order homepage projects newest to oldest: `Heph`, `Filen`, `n0thing`, then `mL7`. DOM, visual, and keyboard order must agree at every viewport.
 - Keep the homepage content and every project image inside the same centered `760px` content boundary used by case studies.
 - Approved biography: `Designing brands, interfaces, and the systems that connect them.`
 - Render the approved biography in `--text-primary`; it is authored content, not a label.
@@ -218,6 +219,8 @@ Rules:
 - Use `32px` from the biography to the first project title on desktop and `32px` from that title to its solid media. On mobile, keep the intervening biography, Links, and project-title text groups at `24px`, then use `32px` from the project title to its media.
 - Put each project date and title below its media, never inside a mobile media or demo frame.
 - Render project dates at `14px/20px` in `--text-tertiary` and project titles at `16px/24px` in `--text-secondary`.
+- Make every below-media metadata strip a full-width link target. Keep the date on its own row, then align the project title left and an Inter `→` right on the same row.
+- For interactive media such as the Heph terminal, keep the media controls usable and enlarge only the metadata link beneath it; do not place an external-link overlay over the demo.
 - Use the same optically compensated `32px` gap between every adjacent homepage project entry on desktop and mobile.
 - Use the same `32px` gap from the final project title to the `Metadata` group; never pull the footer upward with a negative margin.
 - A project with a case study exposes one designated clickable image.
@@ -337,7 +340,8 @@ Rules:
 
 ## Metadata
 
-- Canonical project routes are top-level: `/filen`, `/ml7`, and future `/<project>` paths.
+- Canonical project routes are top-level: `/heph`, `/filen`, `/n0thing`, `/ml7`, and future `/<project>` paths.
+- The homepage Heph metadata links to `/heph`. Its GitHub repository link belongs inside the Heph article, not on the homepage.
 - Use static directory indexes: `<project>/index.html`.
 - Synchronize canonical, Open Graph, Twitter, JSON-LD, sitemap, feed, Markdown mirrors, LLM mirrors, humans file, and structured profile graph.
 - Redirect superseded public routes permanently to the canonical route.

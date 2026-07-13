@@ -12,7 +12,9 @@ This document defines the path from a homepage image to an authored project page
 
 Current routes:
 
+- `/heph`
 - `/filen`
+- `/n0thing`
 - `/ml7`
 
 ## Homepage Entry
@@ -107,6 +109,16 @@ Explain what each artifact proves. Do not use images as decoration.
 - The board must never be cropped.
 - Do not link to `filen.io` from the case page.
 - Location uses two lines: `Gil Rodrigues` then `→ Filen`.
+
+## Heph
+
+- Project label: `Heph`.
+- Route: `/heph`.
+- Homepage entry: interactive terminal demo followed by full-width date/title metadata.
+- Link the metadata strip to `/heph`; do not link the homepage directly to the source repository and do not overlay a link on the interactive terminal.
+- Link `https://github.com/gildrb/heph` from inside the case-study article.
+- Describe only behavior supported by the current Heph documentation and repository.
+- Location uses two lines: `Gil Rodrigues` then `→ Heph`.
 
 ## mL7
 

@@ -23,5 +23,7 @@ Keep this sentence synchronized across visible and machine-readable surfaces.
 ## Current Projects
 
 - Filen image links to `/filen`.
+- Heph metadata links to `/heph`; the repository link appears inside that article.
+- n0thing image links to `/n0thing`.
 - mL7 image links to `/ml7`.
 - Do not use `/index/<project>` for canonical navigation.

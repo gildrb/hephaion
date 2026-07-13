@@ -12,6 +12,8 @@
 - Keep anchors for navigation and buttons for preview actions.
 - Keep homepage authored copy primary, case prose and project titles secondary, dates and captions tertiary, actionable text links tertiary, and text-link hover primary.
 - Let link arrows inherit the link color.
+- Make each homepage project metadata strip clickable across its complete width, with the title left and an Inter `→` aligned to the far right.
+- Keep interactive media outside that link target so its controls remain usable; the full-width metadata strip beneath it provides the forgiving navigation target.
 - Keep icon controls tertiary at rest and primary on hover.
 - Put hover inside `@media (hover: hover)`.
 - Keep focus visible.

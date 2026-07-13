@@ -32,9 +32,11 @@ REQUIRED_DESIGN_PHRASES = (
     "Text-link hover uses `--text-primary`",
     "The same sidebar content persists on the homepage and every case-study route",
     "Do not show a `Portfolio` heading on the homepage",
+    "Order homepage projects newest to oldest",
+    "Make every below-media metadata strip a full-width link target",
 )
 
-REQUIRED_CASE_ROUTES = ("/filen", "/ml7")
+REQUIRED_CASE_ROUTES = ("/heph", "/filen", "/n0thing", "/ml7")
 REQUIRED_SKILL_REFERENCES = {
     "skills/gildrb-portfolio/SKILL.md": (
         "references/homepage.md",
@@ -140,6 +142,7 @@ def _portfolio_errors(portfolio_repo: Path) -> list[str]:
         "src/partials/sidebar.html",
         "src/partials/theme-toggle.html",
         "src/filen.template.html",
+        "src/heph.template.html",
         "src/page.template.html",
         "src/ml7.template.html",
         "src/n0thing.template.html",
@@ -163,9 +166,11 @@ def _portfolio_errors(portfolio_repo: Path) -> list[str]:
     filen = _read(portfolio_repo / "src/sections/portfolio-filen.html")
     ml7 = _read(portfolio_repo / "src/sections/portfolio-ml7.html")
     builder = _read(portfolio_repo / "scripts/build-page.mjs")
+    homepage_template = _read(portfolio_repo / "src/page.template.html")
     sidebar_links = _read(portfolio_repo / "src/partials/sidebar-links.html")
     homepage_sidebar = _read(portfolio_repo / "src/partials/sidebar.html")
     filen_template = _read(portfolio_repo / "src/filen.template.html")
+    heph_template = _read(portfolio_repo / "src/heph.template.html")
     ml7_template = _read(portfolio_repo / "src/ml7.template.html")
     n0thing_template = _read(portfolio_repo / "src/n0thing.template.html")
     email_script = _read(portfolio_repo / "src/scripts/30-email.js")
@@ -230,10 +235,25 @@ def _portfolio_errors(portfolio_repo: Path) -> list[str]:
     preview_css = _read(portfolio_repo / "src/styles/40-preview-content.css")
     if "portfolio-label" in portfolio_open or 'aria-label="Portfolio"' not in portfolio_open:
         errors.append("homepage must omit the visible Portfolio label while preserving its accessible section name")
+    homepage_projects = (
+        "<!-- @include:sections/portfolio-heph.html -->",
+        "<!-- @include:sections/portfolio-filen.html -->",
+        "<!-- @include:sections/portfolio-n0thing.html -->",
+        "<!-- @include:sections/portfolio-ml7.html -->",
+    )
+    project_positions = [homepage_template.find(project) for project in homepage_projects]
+    if any(position < 0 for position in project_positions) or project_positions != sorted(project_positions):
+        errors.append("homepage projects must stay ordered newest to oldest: Heph, Filen, n0thing, mL7")
     if not re.search(r"--text-media-gap:\s*32px", base_css):
         errors.append("homepage must define the 32px optical text-to-media gap")
     if not re.search(r"\.portfolio-section\s*>\s*\.section-title\s*\{[^}]*margin-bottom:\s*var\(--text-media-gap\)", preview_css, re.DOTALL):
         errors.append("first project title must use the optical 32px transition into its solid media")
+    if not re.search(r"\.portfolio-card-meta\s*\{[^}]*grid-template-columns:\s*minmax\(0,\s*1fr\) auto[^}]*width:\s*100%", portfolio_css, re.DOTALL):
+        errors.append("project metadata must span the card and reserve a right-aligned affordance column")
+    if not re.search(r'\.portfolio-card-meta::after\s*\{[^}]*content:\s*"→"[^}]*font-family:\s*"Inter"', portfolio_css, re.DOTALL):
+        errors.append("project metadata must show a right-aligned Inter arrow")
+    if not re.search(r"\.portfolio-card-link\s*\{[^}]*width:\s*100%", portfolio_css, re.DOTALL):
+        errors.append("standalone project metadata links must expose a full-width hit target")
     if not re.search(r"\.profile-copy\s*\{[^}]*color:\s*var\(--text-primary\)", preview_css, re.DOTALL):
         errors.append("homepage biography must use --text-primary")
     if not re.search(r"\.references-links\s*\{[^}]*margin-top:\s*0\s*;", preview_css, re.DOTALL):
@@ -272,6 +292,10 @@ def _portfolio_errors(portfolio_repo: Path) -> list[str]:
         errors.append("homepage biography does not match the gildrb contract")
     if 'href="/filen"' not in filen:
         errors.append("Filen homepage image does not route to /filen")
+    if 'href="/heph"' not in heph_section or 'href="https://github.com/gildrb/heph"' in heph_section:
+        errors.append("Heph homepage metadata must route to /heph instead of GitHub")
+    if 'href="https://github.com/gildrb/heph"' not in heph_template:
+        errors.append("Heph case study must link to its GitHub repository inside the article")
     if 'href="/ml7"' not in ml7:
         errors.append("mL7 homepage image does not route to /ml7")
     responsive_full_size = "(max-width: 768px) calc(100vw - 24px), (max-width: 1100px) calc(100vw - 336px), 760px"
