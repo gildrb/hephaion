@@ -213,7 +213,9 @@ Rules:
 - Use an arrow, not a middle dot, slash, breadcrumb chevron component, or Index button.
 - Do not add separate `Index`, `Back`, or `Return to index` navigation.
 - Keep the theme toggle in its existing location.
+- Preserve each route's per-tab scroll position for browser back and forward navigation. Store on `pagehide` and when the document becomes hidden, restore only for back/forward or bfcache traversal, and tolerate unavailable `sessionStorage`. Fresh visits must retain their normal initial position.
 - On desktop case-study routes, align the center of the final authored line, whether prose or `MORE SOON`, with the center of the theme toggle when the reader reaches the bottom. Let the last content block absorb unused height on short drafts, preserve at least the standard `80px` section gap, and derive the bottom position from the shared footer and toggle tokens rather than a separate optical offset. Keep the mobile toggle in its top-mounted position.
+- Separate authored thoughts with ordinary Markdown paragraph breaks. Use the shared `--text-media-gap` (`32px`) in both directions around case media: from preceding prose to the image, and from the caption to following prose. This mirrors the homepage's optical LinkedIn-to-Contact transition without introducing a heading or divider.
 
 ## Homepage
 

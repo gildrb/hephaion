@@ -192,6 +192,7 @@ def _portfolio_errors(portfolio_repo: Path) -> list[str]:
     heph_template = _read(portfolio_repo / "src/heph.template.html")
     ml7_template = _read(portfolio_repo / "src/ml7.template.html")
     n0thing_template = _read(portfolio_repo / "src/n0thing.template.html")
+    core_script = _read(portfolio_repo / "src/scripts/10-core.js")
     email_script = _read(portfolio_repo / "src/scripts/30-email.js")
     vercel = json.loads(_read(portfolio_repo / "vercel.json"))
 
@@ -248,6 +249,15 @@ def _portfolio_errors(portfolio_repo: Path) -> list[str]:
             errors.append(f"portfolio token drift: {name} must be {value}")
     if not re.search(r"::selection\s*\{[^}]*color:\s*var\(--highlight-text\)[^}]*background:\s*var\(--highlight-bg\)", base_css, re.DOTALL):
         errors.append("text selection must use white over the approved bright-gray highlight")
+    scroll_contract = (
+        'window.history.scrollRestoration = "manual";',
+        'window.addEventListener("pagehide", saveScrollPosition);',
+        'window.addEventListener("pageshow", restoreScrollPosition);',
+        'navigationType !== "back_forward"',
+        "window.sessionStorage.setItem(",
+    )
+    if not all(token in core_script for token in scroll_contract):
+        errors.append("shared navigation must preserve per-tab scroll position only across back/forward traversal")
 
     semantic_color_rules = (
         (r"\.links-label\s*\{[^}]*color:\s*var\(--text-secondary\)", "labels must use --text-secondary"),
@@ -413,6 +423,24 @@ def _portfolio_errors(portfolio_repo: Path) -> list[str]:
         re.DOTALL,
     ):
         errors.append("desktop case ending must remove the final heading's independent bottom margin")
+    if not re.search(
+        r"\.case-media \+ \.case-copy:last-child,\s*\.case-media-grid \+ \.case-copy:last-child\s*\{[^}]*padding-top:\s*var\(--text-media-gap\)",
+        case_css,
+        re.DOTALL,
+    ):
+        errors.append("final prose after case media must preserve the shared optical transition while aligning its last line")
+    if not re.search(
+        r"\.case-media\s*\{[^}]*margin-top:\s*var\(--text-media-gap\)",
+        case_css,
+        re.DOTALL,
+    ):
+        errors.append("case media must use the shared optical transition after preceding prose")
+    if not re.search(
+        r"\.case-media \+ \.case-copy,\s*\.case-media-grid \+ \.case-copy\s*\{[^}]*margin-top:\s*var\(--text-media-gap\)",
+        case_css,
+        re.DOTALL,
+    ):
+        errors.append("prose after case media must use the same shared optical transition")
     for banned in ("object-fit: cover", "border-top:", "border-bottom:"):
         if banned in case_css:
             errors.append(f"case CSS contains banned rule: {banned}")
