@@ -71,7 +71,8 @@ Do not force a section when evidence does not exist. Add an explicit author plac
 - Keep `src/<project>.template.html` structural. It contains the shell and one `<!-- @case-markdown:<project> -->` insertion token, not authored article prose.
 - Keep responsive image markup in `src/case-media/<project>/<media-id>.html` so writing never requires editing `srcset`, dimensions, loading behavior, or layout HTML.
 - Reference those assets from Markdown with `![Caption](media:<media-id>)`. Every image needs a visible caption of one to five words. Consecutive media references form the existing two-column grid.
-- Begin every file with one `#` title and exactly three `- **Label:** Value` metadata rows. A `>` deck may appear between them, but authors may omit it rather than inventing introductory copy.
+- Begin every file with one `#` title. Finished studies may add exactly three `- **Label:** Value` metadata rows; unfinished image-led drafts omit the entire metadata group rather than showing placeholder contribution, scope, or context values. A `>` deck may appear after the title, but authors may omit it rather than inventing introductory copy.
+- Structure unfinished drafts as title, available media with one-to-five-word captions, then `## MORE SOON` as the final block. Preserve an explicitly required project link, such as Heph's repository link, between the title and final marker.
 - Generate the static route with `node scripts/build-page.mjs`; never edit `<project>/index.html` directly.
 - Preserve ordinary Markdown support for `##` and `###` headings, paragraphs, lists, emphasis, strong text, inline code, external links, and fenced code blocks.
 - Keep `content/README.md` synchronized with the supported authoring syntax.

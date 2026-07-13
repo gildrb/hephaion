@@ -219,8 +219,11 @@ def _portfolio_errors(portfolio_repo: Path) -> list[str]:
             errors.append(f"{slug} template must not duplicate author-owned Markdown prose")
         if f"<title>{route_titles[slug]}</title>" not in template:
             errors.append(f"{slug} browser title must contain only its project name")
-        if not markdown.startswith("# ") or len(re.findall(r"^- \*\*[^*]+:\*\* .+$", markdown, re.MULTILINE)) != 3:
+        metadata_count = len(re.findall(r"^- \*\*[^*]+:\*\* .+$", markdown, re.MULTILINE))
+        if not markdown.startswith("# ") or metadata_count not in (0, 3):
             errors.append(f"content/{slug}.md must preserve the documented case-study header")
+        if metadata_count == 0 and not markdown.rstrip().endswith("## MORE SOON"):
+            errors.append(f"unfinished content/{slug}.md must end with ## MORE SOON")
 
     expected_tokens = {
         "--bg": "#000000",
