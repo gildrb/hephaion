@@ -9,6 +9,7 @@ Portfolio router. Read implementation first, then these contracts.
 - Preserve the static HTML, CSS, and vanilla JavaScript boundary.
 - Identify surface: homepage, case study, design system, metadata, verification, or preview.
 - Load one matching skill.
+- When a reusable behavior changes, update `design.md`, the matching skill reference, and `scripts/check_design_docs.py` in the same change. A live-only fix is incomplete.
 
 ## Sources
 
@@ -54,6 +55,7 @@ Portfolio router. Read implementation first, then these contracts.
 - Optimize every new image and provide responsive sources.
 - Keep hover styles inside `@media (hover: hover)`.
 - Keep focus visible and native semantics intact.
+- Keep case articles in natural document flow. The desktop theme-toggle boundary is a maximum endpoint for long posts, never a target that stretches short posts.
 
 ## Routes
 

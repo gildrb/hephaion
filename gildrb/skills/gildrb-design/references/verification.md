@@ -33,3 +33,9 @@ Verify mobile and desktop:
 - project dates at `14px/20px` and titles at `16px/24px`
 - every project metadata strip spans the card width and remains clickable at its far-right edge
 - every title row shows a right-aligned Inter `→`; interactive media remains independently operable
+- a short case page keeps its final content directly after the preceding content with no viewport-filling gap
+- a long desktop case page ends at or above the theme toggle when scrolled to the bottom; the ending is never pushed down merely to align with it
+- `32px` is applied once from prose to media and once from media to following prose or links on desktop and mobile
+- the homepage and `/heph` each render exactly one Heph demo from `src/partials/heph-demo.html`; no copied terminal markup exists
+- the `/heph` order is authored prose, live Heph demo, then GitHub repository link
+- submitting a question in either Heph demo produces a cited response without console errors

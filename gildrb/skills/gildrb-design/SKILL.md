@@ -15,6 +15,7 @@ Apply the exact portfolio system.
 4. Reuse existing shell selectors and tokens.
 5. Reject arbitrary type, spacing, dividers, and crop.
 6. Verify desktop, mobile, focus, theme, and media behavior.
+7. If the behavior is reusable, update `../../design.md`, the matching reference, and `../../scripts/check_design_docs.py` before shipping.
 
 ## References
 
@@ -30,3 +31,6 @@ Apply the exact portfolio system.
 - Images remain full-frame and optimized.
 - No middle-dot or rule dividers appear.
 - Mobile and desktop match the same system.
+- Short case pages remain in natural flow; long case pages respect the desktop theme-toggle endpoint.
+- Reused interfaces have one canonical partial rather than copied markup.
+- The design document, skill reference, and executable checker agree with the implementation.

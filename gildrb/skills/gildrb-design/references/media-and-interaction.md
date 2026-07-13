@@ -8,6 +8,8 @@
 - Preserve intrinsic dimensions.
 - Use the existing `22px` media radius.
 - Theme the Heph terminal surface from the page background and primary text with a `96%/4%` color mix, then give its prompt and composer rows a `94%/6%` mix. On mobile, wrap the terminal in a separate outer frame using a `92%/8%` mix so its padding stays distinguishable from both the page and terminal in either theme.
+- Own the Heph terminal markup once in `src/partials/heph-demo.html`. The homepage includes that partial inside its project wrapper; `src/case-media/heph/heph-demo.html` includes the same partial for the case route. Never fork or copy the terminal markup.
+- In `content/heph.md`, place `![Heph demo](media:heph-demo)` after the authored prose and immediately before the GitHub repository link. The Heph case bundle must include the shared demo data and interaction scripts so this remains the live demo, not a screenshot.
 - Use primary for human-readable content, tertiary for labels and tool context, and secondary for values. Keep the traffic lights colored, but do not introduce terminal-only text grays.
 - Use the adaptive `1px`/`14%` primary-color contour on portfolio images.
 - Cover clickable project media with a normally blended `--highlight-bg` overlay at `0.55` opacity on hover and keyboard focus.

@@ -37,7 +37,34 @@ REQUIRED_DESIGN_PHRASES = (
     "Make every below-media metadata strip a full-width link target",
     "Case-study prose is user-owned.",
     "do not imply permission to alter wording",
+    "Treat that desktop boundary as a maximum endpoint, not a target baseline.",
+    "Own the live Heph terminal once in `src/partials/heph-demo.html`",
 )
+
+REQUIRED_OPERATIONAL_CONTRACTS = {
+    "AGENTS.md": (
+        "A live-only fix is incomplete.",
+        "maximum endpoint for long posts, never a target",
+    ),
+    "skills/gildrb-design/SKILL.md": (
+        "update `../../design.md`, the matching reference, and `../../scripts/check_design_docs.py`",
+        "Reused interfaces have one canonical partial",
+    ),
+    "skills/gildrb-design/references/typography-and-spacing.md": (
+        "Do not use article `min-height`, flex distribution, `margin-top: auto`, or last-child `padding-top`",
+        "This is a maximum endpoint for a long post",
+        "Use `--text-media-gap: 32px` exactly once",
+    ),
+    "skills/gildrb-design/references/media-and-interaction.md": (
+        "Own the Heph terminal markup once in `src/partials/heph-demo.html`",
+        "immediately before the GitHub repository link",
+    ),
+    "skills/gildrb-design/references/verification.md": (
+        "a short case page keeps its final content directly after the preceding content",
+        "a long desktop case page ends at or above the theme toggle",
+        "submitting a question in either Heph demo produces a cited response",
+    ),
+}
 
 REQUIRED_CASE_ROUTES = ("/heph", "/filen", "/n0thing", "/ml7")
 REQUIRED_SKILL_REFERENCES = {
@@ -136,6 +163,14 @@ def _package_errors() -> list[str]:
         path = PACKAGE_ROOT / relative
         if path.is_file() and contract not in _read(path):
             errors.append(f"{relative} does not preserve user-owned case-study copy")
+    for relative, contracts in REQUIRED_OPERATIONAL_CONTRACTS.items():
+        path = PACKAGE_ROOT / relative
+        if not path.is_file():
+            continue
+        text = _read(path)
+        for contract in contracts:
+            if contract not in text:
+                errors.append(f"{relative} missing operational contract: {contract}")
     return errors
 
 
