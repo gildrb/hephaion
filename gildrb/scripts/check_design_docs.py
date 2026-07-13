@@ -346,13 +346,15 @@ def _portfolio_errors(portfolio_repo: Path) -> list[str]:
         errors.append("Heph project section must not clip its metadata focus outline")
     if 'class="heph-demo-frame" aria-hidden="true"' not in heph_section:
         errors.append("mobile Heph terminal must use a dedicated decorative frame")
-    if not re.search(r"\.heph-demo-frame\s*\{[^}]*padding:\s*34px 14px[^}]*background:\s*var\(--heph-demo-terminal-bg\)", heph_css, re.DOTALL):
-        errors.append("mobile Heph panel styling must stay on the terminal-only frame")
+    if not re.search(r"\.heph-demo-frame\s*\{[^}]*padding:\s*34px 14px[^}]*background:\s*var\(--heph-demo-mobile-bg\)", heph_css, re.DOTALL):
+        errors.append("mobile Heph panel must use its distinct outer frame surface")
     heph_hex_colors = {color.lower() for color in re.findall(r"#[0-9a-f]{6}", heph_css, re.IGNORECASE)}
     if not re.search(r"--heph-demo-terminal-bg:\s*color-mix\(\s*in srgb,\s*var\(--bg\) 96%,\s*var\(--text-primary\)", heph_css, re.DOTALL):
         errors.append("Heph terminal surface must derive from the active page theme")
     if not re.search(r"--heph-demo-row-bg:\s*color-mix\(\s*in srgb,\s*var\(--bg\) 94%,\s*var\(--text-primary\)", heph_css, re.DOTALL):
         errors.append("Heph prompt and composer rows must use the second derived surface")
+    if not re.search(r"--heph-demo-mobile-bg:\s*color-mix\(\s*in srgb,\s*var\(--bg\) 92%,\s*var\(--text-primary\)", heph_css, re.DOTALL):
+        errors.append("Heph mobile outer frame must use the stronger theme-derived surface")
     for row_selector in (".heph-demo-prompt", ".heph-demo-composer"):
         if not re.search(rf"{re.escape(row_selector)}[^{{]*\{{[^}}]*background:\s*var\(--heph-demo-row-bg\)", heph_css, re.DOTALL):
             errors.append(f"Heph terminal row does not use the derived row surface: {row_selector}")

@@ -7,7 +7,7 @@
 - Provide responsive optimized sources without upscaling.
 - Preserve intrinsic dimensions.
 - Use the existing `22px` media radius.
-- Theme the Heph terminal surface from the page background and primary text with a `96%/4%` color mix, then give its prompt and composer rows a `94%/6%` mix. These are the only two terminal-specific surfaces, and their contrast relationship reverses with the page theme.
+- Theme the Heph terminal surface from the page background and primary text with a `96%/4%` color mix, then give its prompt and composer rows a `94%/6%` mix. On mobile, wrap the terminal in a separate outer frame using a `92%/8%` mix so its padding stays distinguishable from both the page and terminal in either theme.
 - Use primary for human-readable content, tertiary for labels and tool context, and secondary for values. Keep the traffic lights colored, but do not introduce terminal-only text grays.
 - Use the adaptive `1px`/`14%` primary-color contour on portfolio images.
 - Cover clickable project media with a normally blended `--highlight-bg` overlay at `0.55` opacity on hover and keyboard focus.

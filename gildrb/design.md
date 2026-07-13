@@ -217,7 +217,8 @@ Rules:
 ## Homepage
 
 - Keep biography first and concise.
-- Derive the Heph terminal surface with `color-mix(in srgb, var(--bg) 96%, var(--text-primary))` and its prompt/composer rows with `color-mix(in srgb, var(--bg) 94%, var(--text-primary))`. This creates exactly two terminal-only surfaces: the row is slightly lighter than the terminal in dark mode and slightly darker in light mode.
+- Derive the Heph terminal surface with `color-mix(in srgb, var(--bg) 96%, var(--text-primary))` and its prompt/composer rows with `color-mix(in srgb, var(--bg) 94%, var(--text-primary))`. These remain the two internal terminal surfaces.
+- On mobile only, place those surfaces inside an outer frame derived with `color-mix(in srgb, var(--bg) 92%, var(--text-primary))`. This frame is outside the terminal: it is lighter than the terminal in dark mode and darker than it in light mode, making the padded boundary legible without a border.
 - Inside the Heph terminal, primary prompts, answers, and input use `--text-primary`; labels use `--text-tertiary`; values use `--text-secondary`.
 - Wrap mixed label/value rows such as `ARMORY classics`, `SCOPE 4/4`, `EXCERPTS 4`, and command hints so the label and value receive their correct shared tokens independently.
 - Keep tool output and the complete `materials: ... Details: /evidence.` source line in `--text-tertiary`.
