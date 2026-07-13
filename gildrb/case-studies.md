@@ -17,6 +17,8 @@ Current routes:
 - `/n0thing`
 - `/ml7`
 
+Use only the current location name for the browser-tab title: `Gil Rodrigues` on `/`, then `Heph`, `Filen`, `n0thing`, or `mL7` on each case route. Keep longer descriptive wording in social metadata rather than the `<title>` element.
+
 ## Homepage Entry
 
 - Show the project title in the existing section-title treatment.

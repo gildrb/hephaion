@@ -203,12 +203,22 @@ def _portfolio_errors(portfolio_repo: Path) -> list[str]:
         "ml7": ml7_template,
         "n0thing": n0thing_template,
     }
+    route_titles = {
+        "filen": "Filen",
+        "heph": "Heph",
+        "ml7": "mL7",
+        "n0thing": "n0thing",
+    }
+    if "<title>Gil Rodrigues</title>" not in homepage_template:
+        errors.append("homepage browser title must be only Gil Rodrigues")
     for slug, template in case_templates.items():
         markdown = _read(portfolio_repo / f"content/{slug}.md")
         if f"<!-- @case-markdown:{slug} -->" not in template:
             errors.append(f"{slug} template must use its Markdown insertion token")
         if 'class="case-title"' in template or 'class="case-copy"' in template:
             errors.append(f"{slug} template must not duplicate author-owned Markdown prose")
+        if f"<title>{route_titles[slug]}</title>" not in template:
+            errors.append(f"{slug} browser title must contain only its project name")
         if not markdown.startswith("# ") or len(re.findall(r"^- \*\*[^*]+:\*\* .+$", markdown, re.MULTILINE)) != 3:
             errors.append(f"content/{slug}.md must preserve the documented case-study header")
 
