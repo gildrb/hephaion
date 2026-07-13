@@ -67,6 +67,8 @@ The live portfolio token names remain authoritative.
   --text-primary: #ffffff;
   --text-secondary: #b3b3b3;
   --text-tertiary: #767676;
+  --highlight-bg: #b3b3b3;
+  --highlight-text: #ffffff;
   --section-gap: 24px;
   --section-content-gap: 6px;
   --link-line-height: 24px;
@@ -85,8 +87,8 @@ The live portfolio token names remain authoritative.
 }
 ```
 
-Use `--bg`, `--text-primary`, `--text-secondary`, and `--text-tertiary` for every new portfolio color. Primary is authored content, secondary is labels and supporting metadata, and tertiary is inactive or actionable navigation. Do not create project color palettes, gradients, translucent panels, glow effects, or decorative fills.
-Text selection uses `--text-primary` over `--text-tertiary`; never use the lighter label token as the selection background.
+Use `--bg`, `--text-primary`, `--text-secondary`, and `--text-tertiary` for resting portfolio colors. Primary is authored content, secondary is labels and supporting metadata, and tertiary is inactive or actionable navigation. `--highlight-bg` reuses the approved bright gray for temporary image and text-selection highlighting; `--highlight-text` keeps selected text white in every theme. Do not create project color palettes, gradients, translucent panels, glow effects, or decorative fills.
+Text selection uses `--highlight-text` over `--highlight-bg`; do not restore the outdated tertiary-gray selection background.
 
 ## Typography
 
@@ -213,6 +215,11 @@ Rules:
 ## Homepage
 
 - Keep biography first and concise.
+- Derive the Heph terminal surface with `color-mix(in srgb, var(--bg) 96%, var(--text-primary))` and its prompt/composer rows with `color-mix(in srgb, var(--bg) 94%, var(--text-primary))`. This creates exactly two terminal-only surfaces: the row is slightly lighter than the terminal in dark mode and slightly darker in light mode.
+- Inside the Heph terminal, primary prompts, answers, and input use `--text-primary`; labels use `--text-tertiary`; values use `--text-secondary`.
+- Wrap mixed label/value rows such as `ARMORY classics`, `SCOPE 4/4`, `EXCERPTS 4`, and command hints so the label and value receive their correct shared tokens independently.
+- Keep tool output and the complete `materials: ... Details: /evidence.` source line in `--text-tertiary`.
+- The terminal may contain no private flat colors other than the red, yellow, and green macOS window controls; its two surfaces, text, cursor, outlines, and responsive frame derive from shared tokens.
 - Order homepage projects newest to oldest: `Heph`, `Filen`, `n0thing`, then `mL7`. DOM, visual, and keyboard order must agree at every viewport.
 - Keep the homepage content and every project image inside the same centered `760px` content boundary used by case studies.
 - Approved biography: `Designing brands, interfaces, and the systems that connect them.`
@@ -303,8 +310,15 @@ Rules:
 - Text-link hover uses `--text-primary`, promoting an actionable item from light gray to white in dark mode.
 - Link arrows inherit the link color so the complete link changes as one unit.
 - Icon controls use `--text-tertiary` at rest and `--text-primary` on hover unless a documented component state requires otherwise.
-- Image-entry hover may continue to use opacity because its navigation target is communicated by the linked image rather than text color.
-- Hover changes color or image opacity without changing size or weight.
+- Clickable project media uses a normally blended `--highlight-bg` layer at `0.55` opacity. This reuses the exact approved bright gray and pulls black and white artwork toward it without placing interface copy over the artwork.
+- While a project card is hovered or keyboard-focused, change its existing right-aligned metadata arrow from `→` to `Read →`. Keep `Read` beside the existing arrow and outside the image.
+- Apply the same `Read →` state to Heph's metadata-only link when its title row is hovered or keyboard-focused.
+- Use the same primary-color `1px` outline and `4px` offset for Heph's metadata-only keyboard focus as for image cards. Keep the enclosing `.heph-demo` overflow visible so all four sides of that outline remain unclipped.
+- Reserve enough width for `Read →` in the resting metadata grid so revealing it never shifts the project title or arrow.
+- Wrap the image in `.portfolio-card-image`; keep the overlay decorative and `pointer-events: none` so the full native anchor remains interactive.
+- Apply the same tint on `:focus-visible` while preserving the existing focus outline.
+- Do not place interaction labels over the image, and do not use opacity-only image dimming or colored tints for case-study entries.
+- Hover changes color without changing size or weight.
 - Put hover behavior inside `@media (hover: hover)`.
 - Use `:focus-visible` with a visible primary-color outline.
 - Do not leave clicked controls visually selected.
@@ -333,6 +347,9 @@ Rules:
 
 ## Content
 
+- Case-study prose is user-owned. Visual-system work must preserve titles, decks, captions, metadata descriptions, and body copy verbatim unless the user explicitly requests copy work.
+- Layout, typography, images, routes, metadata wiring, generation, and verification do not imply permission to alter wording.
+- Keep requested writing suggestions outside source files until approved. Missing prose may use only visibly unfinished `[Author: ...]` placeholders.
 - Use concrete facts and decisions.
 - Describe problem, constraints, alternatives, selection logic, implementation, tradeoffs, and next improvements.
 - Do not invent research, outcomes, metrics, authorship, or technical responsibility.

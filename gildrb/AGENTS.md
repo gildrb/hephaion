@@ -13,10 +13,13 @@ Portfolio router. Read implementation first, then these contracts.
 ## Sources
 
 - `src/page.template.html`: homepage document source.
+- `content/<project>.md`: user-owned case-study writing source.
+- `src/case-media/<project>/`: responsive image markup referenced by Markdown.
 - `src/sections/`: homepage content sources.
 - `src/filen.template.html`: first case-study reference implementation.
 - `src/styles/`: ordered visual-system source.
 - `scripts/build-page.mjs`: generated-page owner.
+- `scripts/render-case-markdown.mjs`: Markdown-to-case-study renderer.
 - `scripts/verify-page.mjs`: generated-output and asset contract.
 - `vercel.json`: route, redirect, header, and deployment contract.
 - Rendered desktop and mobile pages outrank prose when layout claims drift.
@@ -35,6 +38,10 @@ Portfolio router. Read implementation first, then these contracts.
 
 - Keep the homepage image-led.
 - Keep case studies authored, specific, and evidence-bound.
+- Treat case-study copy as user-owned. Do not rewrite, replace, expand, summarize, correct, or complete it without an explicit copy request.
+- Edit case-study writing only in `content/<project>.md`; never duplicate it in templates or generated HTML.
+- Layout, typography, image, route, metadata, generation, and verification tasks never authorize copy edits.
+- Keep requested copy suggestions outside source files until the user approves them; use only visibly unfinished `[Author: ...]` placeholders for missing prose.
 - Use the existing Inter font, colors, spacing, image radius, and responsive shell.
 - Render authored text in `--text-primary`, labels in `--text-secondary`, actionable text links in `--text-tertiary`, and link hover states in `--text-primary`.
 - Keep `Gil Rodrigues` at the same top-left location on every page.
@@ -63,6 +70,7 @@ Portfolio router. Read implementation first, then these contracts.
 - A case-study project uses one designated clickable image on the homepage.
 - Canonical case routes are top-level: `/<project>`.
 - Legacy public routes redirect permanently; they do not remain canonical.
+- Existing and user-supplied case-study prose remains verbatim unless the user explicitly authorizes copy editing.
 - Production stays unchanged until the user explicitly approves merge or promotion.
 
 ## PR Checklist

@@ -35,6 +35,8 @@ REQUIRED_DESIGN_PHRASES = (
     "Do not show a `Portfolio` heading on the homepage",
     "Order homepage projects newest to oldest",
     "Make every below-media metadata strip a full-width link target",
+    "Case-study prose is user-owned.",
+    "do not imply permission to alter wording",
 )
 
 REQUIRED_CASE_ROUTES = ("/heph", "/filen", "/n0thing", "/ml7")
@@ -124,6 +126,16 @@ def _package_errors() -> list[str]:
         path = PACKAGE_ROOT / relative
         if path.is_file() and two_line_location not in _read(path):
             errors.append(f"{relative} does not preserve the two-line case location")
+    authorship_contracts = {
+        "AGENTS.md": "Treat case-study copy as user-owned.",
+        "case-studies.md": "Case-study prose is author-owned.",
+        "skills/gildrb-portfolio/SKILL.md": "Preserve case-study copy unless the user explicitly requests copy work.",
+        "skills/gildrb-portfolio/references/case-study.md": "The user owns every title, deck, caption, metadata description, and body paragraph.",
+    }
+    for relative, contract in authorship_contracts.items():
+        path = PACKAGE_ROOT / relative
+        if path.is_file() and contract not in _read(path):
+            errors.append(f"{relative} does not preserve user-owned case-study copy")
     return errors
 
 
@@ -149,7 +161,13 @@ def _portfolio_errors(portfolio_repo: Path) -> list[str]:
         "src/n0thing.template.html",
         "src/scripts/30-email.js",
         "scripts/build-page.mjs",
+        "scripts/render-case-markdown.mjs",
         "scripts/verify-page.mjs",
+        "content/README.md",
+        "content/filen.md",
+        "content/heph.md",
+        "content/ml7.md",
+        "content/n0thing.md",
         "vercel.json",
     )
     for relative in required:
@@ -177,11 +195,30 @@ def _portfolio_errors(portfolio_repo: Path) -> list[str]:
     email_script = _read(portfolio_repo / "src/scripts/30-email.js")
     vercel = json.loads(_read(portfolio_repo / "vercel.json"))
 
+    if 'from "./render-case-markdown.mjs"' not in builder:
+        errors.append("portfolio builder must render case studies from Markdown")
+    case_templates = {
+        "filen": filen_template,
+        "heph": heph_template,
+        "ml7": ml7_template,
+        "n0thing": n0thing_template,
+    }
+    for slug, template in case_templates.items():
+        markdown = _read(portfolio_repo / f"content/{slug}.md")
+        if f"<!-- @case-markdown:{slug} -->" not in template:
+            errors.append(f"{slug} template must use its Markdown insertion token")
+        if 'class="case-title"' in template or 'class="case-copy"' in template:
+            errors.append(f"{slug} template must not duplicate author-owned Markdown prose")
+        if not markdown.startswith("# ") or len(re.findall(r"^- \*\*[^*]+:\*\* .+$", markdown, re.MULTILINE)) != 3:
+            errors.append(f"content/{slug}.md must preserve the documented case-study header")
+
     expected_tokens = {
         "--bg": "#000000",
         "--text-primary": "#ffffff",
         "--text-secondary": "#b3b3b3",
         "--text-tertiary": "#767676",
+        "--highlight-bg": "#b3b3b3",
+        "--highlight-text": "#ffffff",
         "--sidebar-column": "240px",
         "--content-column": "760px",
         "--layout-gap": "48px",
@@ -190,8 +227,8 @@ def _portfolio_errors(portfolio_repo: Path) -> list[str]:
     for name, value in expected_tokens.items():
         if not re.search(rf"{re.escape(name)}:\s*{re.escape(value)}\s*;", base_css):
             errors.append(f"portfolio token drift: {name} must be {value}")
-    if not re.search(r"::selection\s*\{[^}]*color:\s*var\(--text-primary\)[^}]*background:\s*var\(--text-tertiary\)", base_css, re.DOTALL):
-        errors.append("text selection must preserve primary-on-tertiary contrast")
+    if not re.search(r"::selection\s*\{[^}]*color:\s*var\(--highlight-text\)[^}]*background:\s*var\(--highlight-bg\)", base_css, re.DOTALL):
+        errors.append("text selection must use white over the approved bright-gray highlight")
 
     semantic_color_rules = (
         (r"\.links-label\s*\{[^}]*color:\s*var\(--text-secondary\)", "labels must use --text-secondary"),
@@ -225,6 +262,20 @@ def _portfolio_errors(portfolio_repo: Path) -> list[str]:
         errors.append("homepage content must use the shared 760px content boundary")
     if not re.search(r"\.content\s*\{[^}]*padding:\s*48px 0", portfolio_css, re.DOTALL):
         errors.append("desktop content must use the compact 48px vertical padding")
+    if not re.search(r"\.portfolio-card-image::after\s*\{[^}]*background:\s*var\(--highlight-bg\)", portfolio_css, re.DOTALL):
+        errors.append("clickable project media must use the approved bright-gray overlay")
+    if not re.search(r"\.portfolio-card:hover \.portfolio-card-meta::after\s*\{[^}]*content:\s*\"Read →\"", portfolio_css, re.DOTALL):
+        errors.append("clickable project metadata must expose the Read label beside its existing arrow")
+    if not re.search(r"\.portfolio-card-link:hover::after\s*\{[^}]*content:\s*\"Read →\"", portfolio_css, re.DOTALL):
+        errors.append("Heph metadata hover must expose the same Read affordance")
+    if not re.search(r"\.portfolio-card:hover \.portfolio-card-image::after\s*\{[^}]*opacity:\s*0\.55", portfolio_css, re.DOTALL):
+        errors.append("project media hover must expose the neutral gray overlay at 0.55 opacity")
+    if re.search(r"\.portfolio-card-image::before\s*\{", portfolio_css):
+        errors.append("project interaction labels must stay outside the image")
+    if "mix-blend-mode:" in portfolio_css:
+        errors.append("project media hover must use normal blending")
+    if ".case-study-entry:hover img" in case_css:
+        errors.append("case-study entries must not use opacity-only image hover")
     if not re.search(r"\.case-copy p,\s*\n\.case-copy li\s*\{[^}]*color:\s*var\(--text-secondary\)", case_css, re.DOTALL):
         errors.append("case prose must use --text-secondary")
     if not re.search(r"\.case-caption[^}]*color:\s*var\(--text-tertiary\)", case_css, re.DOTALL):
@@ -255,6 +306,8 @@ def _portfolio_errors(portfolio_repo: Path) -> list[str]:
         errors.append("project metadata must show a right-aligned Inter arrow")
     if not re.search(r"\.portfolio-card-link\s*\{[^}]*width:\s*100%", portfolio_css, re.DOTALL):
         errors.append("standalone project metadata links must expose a full-width hit target")
+    if not re.search(r"\.portfolio-card-link:focus-visible\s*\{[^}]*outline:\s*1px solid var\(--text-primary\);[^}]*outline-offset:\s*4px", portfolio_css, re.DOTALL):
+        errors.append("standalone project metadata focus must reuse the full image-card ring")
     if not re.search(r"\.profile-copy\s*\{[^}]*color:\s*var\(--text-primary\)", preview_css, re.DOTALL):
         errors.append("homepage biography must use --text-primary")
     if not re.search(r"\.references-links\s*\{[^}]*margin-top:\s*0\s*;", preview_css, re.DOTALL):
@@ -269,10 +322,27 @@ def _portfolio_errors(portfolio_repo: Path) -> list[str]:
         errors.append("mobile homepage must not restore 80px project-entry gaps")
     heph_section = _read(portfolio_repo / "src/sections/portfolio-heph.html")
     heph_css = _read(portfolio_repo / "src/styles/30-heph-demo.css")
+    if not re.search(r"\.heph-demo\s*\{[^}]*overflow:\s*visible", heph_css, re.DOTALL):
+        errors.append("Heph project section must not clip its metadata focus outline")
     if 'class="heph-demo-frame" aria-hidden="true"' not in heph_section:
         errors.append("mobile Heph terminal must use a dedicated decorative frame")
-    if not re.search(r"\.heph-demo-frame\s*\{[^}]*padding:\s*34px 14px[^}]*background:\s*var\(--heph-demo-mobile-bg\)", heph_css, re.DOTALL):
+    if not re.search(r"\.heph-demo-frame\s*\{[^}]*padding:\s*34px 14px[^}]*background:\s*var\(--heph-demo-terminal-bg\)", heph_css, re.DOTALL):
         errors.append("mobile Heph panel styling must stay on the terminal-only frame")
+    heph_hex_colors = {color.lower() for color in re.findall(r"#[0-9a-f]{6}", heph_css, re.IGNORECASE)}
+    if not re.search(r"--heph-demo-terminal-bg:\s*color-mix\(\s*in srgb,\s*var\(--bg\) 96%,\s*var\(--text-primary\)", heph_css, re.DOTALL):
+        errors.append("Heph terminal surface must derive from the active page theme")
+    if not re.search(r"--heph-demo-row-bg:\s*color-mix\(\s*in srgb,\s*var\(--bg\) 94%,\s*var\(--text-primary\)", heph_css, re.DOTALL):
+        errors.append("Heph prompt and composer rows must use the second derived surface")
+    for row_selector in (".heph-demo-prompt", ".heph-demo-composer"):
+        if not re.search(rf"{re.escape(row_selector)}[^{{]*\{{[^}}]*background:\s*var\(--heph-demo-row-bg\)", heph_css, re.DOTALL):
+            errors.append(f"Heph terminal row does not use the derived row surface: {row_selector}")
+    if not all(token in heph_css for token in ("color: var(--text-primary);", "color: var(--text-secondary);", "color: var(--text-tertiary);")):
+        errors.append("Heph terminal must use shared primary, value, and label tokens")
+    if not heph_hex_colors.issubset({"#f96664", "#face2e", "#3bc55d"}):
+        errors.append("Heph terminal contains a private flat color outside the macOS lights")
+    for mixed_value in ("EVIDENCE <b>ctrl+g</b>", "SCOPE <b>4/4</b>", "EXCERPTS <b>4</b>"):
+        if mixed_value not in heph_section:
+            errors.append(f"Heph terminal does not separate label and value: {mixed_value}")
 
     required_case_rules = (
         "margin: 0 0 24px;",
@@ -299,7 +369,7 @@ def _portfolio_errors(portfolio_repo: Path) -> list[str]:
         errors.append("Filen homepage image does not route to /filen")
     if 'href="/heph"' not in heph_section or 'href="https://github.com/gildrb/heph"' in heph_section:
         errors.append("Heph homepage metadata must route to /heph instead of GitHub")
-    if 'href="https://github.com/gildrb/heph"' not in heph_template:
+    if "[GitHub repository](https://github.com/gildrb/heph)" not in _read(portfolio_repo / "content/heph.md"):
         errors.append("Heph case study must link to its GitHub repository inside the article")
     if 'href="/ml7"' not in ml7:
         errors.append("mL7 homepage image does not route to /ml7")

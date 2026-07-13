@@ -1,6 +1,6 @@
 ---
 name: gildrb-portfolio
-description: Use for gildrb homepage structure, project ordering, project case studies, authored project writing, evidence selection, top-level project routes, metadata mirrors, static generation, or portfolio verification.
+description: Use for gildrb homepage structure, project ordering, author-owned case-study copy, evidence selection, top-level project routes, metadata mirrors, static generation, or portfolio verification.
 ---
 
 # Portfolio
@@ -13,9 +13,11 @@ Maintain the image-led index and authored case-study system.
 2. Read `../../case-studies.md`.
 3. Load only the relevant reference below.
 4. Keep claims bounded by supplied evidence.
-5. Update source templates before generated files.
-6. Synchronize routes and machine-readable mirrors.
-7. Build, verify, and render desktop and mobile.
+5. Preserve case-study copy unless the user explicitly requests copy work.
+6. Edit visible case-study writing only in `content/<project>.md`.
+7. Update structural templates and media partials before generated files.
+8. Synchronize routes and machine-readable mirrors.
+9. Build, verify, and render desktop and mobile.
 
 ## References
 

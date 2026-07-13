@@ -61,7 +61,18 @@ Use this sequence when evidence supports it:
 10. Interface or implementation details.
 11. Tradeoffs, reflection, and next improvements.
 
-Do not force a section when evidence does not exist. Add a precise placeholder or omit it until the user provides proof.
+Do not force a section when evidence does not exist. Add an explicit author placeholder or omit it until the user provides proof. A placeholder must be visibly unfinished, such as `[Author: explain the rejected direction]`; it must not masquerade as publishable prose.
+
+## Markdown Authoring
+
+- Author each case study in `content/<project>.md`; this is the only source for its visible title, deck, metadata rows, section headings, paragraphs, captions, links, lists, and code examples.
+- Keep `src/<project>.template.html` structural. It contains the shell and one `<!-- @case-markdown:<project> -->` insertion token, not authored article prose.
+- Keep responsive image markup in `src/case-media/<project>/<media-id>.html` so writing never requires editing `srcset`, dimensions, loading behavior, or layout HTML.
+- Reference those assets from Markdown with `![Caption](media:<media-id>)`. Consecutive media references form the existing two-column grid.
+- Begin every file with one `#` title, one `>` deck, and exactly three `- **Label:** Value` metadata rows.
+- Generate the static route with `node scripts/build-page.mjs`; never edit `<project>/index.html` directly.
+- Preserve ordinary Markdown support for `##` and `###` headings, paragraphs, lists, emphasis, strong text, inline code, external links, and fenced code blocks.
+- Keep `content/README.md` synchronized with the supported authoring syntax.
 
 ## Evidence Types
 
@@ -88,7 +99,21 @@ Useful evidence includes:
 
 Explain what each artifact proves. Do not use images as decoration.
 
-## Writing
+## Authorship Boundary
+
+Case-study prose is author-owned. The user writes the titles, decks, captions, metadata descriptions, and article body.
+
+- Never rewrite, replace, expand, summarize, or “improve” existing case-study copy unless the user explicitly asks for that exact operation.
+- Never fill an empty section with publishable prose on the user's behalf.
+- Preserve user-supplied wording verbatim when implementing it, apart from an explicitly requested correction.
+- Agents may maintain document structure, insert visibly unfinished author placeholders, or identify missing and unclear sections.
+- Agents may offer suggested copy only when requested. Keep suggestions separate from the source until the user approves or supplies the final wording.
+- A request to change layout, typography, images, routes, metadata wiring, or generation does not authorize copy edits.
+- Grammar, spelling, tone, and clarity edits also require an explicit copy-editing request.
+
+## Writing Guidance
+
+Use these principles only when the user explicitly requests suggestions, drafting, or copy editing. They guide review; they do not grant permission to overwrite the author's prose.
 
 - Lead each section with the decision or problem.
 - Name constraints precisely.

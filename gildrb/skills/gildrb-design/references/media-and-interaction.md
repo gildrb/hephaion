@@ -7,7 +7,15 @@
 - Provide responsive optimized sources without upscaling.
 - Preserve intrinsic dimensions.
 - Use the existing `22px` media radius.
+- Theme the Heph terminal surface from the page background and primary text with a `96%/4%` color mix, then give its prompt and composer rows a `94%/6%` mix. These are the only two terminal-specific surfaces, and their contrast relationship reverses with the page theme.
+- Use primary for human-readable content, tertiary for labels and tool context, and secondary for values. Keep the traffic lights colored, but do not introduce terminal-only text grays.
 - Use the adaptive `1px`/`14%` primary-color contour on portfolio images.
+- Cover clickable project media with a normally blended `--highlight-bg` overlay at `0.55` opacity on hover and keyboard focus.
+- At the same time, change the existing right-aligned metadata arrow to `Read →`; keep this affordance below the image and reserve its width to prevent layout shift.
+- Use the same `Read →` affordance when Heph's metadata-only link is hovered or keyboard-focused.
+- Use the same primary-color `1px`/`4px` offset focus outline for the compact Heph metadata link and full image cards. Keep `.heph-demo` overflow visible so the metadata outline is not clipped by its enclosing project section.
+- Make the interaction explicit without overlaying text on artwork; do not rely on opacity-only dimming, a color-specific tint, or the original artwork's contrast.
+- Keep the tint layer inside `.portfolio-card-image`, decorative, and unable to intercept pointer events.
 - Keep mobile project date/title metadata outside demo or media frames.
 - Keep anchors for navigation and buttons for preview actions.
 - Keep homepage authored copy primary, case prose and project titles secondary, dates and captions tertiary, actionable text links tertiary, and text-link hover primary.
