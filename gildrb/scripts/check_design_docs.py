@@ -216,8 +216,10 @@ def _portfolio_errors(portfolio_repo: Path) -> list[str]:
         errors.append("homepage content must use the shared 760px content boundary")
     if not re.search(r"\.content\s*\{[^}]*padding:\s*48px 0", portfolio_css, re.DOTALL):
         errors.append("desktop content must use the compact 48px vertical padding")
-    if not re.search(r"\.case-copy p,\s*\n\.case-copy li\s*\{[^}]*color:\s*var\(--text-primary\)", case_css, re.DOTALL):
-        errors.append("authored case prose must use --text-primary")
+    if not re.search(r"\.case-copy p,\s*\n\.case-copy li\s*\{[^}]*color:\s*var\(--text-secondary\)", case_css, re.DOTALL):
+        errors.append("case prose must use --text-secondary")
+    if not re.search(r"\.case-caption[^}]*color:\s*var\(--text-tertiary\)", case_css, re.DOTALL):
+        errors.append("case captions must use --text-tertiary")
     if not re.search(r"\.case-section\s*\{[^}]*margin-top:\s*80px", case_css, re.DOTALL):
         errors.append("case sections must use the compact 80px rhythm")
     if not re.search(r"\.name\s*\{[^}]*line-height:\s*var\(--link-line-height\)[^}]*min-height:\s*calc\(var\(--link-line-height\) \* 2\)", base_css, re.DOTALL):
@@ -225,6 +227,22 @@ def _portfolio_errors(portfolio_repo: Path) -> list[str]:
     preview_css = _read(portfolio_repo / "src/styles/40-preview-content.css")
     if not re.search(r"\.profile-copy\s*\{[^}]*color:\s*var\(--text-primary\)", preview_css, re.DOTALL):
         errors.append("homepage biography must use --text-primary")
+    if not re.search(r"\.references-links\s*\{[^}]*margin-top:\s*0\s*;", preview_css, re.DOTALL):
+        errors.append("Metadata must not use a negative desktop offset")
+    if re.search(r"\.references-links\s*\{[^}]*margin-top:\s*-", responsive_css, re.DOTALL):
+        errors.append("Metadata must not use a negative mobile offset")
+    if not re.search(r"\.showcase\s*\{[^}]*margin-bottom:\s*32px", portfolio_css, re.DOTALL):
+        errors.append("homepage showcase entries must use the optical 32px gap")
+    if not re.search(r"\.gallery\s*\{[^}]*margin-bottom:\s*32px", portfolio_css, re.DOTALL):
+        errors.append("homepage gallery entries must use the optical 32px gap")
+    if "margin-bottom: 80px;" in responsive_css:
+        errors.append("mobile homepage must not restore 80px project-entry gaps")
+    heph_section = _read(portfolio_repo / "src/sections/portfolio-heph.html")
+    heph_css = _read(portfolio_repo / "src/styles/30-heph-demo.css")
+    if 'class="heph-demo-frame" aria-hidden="true"' not in heph_section:
+        errors.append("mobile Heph terminal must use a dedicated decorative frame")
+    if not re.search(r"\.heph-demo-frame\s*\{[^}]*padding:\s*34px 14px[^}]*background:\s*var\(--heph-demo-mobile-bg\)", heph_css, re.DOTALL):
+        errors.append("mobile Heph panel styling must stay on the terminal-only frame")
 
     required_case_rules = (
         "font-size: 40px;",

@@ -23,3 +23,8 @@ Verify mobile and desktop:
 - project image navigation
 - primary authored text, secondary labels, tertiary resting links, and primary link hover in both themes
 - console errors
+- `32px` between every adjacent homepage project entry on desktop and mobile
+- `32px` from the final project title to `Metadata`, with no overlap
+- `24px` between LinkedIn and Contact as the text-to-text comparison
+- project date/title metadata outside mobile media and demo frames
+- project dates at `14px/20px` and titles at `16px/24px`

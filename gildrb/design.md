@@ -1,5 +1,5 @@
 ---
-version: "1.0.0"
+version: "1.1.0"
 name: "gildrb"
 description: "Visual and interaction contract for the gildrb portfolio and project case studies."
 default_theme: "dark"
@@ -137,8 +137,8 @@ Use the existing 4px-derived rhythm and homepage constants.
 - Image/grid gap: `20px`.
 - Related group gap: `24px` or `32px`.
 - Major internal gap: `48px` or `64px`.
-- Desktop section gap: `80px`.
-- Mobile section gap: `80px`.
+- Homepage project-entry gap: `32px` at every viewport; this optically compensates text-to-media boundaries against the `24px` text-to-text sidebar group gap.
+- Case-study section gap: `80px` at every viewport.
 - Desktop wrapper padding: `48px`.
 - Wrapper padding below `1400px`: `32px`.
 - Current mobile wrapper padding: `12px`.
@@ -214,12 +214,15 @@ Rules:
 - Keep the homepage content and every project image inside the same centered `760px` content boundary used by case studies.
 - Approved biography: `Designing brands, interfaces, and the systems that connect them.`
 - Render the approved biography in `--text-primary`; it is authored content, not a label.
-- Keep project titles plain text unless explicitly specified.
+- Put each project date and title below its media, never inside a mobile media or demo frame.
+- Render project dates at `14px/20px` in `--text-tertiary` and project titles at `16px/24px` in `--text-secondary`.
+- Use the same optically compensated `32px` gap between every adjacent homepage project entry on desktop and mobile.
+- Use the same `32px` gap from the final project title to the `Metadata` group; never pull the footer upward with a negative margin.
 - A project with a case study exposes one designated clickable image.
 - Do not append `Read the case study`, `View project`, summaries, tags, roles, or marketing copy.
 - The designated image uses the same image-wrapper shape as the gallery.
 - Clicking the designated image navigates; it does not open the image preview.
-- Other image-preview buttons retain preview behavior when they remain on the homepage.
+- Keep the homepage free of detached personal-image preview sections.
 
 ## Media
 
@@ -250,9 +253,11 @@ Rules:
 ### Shape
 
 - Reuse `--media-radius: 22px` for portfolio images.
+- Give portfolio images a subtle `1px` contour mixed from `--text-primary` at `14%` so black and white media boundaries remain visible in both themes.
+- On mobile, apply demo padding, background, and radius to a media-only frame; keep date/title metadata as a sibling below it.
 - Do not introduce case-study card radii.
 - Code examples may use the documented `8px` radius.
-- Do not add shadows, outlines, or frames around ordinary images.
+- Do not add shadows or decorative frames around ordinary images.
 
 ## Case Layout
 
@@ -282,8 +287,9 @@ Rules:
 - Links navigate. Buttons act.
 - Image preview controls remain native buttons.
 - Case-study entry images remain native anchors.
-- Authored prose uses `--text-primary`. This includes the homepage biography, case decks, paragraphs, and list items.
-- Labels use `--text-secondary`. This includes `Links`, `Contact`, `References`, `About`, project titles, metadata terms, captions, and other text that names a group or field without acting.
+- The homepage biography uses `--text-primary`; case decks, paragraphs, and list items use `--text-secondary` for a quieter reading layer below white headings.
+- Labels use `--text-secondary`. This includes `Links`, `Contact`, `Metadata`, `About`, project titles, and other text that names a group or field without acting.
+- Dates, case metadata terms, and image captions use `--text-tertiary`.
 - Actionable text links use `--text-tertiary` at rest. This includes profile links, reference links, and email.
 - The case-study home link remains `--text-tertiary` beside the tertiary arrow while the current project is `--text-primary`.
 - On hover-capable devices, the case-study home link becomes `--text-primary` to make the return action explicit.
@@ -356,5 +362,7 @@ For every design change:
 15. Confirm authored text is primary, labels are secondary, actionable text links are tertiary at rest, and text-link hover is primary in both themes.
 16. Confirm every generated route contains the same shared profile and contact links, and that email copy works on case pages.
 17. Confirm case studies do not repeat an email footer and that shared Links and Contact follow the article on mobile.
+18. Measure every adjacent homepage project transition and the final project-to-`Metadata` transition at desktop and mobile widths; each must resolve to `32px` while the text-to-text sidebar group gap remains `24px`.
+19. Confirm mobile demo metadata is outside the styled media frame and remains exposed to assistive technology.
 
 Reject a change that introduces crop, arbitrary type sizes, negative case letter spacing, a second navigation system, editorial divider rules, stale generated output, broken metadata, or an unprotected unfinished preview.

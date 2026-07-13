@@ -7,11 +7,13 @@
 - Provide responsive optimized sources without upscaling.
 - Preserve intrinsic dimensions.
 - Use the existing `22px` media radius.
+- Use the adaptive `1px`/`14%` primary-color contour on portfolio images.
+- Keep mobile project date/title metadata outside demo or media frames.
 - Keep anchors for navigation and buttons for preview actions.
-- Keep authored text primary, labels secondary light gray, actionable text links tertiary dark gray, and text-link hover primary.
+- Keep homepage authored copy primary, case prose and project titles secondary, dates and captions tertiary, actionable text links tertiary, and text-link hover primary.
 - Let link arrows inherit the link color.
 - Keep icon controls tertiary at rest and primary on hover.
 - Put hover inside `@media (hover: hover)`.
 - Keep focus visible.
 - Keep theme changes immediate.
-- Do not add editorial divider rules, middle dots, gradients, cards, or shadows.
+- Do not add editorial divider rules, middle dots, gradients, decorative cards, or shadows.
