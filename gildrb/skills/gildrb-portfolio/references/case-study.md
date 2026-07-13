@@ -13,6 +13,7 @@
 The user owns every title, deck, caption, metadata description, and body paragraph. Do not draft or alter publishable prose unless the user explicitly requests copy work. Layout, image, route, metadata, or generation tasks never imply permission to edit copy.
 
 - Preserve existing and supplied wording verbatim.
+- When the user requests media descriptions, keep every visible image caption between one and five words.
 - Use visibly unfinished `[Author: ...]` placeholders for missing sections.
 - Keep requested suggestions outside source files until the user approves them.
 - Treat spelling, grammar, tone, and clarity changes as copy work requiring explicit authorization.

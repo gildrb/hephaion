@@ -125,6 +125,8 @@ Case-specific letter spacing is always `0`. Do not use negative letter spacing.
 - Compact heading: `19px`, weight `500`, line height `28px`.
 - Prose and deck: `16px`, weight `400`, line height `24px`.
 - Metadata label and caption: `14px`, weight `400`, line height `20px`.
+- Stack case metadata as three rows in a two-column definition grid: a shared `104px` label column and one flexible value column with a `24px` gap. On mobile use `88px` and `16px`. Labels and values share a top baseline so copy length cannot unbalance the group.
+- Keep every visible case-media caption between one and five words.
 - Code: `14px`, weight `400`, line height `20px`.
 
 On desktop, the top edge of the page title must align with the top edge of `Gil Rodrigues` in the persistent location. Use zero top margin on the title; do not compensate by moving the article or sidebar independently.

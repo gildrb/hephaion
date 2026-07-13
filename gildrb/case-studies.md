@@ -68,7 +68,7 @@ Do not force a section when evidence does not exist. Add an explicit author plac
 - Author each case study in `content/<project>.md`; this is the only source for its visible title, deck, metadata rows, section headings, paragraphs, captions, links, lists, and code examples.
 - Keep `src/<project>.template.html` structural. It contains the shell and one `<!-- @case-markdown:<project> -->` insertion token, not authored article prose.
 - Keep responsive image markup in `src/case-media/<project>/<media-id>.html` so writing never requires editing `srcset`, dimensions, loading behavior, or layout HTML.
-- Reference those assets from Markdown with `![Caption](media:<media-id>)`. Consecutive media references form the existing two-column grid.
+- Reference those assets from Markdown with `![Caption](media:<media-id>)`. Every image needs a visible caption of one to five words. Consecutive media references form the existing two-column grid.
 - Begin every file with one `#` title and exactly three `- **Label:** Value` metadata rows. A `>` deck may appear between them, but authors may omit it rather than inventing introductory copy.
 - Generate the static route with `node scripts/build-page.mjs`; never edit `<project>/index.html` directly.
 - Preserve ordinary Markdown support for `##` and `###` headings, paragraphs, lists, emphasis, strong text, inline code, external links, and fenced code blocks.

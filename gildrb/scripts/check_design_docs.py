@@ -280,6 +280,16 @@ def _portfolio_errors(portfolio_repo: Path) -> list[str]:
         errors.append("case prose must use --text-secondary")
     if not re.search(r"\.case-caption[^}]*color:\s*var\(--text-tertiary\)", case_css, re.DOTALL):
         errors.append("case captions must use --text-tertiary")
+    if not re.search(r"\.case-meta div\s*\{[^}]*grid-template-columns:\s*104px minmax\(0,\s*1fr\)[^}]*column-gap:\s*24px", case_css, re.DOTALL):
+        errors.append("case metadata must use the shared desktop label/value grid")
+    if not re.search(r"@media \(max-width:\s*768px\)[\s\S]*?\.case-meta div\s*\{[^}]*grid-template-columns:\s*88px minmax\(0,\s*1fr\)[^}]*column-gap:\s*16px", case_css):
+        errors.append("case metadata must use the compact mobile label/value grid")
+    for markdown_path in (portfolio_repo / "content").glob("*.md"):
+        if markdown_path.name == "README.md":
+            continue
+        captions = re.findall(r"^!\[(.*)\]\(media:[a-z0-9-]+\)$", _read(markdown_path), re.MULTILINE)
+        if any(not caption.strip() or len(caption.split()) > 5 for caption in captions):
+            errors.append(f"case media captions must contain one to five words: {markdown_path.name}")
     if not re.search(r"\.case-section\s*\{[^}]*margin-top:\s*80px", case_css, re.DOTALL):
         errors.append("case sections must use the compact 80px rhythm")
     if not re.search(r"\.name\s*\{[^}]*line-height:\s*var\(--link-line-height\)[^}]*min-height:\s*calc\(var\(--link-line-height\) \* 2\)", base_css, re.DOTALL):
