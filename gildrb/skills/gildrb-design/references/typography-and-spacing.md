@@ -4,16 +4,17 @@
 
 - Shell location: `19px`, weight `400`.
 - Default interface and prose: `16px/24px`, weight `400`.
-- Case title desktop: `40px/48px`, weight `600`.
-- Case title mobile: `32px/40px`, weight `600`.
-- Section heading: `32px/40px`, weight `600`.
-- Compact heading: `20px/28px`, weight `600`.
+- Case title desktop: `28px/36px`, weight `500`.
+- Case title mobile: `24px/32px`, weight `500`.
+- Section heading: `24px/32px`, weight `500`.
+- Compact heading: `19px/28px`, weight `500`.
 - Caption and metadata: `14px/20px`, weight `400`.
 - Homepage project title: `16px/24px`, weight `400`.
 - Homepage project date: `14px/20px`, weight `400`.
 - Case-specific letter spacing: `0`.
 - No fluid case typography.
 - No negative case letter spacing.
+- On desktop, align the case title's top edge exactly with the top edge of the persistent `Gil Rodrigues` location. Keep the title's top margin at `0`.
 
 ## Rhythm
 

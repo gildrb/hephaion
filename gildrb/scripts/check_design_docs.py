@@ -26,8 +26,9 @@ REQUIRED_DESIGN_PHRASES = (
     "Case-specific letter spacing is always `0`.",
     "Do not use middle-dot separators.",
     "Do not crop process images.",
-    "Page title desktop: `40px`, weight `600`, line height `48px`.",
-    "Page title mobile: `32px`, weight `600`, line height `40px`.",
+    "Page title desktop: `28px`, weight `500`, line height `36px`.",
+    "Page title mobile: `24px`, weight `500`, line height `32px`.",
+    "the top edge of the page title must align with the top edge of `Gil Rodrigues`",
     "Actionable text links use `--text-tertiary` at rest.",
     "Text-link hover uses `--text-primary`",
     "The same sidebar content persists on the homepage and every case-study route",
@@ -246,8 +247,8 @@ def _portfolio_errors(portfolio_repo: Path) -> list[str]:
         errors.append("homepage projects must stay ordered newest to oldest: Heph, Filen, n0thing, mL7")
     if not re.search(r"--text-media-gap:\s*32px", base_css):
         errors.append("homepage must define the 32px optical text-to-media gap")
-    if not re.search(r"\.portfolio-section\s*>\s*\.section-title\s*\{[^}]*margin-bottom:\s*var\(--text-media-gap\)", preview_css, re.DOTALL):
-        errors.append("first project title must use the optical 32px transition into its solid media")
+    if not re.search(r"\.profile-summary\s*\{[^}]*margin-bottom:\s*var\(--text-media-gap\)", preview_css, re.DOTALL):
+        errors.append("homepage description must use the optical 32px transition into the first project media")
     if not re.search(r"\.portfolio-card-meta\s*\{[^}]*grid-template-columns:\s*minmax\(0,\s*1fr\) auto[^}]*width:\s*100%", portfolio_css, re.DOTALL):
         errors.append("project metadata must span the card and reserve a right-aligned affordance column")
     if not re.search(r'\.portfolio-card-meta::after\s*\{[^}]*content:\s*"→"[^}]*font-family:\s*"Inter"', portfolio_css, re.DOTALL):
@@ -274,10 +275,14 @@ def _portfolio_errors(portfolio_repo: Path) -> list[str]:
         errors.append("mobile Heph panel styling must stay on the terminal-only frame")
 
     required_case_rules = (
-        "font-size: 40px;",
-        "line-height: 48px;",
-        "font-size: 32px;",
-        "line-height: 40px;",
+        "margin: 0 0 24px;",
+        "font-size: 28px;",
+        "font-size: 24px;",
+        "font-size: 19px;",
+        "font-weight: 500;",
+        "line-height: 36px;",
+        "line-height: 32px;",
+        "line-height: 28px;",
         "letter-spacing: 0;",
     )
     for rule in required_case_rules:

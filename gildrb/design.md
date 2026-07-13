@@ -117,15 +117,17 @@ Text selection uses `--text-primary` over `--text-tertiary`; never use the light
 
 Case-specific letter spacing is always `0`. Do not use negative letter spacing.
 
-- Page title desktop: `40px`, weight `600`, line height `48px`.
-- Page title mobile: `32px`, weight `600`, line height `40px`.
-- Section heading: `32px`, weight `600`, line height `40px`.
-- Compact heading: `20px`, weight `600`, line height `28px`.
+- Page title desktop: `28px`, weight `500`, line height `36px`.
+- Page title mobile: `24px`, weight `500`, line height `32px`.
+- Section heading: `24px`, weight `500`, line height `32px`.
+- Compact heading: `19px`, weight `500`, line height `28px`.
 - Prose and deck: `16px`, weight `400`, line height `24px`.
 - Metadata label and caption: `14px`, weight `400`, line height `20px`.
 - Code: `14px`, weight `400`, line height `20px`.
 
-Do not use `clamp()` for case-study type. Do not invent intermediate values such as `15px`, `17px`, `19px` outside the existing shell, `28px` display copy, or viewport-scaled headings.
+On desktop, the top edge of the page title must align with the top edge of `Gil Rodrigues` in the persistent location. Use zero top margin on the title; do not compensate by moving the article or sidebar independently.
+
+Do not use `clamp()` for case-study type. Do not invent intermediate values such as `15px` or `17px`, or viewport-scaled headings. The existing `19px` shell location is also the compact-heading step; `28px` is reserved for desktop page titles.
 
 ## Spacing
 
