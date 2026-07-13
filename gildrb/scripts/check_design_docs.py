@@ -360,10 +360,11 @@ def _portfolio_errors(portfolio_repo: Path) -> list[str]:
     if "margin-bottom: 80px;" in responsive_css:
         errors.append("mobile homepage must not restore 80px project-entry gaps")
     heph_section = _read(portfolio_repo / "src/sections/portfolio-heph.html")
+    heph_demo = _read(portfolio_repo / "src/partials/heph-demo.html")
     heph_css = _read(portfolio_repo / "src/styles/30-heph-demo.css")
     if not re.search(r"\.heph-demo\s*\{[^}]*overflow:\s*visible", heph_css, re.DOTALL):
         errors.append("Heph project section must not clip its metadata focus outline")
-    if 'class="heph-demo-frame" aria-hidden="true"' not in heph_section:
+    if 'class="heph-demo-frame" aria-hidden="true"' not in heph_demo:
         errors.append("mobile Heph terminal must use a dedicated decorative frame")
     if not re.search(r"\.heph-demo-frame\s*\{[^}]*padding:\s*34px 14px[^}]*background:\s*var\(--heph-demo-mobile-bg\)", heph_css, re.DOTALL):
         errors.append("mobile Heph panel must use its distinct outer frame surface")
@@ -382,7 +383,7 @@ def _portfolio_errors(portfolio_repo: Path) -> list[str]:
     if not heph_hex_colors.issubset({"#f96664", "#face2e", "#3bc55d"}):
         errors.append("Heph terminal contains a private flat color outside the macOS lights")
     for mixed_value in ("EVIDENCE <b>ctrl+g</b>", "SCOPE <b>4/4</b>", "EXCERPTS <b>4</b>"):
-        if mixed_value not in heph_section:
+        if mixed_value not in heph_demo:
             errors.append(f"Heph terminal does not separate label and value: {mixed_value}")
 
     required_case_rules = (
@@ -405,30 +406,18 @@ def _portfolio_errors(portfolio_repo: Path) -> list[str]:
         re.DOTALL,
     ):
         errors.append("desktop case ending must derive its vertical alignment from the theme toggle footer tokens")
-    if not re.search(
-        r"@media\s*\(min-width:\s*769px\)[\s\S]*?\.case-article article\s*\{[^}]*min-height:\s*calc\(100vh - 96px\)[^}]*display:\s*flex[^}]*flex-direction:\s*column",
+    if re.search(
+        r"\.case-article article > :last-child\s*\{[^}]*(?:margin-top:\s*auto|padding-top:)",
         case_css,
         re.DOTALL,
     ):
-        errors.append("desktop case articles must expose unused height to the final section")
-    if not re.search(
-        r"\.case-article article > :last-child\s*\{[^}]*margin-top:\s*auto[^}]*padding-top:\s*80px",
-        case_css,
-        re.DOTALL,
-    ):
-        errors.append("desktop final case section must absorb spare height while preserving the 80px section gap")
+        errors.append("desktop case endings must not stretch or add artificial space before short content")
     if not re.search(
         r"\.case-section:last-child \.case-copy:last-child h2:last-child\s*\{[^}]*margin-bottom:\s*0",
         case_css,
         re.DOTALL,
     ):
         errors.append("desktop case ending must remove the final heading's independent bottom margin")
-    if not re.search(
-        r"\.case-media \+ \.case-copy:last-child,\s*\.case-media-grid \+ \.case-copy:last-child\s*\{[^}]*padding-top:\s*var\(--text-media-gap\)",
-        case_css,
-        re.DOTALL,
-    ):
-        errors.append("final prose after case media must preserve the shared optical transition while aligning its last line")
     if not re.search(
         r"\.case-media\s*\{[^}]*margin-top:\s*var\(--text-media-gap\)",
         case_css,
