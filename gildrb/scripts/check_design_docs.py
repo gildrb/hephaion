@@ -31,6 +31,7 @@ REQUIRED_DESIGN_PHRASES = (
     "Actionable text links use `--text-tertiary` at rest.",
     "Text-link hover uses `--text-primary`",
     "The same sidebar content persists on the homepage and every case-study route",
+    "Do not show a `Portfolio` heading on the homepage",
 )
 
 REQUIRED_CASE_ROUTES = ("/filen", "/ml7")
@@ -132,6 +133,7 @@ def _portfolio_errors(portfolio_repo: Path) -> list[str]:
         "src/styles/50-case-study.css",
         "src/styles/90-responsive.css",
         "src/sections/profile-summary.html",
+        "src/sections/portfolio-open.html",
         "src/sections/portfolio-filen.html",
         "src/sections/portfolio-ml7.html",
         "src/partials/sidebar-links.html",
@@ -157,6 +159,7 @@ def _portfolio_errors(portfolio_repo: Path) -> list[str]:
     case_css = _read(portfolio_repo / "src/styles/50-case-study.css")
     responsive_css = _read(portfolio_repo / "src/styles/90-responsive.css")
     profile = _read(portfolio_repo / "src/sections/profile-summary.html")
+    portfolio_open = _read(portfolio_repo / "src/sections/portfolio-open.html")
     filen = _read(portfolio_repo / "src/sections/portfolio-filen.html")
     ml7 = _read(portfolio_repo / "src/sections/portfolio-ml7.html")
     builder = _read(portfolio_repo / "scripts/build-page.mjs")
@@ -225,6 +228,12 @@ def _portfolio_errors(portfolio_repo: Path) -> list[str]:
     if not re.search(r"\.name\s*\{[^}]*line-height:\s*var\(--link-line-height\)[^}]*min-height:\s*calc\(var\(--link-line-height\) \* 2\)", base_css, re.DOTALL):
         errors.append("desktop location must reserve two lines so shared links never move")
     preview_css = _read(portfolio_repo / "src/styles/40-preview-content.css")
+    if "portfolio-label" in portfolio_open or 'aria-label="Portfolio"' not in portfolio_open:
+        errors.append("homepage must omit the visible Portfolio label while preserving its accessible section name")
+    if not re.search(r"--text-media-gap:\s*32px", base_css):
+        errors.append("homepage must define the 32px optical text-to-media gap")
+    if not re.search(r"\.portfolio-section\s*>\s*\.section-title\s*\{[^}]*margin-bottom:\s*var\(--text-media-gap\)", preview_css, re.DOTALL):
+        errors.append("first project title must use the optical 32px transition into its solid media")
     if not re.search(r"\.profile-copy\s*\{[^}]*color:\s*var\(--text-primary\)", preview_css, re.DOTALL):
         errors.append("homepage biography must use --text-primary")
     if not re.search(r"\.references-links\s*\{[^}]*margin-top:\s*0\s*;", preview_css, re.DOTALL):

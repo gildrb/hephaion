@@ -214,6 +214,8 @@ Rules:
 - Keep the homepage content and every project image inside the same centered `760px` content boundary used by case studies.
 - Approved biography: `Designing brands, interfaces, and the systems that connect them.`
 - Render the approved biography in `--text-primary`; it is authored content, not a label.
+- Do not show a `Portfolio` heading on the homepage; keep `Portfolio` only as the accessible name of the project section.
+- Use `32px` from the biography to the first project title on desktop and `32px` from that title to its solid media. On mobile, keep the intervening biography, Links, and project-title text groups at `24px`, then use `32px` from the project title to its media.
 - Put each project date and title below its media, never inside a mobile media or demo frame.
 - Render project dates at `14px/20px` in `--text-tertiary` and project titles at `16px/24px` in `--text-secondary`.
 - Use the same optically compensated `32px` gap between every adjacent homepage project entry on desktop and mobile.

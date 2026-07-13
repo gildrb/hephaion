@@ -22,4 +22,5 @@ Use `4`, `8`, `12`, `16`, `20`, `24`, `32`, `48`, `64`, `80`, and `120` pixel st
 - Use the optically compensated `32px` gap between every adjacent homepage project entry at every viewport.
 - Use `32px` between the final project title and `Metadata`; do not use a negative footer offset.
 - Keep the sidebar group gap at `24px`; text-to-text and text-to-media boundaries require different numerical gaps to look equal.
+- Omit the visible `Portfolio` label. Keep adjacent homepage text groups at `24px` on mobile, use `32px` from the biography to the first project title on desktop, and always use `32px` from that title to its solid media.
 - Keep `80px` for major case-study sections, not homepage project transitions.

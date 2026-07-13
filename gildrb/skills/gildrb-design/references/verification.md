@@ -26,5 +26,7 @@ Verify mobile and desktop:
 - `32px` between every adjacent homepage project entry on desktop and mobile
 - `32px` from the final project title to `Metadata`, with no overlap
 - `24px` between LinkedIn and Contact as the text-to-text comparison
+- no visible `Portfolio` heading, while the project section retains an accessible `Portfolio` name
+- `32px` from the first project title to its solid media; mobile text groups before it remain `24px` apart
 - project date/title metadata outside mobile media and demo frames
 - project dates at `14px/20px` and titles at `16px/24px`
