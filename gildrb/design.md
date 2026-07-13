@@ -213,6 +213,7 @@ Rules:
 - Use an arrow, not a middle dot, slash, breadcrumb chevron component, or Index button.
 - Do not add separate `Index`, `Back`, or `Return to index` navigation.
 - Keep the theme toggle in its existing location.
+- On desktop case-study routes, align the center of the final authored line, whether prose or `MORE SOON`, with the center of the theme toggle when the reader reaches the bottom. Let the last content block absorb unused height on short drafts, preserve at least the standard `80px` section gap, and derive the bottom position from the shared footer and toggle tokens rather than a separate optical offset. Keep the mobile toggle in its top-mounted position.
 
 ## Homepage
 

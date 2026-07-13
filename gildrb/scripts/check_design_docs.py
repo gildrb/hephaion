@@ -222,8 +222,14 @@ def _portfolio_errors(portfolio_repo: Path) -> list[str]:
         metadata_count = len(re.findall(r"^- \*\*[^*]+:\*\* .+$", markdown, re.MULTILINE))
         if not markdown.startswith("# ") or metadata_count not in (0, 3):
             errors.append(f"content/{slug}.md must preserve the documented case-study header")
-        if metadata_count == 0 and not markdown.rstrip().endswith("## MORE SOON"):
-            errors.append(f"unfinished content/{slug}.md must end with ## MORE SOON")
+        body_lines = markdown.splitlines()[1:]
+        authored_body = any(
+            line.strip()
+            and not line.strip().startswith(("!", "#", "- **"))
+            for line in body_lines
+        )
+        if metadata_count == 0 and not authored_body and not markdown.rstrip().endswith("## MORE SOON"):
+            errors.append(f"content/{slug}.md must contain authored prose or end with ## MORE SOON")
 
     expected_tokens = {
         "--bg": "#000000",
@@ -383,6 +389,30 @@ def _portfolio_errors(portfolio_repo: Path) -> list[str]:
     for rule in required_case_rules:
         if rule not in case_css:
             errors.append(f"case CSS missing rule: {rule}")
+    if not re.search(
+        r"@media\s*\(min-width:\s*769px\)[\s\S]*?\.case-article article > :last-child\s*\{[^}]*padding-bottom:\s*calc\([^}]*var\(--footer-title-center-offset\)[^}]*var\(--theme-toggle-size\)",
+        case_css,
+        re.DOTALL,
+    ):
+        errors.append("desktop case ending must derive its vertical alignment from the theme toggle footer tokens")
+    if not re.search(
+        r"@media\s*\(min-width:\s*769px\)[\s\S]*?\.case-article article\s*\{[^}]*min-height:\s*calc\(100vh - 96px\)[^}]*display:\s*flex[^}]*flex-direction:\s*column",
+        case_css,
+        re.DOTALL,
+    ):
+        errors.append("desktop case articles must expose unused height to the final section")
+    if not re.search(
+        r"\.case-article article > :last-child\s*\{[^}]*margin-top:\s*auto[^}]*padding-top:\s*80px",
+        case_css,
+        re.DOTALL,
+    ):
+        errors.append("desktop final case section must absorb spare height while preserving the 80px section gap")
+    if not re.search(
+        r"\.case-section:last-child \.case-copy:last-child h2:last-child\s*\{[^}]*margin-bottom:\s*0",
+        case_css,
+        re.DOTALL,
+    ):
+        errors.append("desktop case ending must remove the final heading's independent bottom margin")
     for banned in ("object-fit: cover", "border-top:", "border-bottom:"):
         if banned in case_css:
             errors.append(f"case CSS contains banned rule: {banned}")
