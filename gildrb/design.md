@@ -215,7 +215,7 @@ Rules:
 - Approved biography: `Designing brands, interfaces, and the systems that connect them.`
 - Render the approved biography in `--text-primary`; it is authored content, not a label.
 - Put each project date and title below its media, never inside a mobile media or demo frame.
-- Render project dates at `14px/20px` in `--text-tertiary` and project titles at `16px/24px` in `--text-secondary`.
+- Render project dates at `14px/20px` in `--text-tertiary`, using Inter's tabular numerals (`font-variant-numeric: tabular-nums` and `"tnum"`), and project titles at `16px/24px` in `--text-secondary`.
 - Use the same optically compensated `32px` gap between every adjacent homepage project entry on desktop and mobile.
 - Use the same `32px` gap from the final project title to the `Metadata` group; never pull the footer upward with a negative margin.
 - A project with a case study exposes one designated clickable image.

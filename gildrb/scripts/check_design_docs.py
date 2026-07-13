@@ -29,6 +29,7 @@ REQUIRED_DESIGN_PHRASES = (
     "Page title desktop: `40px`, weight `600`, line height `48px`.",
     "Page title mobile: `32px`, weight `600`, line height `40px`.",
     "Actionable text links use `--text-tertiary` at rest.",
+    "using Inter's tabular numerals",
     "Text-link hover uses `--text-primary`",
     "The same sidebar content persists on the homepage and every case-study route",
 )
@@ -194,6 +195,13 @@ def _portfolio_errors(portfolio_repo: Path) -> list[str]:
     for pattern, message in semantic_color_rules:
         if not re.search(pattern, base_css, re.DOTALL):
             errors.append(f"portfolio semantic color drift: {message}")
+
+    if not re.search(
+        r'\.portfolio-card-meta time\s*\{[^}]*font-variant-numeric:\s*tabular-nums\s*;[^}]*font-feature-settings:\s*"tnum"\s+1\s*;',
+        portfolio_css,
+        re.DOTALL,
+    ):
+        errors.append("homepage project dates must use Inter tabular numerals")
 
     case_color_rules = (
         (r"\.case-home-link\s*\{[^}]*color:\s*var\(--text-tertiary\)", "case home link must use --text-tertiary at rest"),

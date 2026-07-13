@@ -10,7 +10,7 @@
 - Compact heading: `20px/28px`, weight `600`.
 - Caption and metadata: `14px/20px`, weight `400`.
 - Homepage project title: `16px/24px`, weight `400`.
-- Homepage project date: `14px/20px`, weight `400`.
+- Homepage project date: `14px/20px`, weight `400`, with Inter tabular numerals enabled through `font-variant-numeric: tabular-nums` and `font-feature-settings: "tnum" 1`.
 - Case-specific letter spacing: `0`.
 - No fluid case typography.
 - No negative case letter spacing.
