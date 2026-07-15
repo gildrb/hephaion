@@ -319,13 +319,13 @@ Rules:
 - Text-link hover uses `--text-primary`, promoting an actionable item from light gray to white in dark mode.
 - Link arrows inherit the link color so the complete link changes as one unit.
 - Icon controls use `--text-tertiary` at rest and `--text-primary` on hover unless a documented component state requires otherwise.
-- Clickable project media uses a normally blended `--highlight-bg` layer at `0.55` opacity. This reuses the exact approved bright gray and pulls black and white artwork toward it without placing interface copy over the artwork.
+- Clickable project media has no hover overlay, opacity dimming, or color tint.
 - While a project card is hovered or keyboard-focused, change its existing right-aligned metadata arrow from `→` to `Read →`. Keep `Read` beside the existing arrow and outside the image.
 - Apply the same `Read →` state to Heph's metadata-only link when its title row is hovered or keyboard-focused.
 - Use the same primary-color `1px` outline and `4px` offset for Heph's metadata-only keyboard focus as for image cards. Keep the enclosing `.heph-demo` overflow visible so all four sides of that outline remain unclipped.
 - Reserve enough width for `Read →` in the resting metadata grid so revealing it never shifts the project title or arrow.
-- Wrap the image in `.portfolio-card-image`; keep the overlay decorative and `pointer-events: none` so the full native anchor remains interactive.
-- Apply the same tint on `:focus-visible` while preserving the existing focus outline.
+- Keep the image wrapper free of interaction layers so the full native anchor remains interactive.
+- Preserve the adaptive primary-color `1px`/`14%` contour on project images.
 - Do not place interaction labels over the image, and do not use opacity-only image dimming or colored tints for case-study entries.
 - Hover changes color without changing size or weight.
 - Put hover behavior inside `@media (hover: hover)`.
