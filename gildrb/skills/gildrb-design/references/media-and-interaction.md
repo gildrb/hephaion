@@ -11,6 +11,7 @@
 - Own the Heph terminal markup once in `src/partials/heph-demo.html`. The homepage includes that partial inside its project wrapper; `src/case-media/heph/heph-demo.html` includes the same partial for the case route. Never fork or copy the terminal markup.
 - In `content/heph.md`, place `![Heph demo](media:heph-demo)` after the authored prose and immediately before the GitHub repository link. The Heph case bundle must include the shared demo data and interaction scripts so this remains the live demo, not a screenshot.
 - Use primary for human-readable content, tertiary for labels and tool context, and secondary for values. Keep the traffic lights colored, but do not introduce terminal-only text grays.
+- Keep case-study code blocks in the shared `--content-column` and use `--text-media-gap` (32px) above and below, matching the media rhythm.
 - Use the adaptive `1px`/`14%` primary-color contour on portfolio images.
 - Cover clickable project media with a normally blended `--highlight-bg` overlay at `0.55` opacity on hover and keyboard focus.
 - At the same time, change the existing right-aligned metadata arrow to `Read →`; keep this affordance below the image and reserve its width to prevent layout shift.

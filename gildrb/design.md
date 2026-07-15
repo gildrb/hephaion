@@ -97,6 +97,7 @@ Text selection uses `--highlight-text` over `--highlight-bg`; do not restore the
 - Use self-hosted Inter Variable for headings, prose, labels, navigation, and controls.
 - Keep the existing system fallbacks: `-apple-system`, `BlinkMacSystemFont`, `Segoe UI`, `sans-serif`.
 - Use Geist Mono only for code examples already using the case-study code treatment.
+- Keep case-study code blocks in the shared `--content-column` and use `--text-media-gap` (32px) above and below, matching the media rhythm.
 - Do not change the global font family for one case study.
 
 ### Rendering
