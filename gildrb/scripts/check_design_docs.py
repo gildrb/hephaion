@@ -220,6 +220,7 @@ def _portfolio_errors(portfolio_repo: Path) -> list[str]:
     filen = _read(portfolio_repo / "src/sections/portfolio-filen.html")
     ml7 = _read(portfolio_repo / "src/sections/portfolio-ml7.html")
     builder = _read(portfolio_repo / "scripts/build-page.mjs")
+    site_config = _read(portfolio_repo / "scripts/site-config.mjs")
     homepage_template = _read(portfolio_repo / "src/page.template.html")
     sidebar_links = _read(portfolio_repo / "src/partials/sidebar-links.html")
     homepage_sidebar = _read(portfolio_repo / "src/partials/sidebar.html")
@@ -306,19 +307,38 @@ def _portfolio_errors(portfolio_repo: Path) -> list[str]:
             errors.append(f"portfolio semantic color drift: {message}")
 
     case_color_rules = (
-        (r"\.case-home-link\s*\{[^}]*color:\s*var\(--text-tertiary\)", "case home link must use --text-tertiary at rest"),
+        (r"\.case-location \.case-home-link,\s*\n\.case-arrow\s*\{[^}]*color:\s*var\(--text-tertiary\)", "case home link must use --text-tertiary at rest"),
         (r"\.case-arrow\s*\{[^}]*color:\s*var\(--text-tertiary\)", "case location arrow must use --text-tertiary"),
-        (r"\.case-location span:last-child\s*\{[^}]*color:\s*var\(--text-primary\)", "current case project must use --text-primary"),
+        (r"\.case-location \.case-current-link\s*\{[^}]*color:\s*var\(--text-primary\)", "current case project must use --text-primary"),
         (r"\.case-home-link:hover\s*\{[^}]*color:\s*var\(--text-primary\)", "case home-link hover must use --text-primary"),
         (r"\.case-location\s*\{[^}]*flex-wrap:\s*wrap", "case location must wrap onto two lines"),
         (r"\.case-home-link\s*\{[^}]*flex-basis:\s*100%", "case home link must occupy the first location line"),
         (r"\.case-location\s*\{[^}]*row-gap:\s*0", "case location lines must not add an extra vertical gap"),
         (r"\.case-article article\s*\{[^}]*width:\s*min\(100%,\s*760px\)\s*;[^}]*margin-right:\s*auto\s*;[^}]*margin-left:\s*auto\s*;", "case article must use the centered 760px blog-width boundary"),
         (r"\.case-intro,\s*\n\.case-copy\s*\{[^}]*margin-right:\s*auto\s*;[^}]*margin-left:\s*auto\s*;", "case prose columns must be centered inside the media container"),
+        (r"\.case-code \.tok-key,\s*\n\.case-code \.tok-keyword\s*\{[^}]*color:\s*var\(--text-primary\)", "case code keys and keywords must use --text-primary"),
+        (r"\.case-code \.tok-string,\s*\n\.case-code \.tok-value,\s*\n\.case-code \.tok-number\s*\{[^}]*color:\s*var\(--text-secondary\)", "case code strings and values must use --text-secondary"),
+        (r"\.case-code \.tok-comment,\s*\n\.case-code \.tok-punctuation,\s*\n\.case-code \.tok-operator\s*\{[^}]*color:\s*var\(--text-tertiary\)", "case code comments and operators must use --text-tertiary"),
     )
     for pattern, message in case_color_rules:
         if not re.search(pattern, case_css, re.DOTALL):
             errors.append(f"portfolio semantic color drift: {message}")
+    case_code_match = re.search(r"\.case-code pre\s*\{([^}]*)\}", case_css, re.DOTALL)
+    if not case_code_match:
+        errors.append("case code block must define its flat pre treatment")
+    else:
+        case_code_rules = (
+            (r"overflow-x:\s*auto", "horizontal scrolling"),
+            (r"border:\s*0", "no border"),
+            (r"border-radius:\s*0", "no radius"),
+            (r"background:\s*transparent", "no fill"),
+            (r'font:\s*14px/20px\s*"Geist Mono",\s*monospace', "Geist Mono"),
+        )
+        for pattern, message in case_code_rules:
+            if not re.search(pattern, case_code_match.group(1)):
+                errors.append(f"case code block must keep its flat treatment: {message}")
+        if re.search(r"box-shadow\s*:", case_code_match.group(1)):
+            errors.append("case code block must not use a shadow")
 
     if not re.search(r"\.layout\s*\{[^}]*max-width:\s*calc\(\s*var\(--sidebar-column\) \+ var\(--layout-gap\) \+ var\(--content-column\)\s*\)[^}]*margin:\s*0 auto", base_css, re.DOTALL):
         errors.append("desktop layout must center the sidebar and 760px content column as one unit")
@@ -326,14 +346,12 @@ def _portfolio_errors(portfolio_repo: Path) -> list[str]:
         errors.append("homepage content must use the shared 760px content boundary")
     if not re.search(r"\.content\s*\{[^}]*padding:\s*48px 0", portfolio_css, re.DOTALL):
         errors.append("desktop content must use the compact 48px vertical padding")
-    if not re.search(r"\.portfolio-card-image::after\s*\{[^}]*background:\s*var\(--highlight-bg\)", portfolio_css, re.DOTALL):
-        errors.append("clickable project media must use the approved bright-gray overlay")
+    if ".portfolio-card-image::after" in portfolio_css or "opacity: 0.55" in portfolio_css:
+        errors.append("clickable project media must remain free of hover overlays and tint layers")
     if not re.search(r"\.portfolio-card:hover \.portfolio-card-meta::after\s*\{[^}]*content:\s*\"Read →\"", portfolio_css, re.DOTALL):
         errors.append("clickable project metadata must expose the Read label beside its existing arrow")
     if not re.search(r"\.portfolio-card-link:hover::after\s*\{[^}]*content:\s*\"Read →\"", portfolio_css, re.DOTALL):
         errors.append("Heph metadata hover must expose the same Read affordance")
-    if not re.search(r"\.portfolio-card:hover \.portfolio-card-image::after\s*\{[^}]*opacity:\s*0\.55", portfolio_css, re.DOTALL):
-        errors.append("project media hover must expose the neutral gray overlay at 0.55 opacity")
     if re.search(r"\.portfolio-card-image::before\s*\{", portfolio_css):
         errors.append("project interaction labels must stay outside the image")
     if "mix-blend-mode:" in portfolio_css:
@@ -399,9 +417,9 @@ def _portfolio_errors(portfolio_repo: Path) -> list[str]:
     heph_css = _read(portfolio_repo / "src/styles/30-heph-demo.css")
     if not re.search(r"\.heph-demo\s*\{[^}]*overflow:\s*visible", heph_css, re.DOTALL):
         errors.append("Heph project section must not clip its metadata focus outline")
-    if 'class="heph-demo-frame" aria-hidden="true"' not in heph_demo:
+    if 'class="heph-demo-frame"' not in heph_demo:
         errors.append("mobile Heph terminal must use a dedicated decorative frame")
-    if not re.search(r"\.heph-demo-frame\s*\{[^}]*padding:\s*34px 14px[^}]*background:\s*var\(--heph-demo-mobile-bg\)", heph_css, re.DOTALL):
+    if not re.search(r"@media\s*\(max-width:\s*700px\)[\s\S]*?\.heph-demo-frame\s*\{[^}]*padding:\s*34px 14px[^}]*background:\s*var\(--heph-demo-mobile-bg\)", heph_css, re.DOTALL):
         errors.append("mobile Heph panel must use its distinct outer frame surface")
     heph_hex_colors = {color.lower() for color in re.findall(r"#[0-9a-f]{6}", heph_css, re.IGNORECASE)}
     if not re.search(r"--heph-demo-terminal-bg:\s*color-mix\(\s*in srgb,\s*var\(--bg\) 96%,\s*var\(--text-primary\)", heph_css, re.DOTALL):
@@ -485,7 +503,7 @@ def _portfolio_errors(portfolio_repo: Path) -> list[str]:
         if responsive_full_size not in source:
             errors.append(f"{source_name} must use the responsive 760px media boundary")
     for project in ("filen", "ml7"):
-        if f'path.join(root, "{project}/index.html")' not in builder:
+        if 'path.join(root, slug, "index.html")' not in builder:
             errors.append(f"builder does not generate /{project}")
     required_sidebar_links = (
         "https://behance.net/gildrb",
@@ -545,7 +563,7 @@ def _portfolio_errors(portfolio_repo: Path) -> list[str]:
     for stylesheet, pattern, message in responsive_visibility_rules:
         if not re.search(pattern, stylesheet, re.DOTALL):
             errors.append(message)
-    if '["10-core.js", "20-theme.js", "30-email.js"]' not in builder:
+    if not all(token in site_config for token in ('"10-core.js"', '"20-theme.js"', '"30-email.js"')):
         errors.append("case-page script bundle does not include shared email behavior")
     if 'querySelectorAll(".email")' not in email_script:
         errors.append("shared email behavior does not bind every responsive email control")

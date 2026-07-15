@@ -97,6 +97,8 @@ Text selection uses `--highlight-text` over `--highlight-bg`; do not restore the
 - Use self-hosted Inter Variable for headings, prose, labels, navigation, and controls.
 - Keep the existing system fallbacks: `-apple-system`, `BlinkMacSystemFont`, `Segoe UI`, `sans-serif`.
 - Use Geist Mono only for code examples already using the case-study code treatment.
+- Keep case-study code examples flat: no border, fill, radius, or shadow. Use Geist Mono with horizontal scrolling for wide source. Syntax highlighting is palette-only: keys, properties, table headers, and keywords use `--text-primary`; strings, values, numbers, and hex values use `--text-secondary`; comments, punctuation, and operators use `--text-tertiary`. Add no hues or color tokens.
+- In code and ASCII/tree blocks with trailing `#` comments, place the `#` column exactly four spaces after the longest pre-comment entry.
 - Do not change the global font family for one case study.
 
 ### Rendering
@@ -301,7 +303,7 @@ Rules:
 - Do not add `<hr>`.
 - Do not add horizontal rules between intro, metadata, sections, or footer.
 - Do not add `border-top` or `border-bottom` as editorial dividers.
-- Code blocks may keep their own enclosing border because it defines the code surface rather than separating sections.
+- Code blocks use the same flat, borderless treatment as the surrounding page.
 - Use whitespace, heading hierarchy, and text color for section boundaries.
 
 ## Interaction
@@ -323,8 +325,8 @@ Rules:
 - Apply the same `Read →` state to Heph's metadata-only link when its title row is hovered or keyboard-focused.
 - Use the same primary-color `1px` outline and `4px` offset for Heph's metadata-only keyboard focus as for image cards. Keep the enclosing `.heph-demo` overflow visible so all four sides of that outline remain unclipped.
 - Reserve enough width for `Read →` in the resting metadata grid so revealing it never shifts the project title or arrow.
-- Wrap the image in `.portfolio-card-image`; keep the overlay decorative and `pointer-events: none` so the full native anchor remains interactive.
-- Apply the same tint on `:focus-visible` while preserving the existing focus outline.
+- Wrap the image in `.portfolio-card-image`; keep the full native anchor interactive without an overlay.
+- Preserve the existing focus outline without adding a tint.
 - Do not place interaction labels over the image, and do not use opacity-only image dimming or colored tints for case-study entries.
 - Hover changes color without changing size or weight.
 - Put hover behavior inside `@media (hover: hover)`.
