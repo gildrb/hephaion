@@ -97,6 +97,8 @@ Text selection uses `--highlight-text` over `--highlight-bg`; do not restore the
 - Use self-hosted Inter Variable for headings, prose, labels, navigation, and controls.
 - Keep the existing system fallbacks: `-apple-system`, `BlinkMacSystemFont`, `Segoe UI`, `sans-serif`.
 - Use Geist Mono only for code examples already using the case-study code treatment.
+- Case-study headings use the compact `###` treatment and its `19px/28px` step. Do not use `##` section wrappers in case studies.
+- Arrow glyphs render in Inter everywhere, including inside code blocks. Keep the surrounding code in Geist Mono and let the arrow glyph fall back to Inter.
 - Do not change the global font family for one case study.
 
 ### Rendering
