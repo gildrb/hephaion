@@ -11,13 +11,14 @@
 - Own the Heph terminal markup once in `src/partials/heph-demo.html`. The homepage includes that partial inside its project wrapper; `src/case-media/heph/heph-demo.html` includes the same partial for the case route. Never fork or copy the terminal markup.
 - In `content/heph.md`, place `![Heph demo](media:heph-demo)` after the authored prose and immediately before the GitHub repository link. The Heph case bundle must include the shared demo data and interaction scripts so this remains the live demo, not a screenshot.
 - Use primary for human-readable content, tertiary for labels and tool context, and secondary for values. Keep the traffic lights colored, but do not introduce terminal-only text grays.
+- Case-study code examples are flat: no border, fill, radius, or shadow. Use Geist Mono with horizontal scrolling for wide source. Syntax highlighting is palette-only: keys, properties, table headers, and keywords use `--text-primary`; strings, values, numbers, and hex values use `--text-secondary`; comments, punctuation, and operators use `--text-tertiary`. Add no hues or color tokens.
 - Use the adaptive `1px`/`14%` primary-color contour on portfolio images.
-- Cover clickable project media with a normally blended `--highlight-bg` overlay at `0.55` opacity on hover and keyboard focus.
+- Keep clickable project media free of hover overlays and tint layers.
 - At the same time, change the existing right-aligned metadata arrow to `Read →`; keep this affordance below the image and reserve its width to prevent layout shift.
 - Use the same `Read →` affordance when Heph's metadata-only link is hovered or keyboard-focused.
 - Use the same primary-color `1px`/`4px` offset focus outline for the compact Heph metadata link and full image cards. Keep `.heph-demo` overflow visible so the metadata outline is not clipped by its enclosing project section.
 - Make the interaction explicit without overlaying text on artwork; do not rely on opacity-only dimming, a color-specific tint, or the original artwork's contrast.
-- Keep the tint layer inside `.portfolio-card-image`, decorative, and unable to intercept pointer events.
+- Keep interaction feedback in the metadata row and focus outline, not over the artwork.
 - Keep mobile project date/title metadata outside demo or media frames.
 - Keep anchors for navigation and buttons for preview actions.
 - Keep homepage authored copy primary, case prose and project titles secondary, dates and captions tertiary, actionable text links tertiary, and text-link hover primary.
