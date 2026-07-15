@@ -221,6 +221,7 @@ def _portfolio_errors(portfolio_repo: Path) -> list[str]:
     ml7 = _read(portfolio_repo / "src/sections/portfolio-ml7.html")
     builder = _read(portfolio_repo / "scripts/build-page.mjs")
     site_config = _read(portfolio_repo / "scripts/site-config.mjs")
+    renderer = _read(portfolio_repo / "scripts/render-case-markdown.mjs")
     homepage_template = _read(portfolio_repo / "src/page.template.html")
     sidebar_links = _read(portfolio_repo / "src/partials/sidebar-links.html")
     homepage_sidebar = _read(portfolio_repo / "src/partials/sidebar.html")
@@ -322,8 +323,16 @@ def _portfolio_errors(portfolio_repo: Path) -> list[str]:
     for pattern, message in case_color_rules:
         if not re.search(pattern, case_css, re.DOTALL):
             errors.append(f"portfolio semantic color drift: {message}")
-    if 'font: 14px/20px "Geist Mono", "Inter", monospace;' not in case_css:
-        errors.append("case code must keep Inter in the code font stack for arrows")
+    if 'font: 14px/20px "Geist Mono", monospace;' not in case_css:
+        errors.append("case code pre must use the pure Geist Mono monospace stack")
+    if "case-code-arrow" not in renderer:
+        errors.append("case code renderer must wrap arrows in the explicit arrow span")
+    if not re.search(
+        r"\.case-code \.case-code-arrow\s*\{[^}]*font-family:\s*\"Inter\",\s*sans-serif",
+        case_css,
+        re.DOTALL,
+    ):
+        errors.append("case code arrow spans must use the Inter sans-serif family")
 
     if not re.search(r"\.layout\s*\{[^}]*max-width:\s*calc\(\s*var\(--sidebar-column\) \+ var\(--layout-gap\) \+ var\(--content-column\)\s*\)[^}]*margin:\s*0 auto", base_css, re.DOTALL):
         errors.append("desktop layout must center the sidebar and 760px content column as one unit")
