@@ -12,6 +12,7 @@
 - In `content/heph.md`, place `![Heph demo](media:heph-demo)` after the authored prose and immediately before the GitHub repository link. The Heph case bundle must include the shared demo data and interaction scripts so this remains the live demo, not a screenshot.
 - Use primary for human-readable content, tertiary for labels and tool context, and secondary for values. Keep the traffic lights colored, but do not introduce terminal-only text grays.
 - Case-study code examples are flat: no border, fill, radius, or shadow. Use Geist Mono with horizontal scrolling for wide source. Syntax highlighting is palette-only: keys, properties, table headers, and keywords use `--text-primary`; strings, values, numbers, and hex values use `--text-secondary`; comments, punctuation, and operators use `--text-tertiary`. Add no hues or color tokens.
+- In code and ASCII/tree blocks with trailing `#` comments, place the `#` column exactly four spaces after the longest pre-comment entry.
 - Use the adaptive `1px`/`14%` primary-color contour on portfolio images.
 - Keep clickable project media free of hover overlays and tint layers.
 - At the same time, change the existing right-aligned metadata arrow to `Read →`; keep this affordance below the image and reserve its width to prevent layout shift.

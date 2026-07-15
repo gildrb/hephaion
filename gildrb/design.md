@@ -98,6 +98,7 @@ Text selection uses `--highlight-text` over `--highlight-bg`; do not restore the
 - Keep the existing system fallbacks: `-apple-system`, `BlinkMacSystemFont`, `Segoe UI`, `sans-serif`.
 - Use Geist Mono only for code examples already using the case-study code treatment.
 - Keep case-study code examples flat: no border, fill, radius, or shadow. Use Geist Mono with horizontal scrolling for wide source. Syntax highlighting is palette-only: keys, properties, table headers, and keywords use `--text-primary`; strings, values, numbers, and hex values use `--text-secondary`; comments, punctuation, and operators use `--text-tertiary`. Add no hues or color tokens.
+- In code and ASCII/tree blocks with trailing `#` comments, place the `#` column exactly four spaces after the longest pre-comment entry.
 - Do not change the global font family for one case study.
 
 ### Rendering
