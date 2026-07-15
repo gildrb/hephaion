@@ -7,7 +7,7 @@
 - Case title desktop: `28px/36px`, weight `500`.
 - Case title mobile: `24px/32px`, weight `500`.
 - Case-study section heading: `19px/28px`, weight `500`. Write it as `###` in case-study Markdown; do not use `##` section wrappers.
-- Arrow glyphs render in Inter everywhere, including inside code blocks. Keep the surrounding code in Geist Mono and let the arrow glyph fall back to Inter.
+- Case-code `pre` uses pure `"Geist Mono", monospace`; wrap arrow glyphs in an explicit `.case-code-arrow` span using `"Inter", sans-serif` so they match the breadcrumb and card arrows.
 - Caption and metadata: `14px/20px`, weight `400`.
 - Homepage project title: `16px/24px`, weight `400`.
 - Homepage project date: `14px/20px`, weight `400`.
