@@ -29,7 +29,7 @@ Preserve one shared responsive shell and its exact structural geometry across ev
 - Below `1400px`: wrapper padding `32px`, layout gap `32px`.
 - Desktop sidebar: sticky at `top: 0`, `100vh`, `48px` vertical padding.
 - Case article maximum: `760px`, centered; copy stays left-aligned.
-- Mobile at `768px`: content plus `32px` theme-control column and wrapper inline padding `12px`. The layout and `.content` have `0` padding; the sticky name/theme row supplies `24px` top and `8px` bottom padding.
+- Mobile at `767px`: content plus `32px` theme-control column and wrapper inline padding `12px`. The layout and `.content` have `0` padding; the name/theme row supplies `24px` top and `8px` bottom padding. The homepage row stays in document flow; case-study rows remain sticky.
 - Mobile uses the existing shared shell and `display: contents`; case article order `5`, shared navigation order `6`.
 - Shared sidebar content appears on every route from one partial. Project location uses two lines: `Gil Rodrigues` then `→ <Project>`.
 - Homepage and case Links groups begin at the same desktop coordinate by reserving two location lines.

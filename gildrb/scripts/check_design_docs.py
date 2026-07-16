@@ -64,6 +64,10 @@ REQUIRED_OPERATIONAL_CONTRACTS = {
     "skills/gildrb-shell-layout/SKILL.md": (
         "Heph demo markup has one canonical owner: `src/partials/heph-demo.html`",
         "Project location uses two lines",
+        "The homepage row stays in document flow; case-study rows remain sticky.",
+    ),
+    "skills/gildrb-interaction/SKILL.md": (
+        "A touch drag on the mobile homepage moves the name, theme control, and content as one page",
     ),
     "skills/gildrb-typography/SKILL.md": (
         "Case-study Markdown uses compact `###` headings",
@@ -461,7 +465,7 @@ def _portfolio_errors(portfolio_repo: Path) -> list[str]:
         errors.append("homepage must place the Date, Title, Field, and Link header before its global project list")
     if not re.search(r'\.portfolio-table-header\s*\{[^}]*display:\s*grid[^}]*grid-template-columns:\s*subgrid[^}]*color:\s*var\(--text-primary\)[^}]*font-family:\s*"Inter",\s*sans-serif[^}]*font-size:\s*16px[^}]*line-height:\s*24px', portfolio_css, re.DOTALL):
         errors.append("homepage column headings must use the project subgrid and primary Inter at 16px/24px")
-    if not re.search(r"@media \(min-width:\s*769px\)[\s\S]*?\.portfolio-table-header\s*\{[^}]*padding-top:\s*0", portfolio_css):
+    if not re.search(r"@media \(min-width:\s*768px\)[\s\S]*?\.portfolio-table-header\s*\{[^}]*padding-top:\s*0", portfolio_css):
         errors.append("desktop column headings must share the sidebar Links text axis")
     if re.search(r"\.portfolio-sort-button:hover\s*\{[^}]*text-decoration:\s*underline", portfolio_css, re.DOTALL):
         errors.append("homepage sort controls must not introduce a bespoke underline hover state")
@@ -500,12 +504,12 @@ def _portfolio_errors(portfolio_repo: Path) -> list[str]:
         if field_markup.count(f'class="portfolio-card-field">{field}') != count:
             errors.append(f"homepage field tags must preserve {count} {field} row(s)")
     if not re.search(
-        r"@media \(max-width:\s*768px\)[\s\S]*?\.portfolio-section\s*\{[^}]*grid-template-columns:\s*max-content max-content minmax\(0,\s*1fr\) auto[^}]*column-gap:\s*clamp\(8px,\s*3vw,\s*16px\)[\s\S]*?\.portfolio-card-field\s*\{[^}]*min-width:\s*0[^}]*overflow:\s*hidden[^}]*text-overflow:\s*ellipsis",
+        r"@media \(max-width:\s*767px\)[\s\S]*?\.portfolio-section\s*\{[^}]*grid-template-columns:\s*max-content max-content minmax\(0,\s*1fr\) auto[^}]*column-gap:\s*clamp\(8px,\s*3vw,\s*16px\)[\s\S]*?\.portfolio-card-field\s*\{[^}]*min-width:\s*0[^}]*overflow:\s*hidden[^}]*text-overflow:\s*ellipsis",
         portfolio_css,
     ):
         errors.append("homepage project table must keep 16px type and truncate long fields inside the flexible mobile track")
     if not re.search(
-        r"@media \(max-width:\s*768px\)[\s\S]*?\.portfolio-card-view\s*\{[^}]*display:\s*none",
+        r"@media \(max-width:\s*767px\)[\s\S]*?\.portfolio-card-view\s*\{[^}]*display:\s*none",
         portfolio_css,
     ):
         errors.append("mobile homepage rows must hide View while preserving the Inter arrow")
@@ -564,7 +568,7 @@ def _portfolio_errors(portfolio_repo: Path) -> list[str]:
         errors.append("homepage footer must align profile.json left and copyright right")
     if not re.search(r'\.copyright\s*\{[^}]*color:\s*var\(--text-tertiary\)[^}]*font-family:\s*"Inter",\s*sans-serif[^}]*font-size:\s*16px[^}]*line-height:\s*var\(--link-line-height\)[^}]*margin-bottom:\s*var\(--footer-stack-bottom-gap\)', preview_css, re.DOTALL):
         errors.append("homepage copyright must use dark-gray Inter at 16px/24px and share profile.json's optical bottom margin")
-    if not re.search(r"@media \(max-width:\s*768px\)[\s\S]*?\.site-footer\s*\{[^}]*display:\s*none", responsive_css):
+    if not re.search(r"@media \(max-width:\s*767px\)[\s\S]*?\.site-footer\s*\{[^}]*display:\s*none", responsive_css):
         errors.append("homepage metadata and copyright footer must stay desktop-only")
     if 'document.querySelector("#copyright-year")' not in core_script or "copyrightYear.textContent = year;" not in core_script:
         errors.append("homepage copyright year must update from the visitor's current local year")

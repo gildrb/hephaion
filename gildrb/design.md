@@ -192,9 +192,9 @@ Do not add arbitrary values when an existing step expresses the relationship. Wi
 
 ### Mobile
 
-- At `768px` and below, the layout becomes a two-column grid: content plus `32px` theme-control column.
+- At `767px` and below, the layout becomes a two-column grid: content plus `32px` theme-control column.
 - Wrapper uses `12px` inline padding.
-- The mobile layout container has no vertical padding. The sticky name and theme-control row supplies `24px` top and `8px` bottom padding; `.content` uses `display: contents` with `0` padding.
+- The mobile layout container has no vertical padding. The name and theme-control row supplies `24px` top and `8px` bottom padding; `.content` uses `display: contents` with `0` padding. On the homepage both controls stay in document flow so a touch drag moves the whole page as one surface; case-study routes keep the row sticky for reading navigation.
 - Sidebar and content use `display: contents` so the same elements enter the shared mobile grid.
 - On case-study routes, keep the desktop Links and Contact group in the sidebar. On mobile, render the article immediately after the location row and place the mobile instance of that same shared partial after the article so DOM, focus, and visual order agree.
 - The mobile grid still requires article order `5` and shared navigation order `6`: `display: contents` exposes both sets of descendants to the wrapper grid, so these values preserve the same order already established in the DOM rather than contradicting it.
@@ -260,10 +260,10 @@ Rules:
 - Use `32px` from the biography to the project table. Keep the header rule and all five rows contiguous with `8px` vertical padding and faint `12%` primary separators.
 - Render project dates and fields at `16px/24px` in `--text-tertiary`; render project titles at `16px/24px` in `--text-primary`.
 - Make every project row a full-width link target. Align date, title, field, and the Inter `→` on the shared five-column subgrid.
-- Reveal `View` immediately left of the arrow only while the row is directly hovered or keyboard-focused. Hide `View` at `768px` and below so touch layouts retain all data columns without overflow.
+- Reveal `View` immediately left of the arrow only while the row is directly hovered or keyboard-focused. Hide `View` at `767px` and below so touch layouts retain all data columns without overflow.
 - Keep the homepage footer only on `/` and only on desktop. Align `© <current year> Gil Rodrigues` with the `profile.json` text line at the far-right edge of the shared content column, with matching optical bottom margins.
 - Render the desktop copyright in explicit Inter `16px/24px` using `--text-tertiary`. Keep `2026` as the no-JavaScript fallback and replace only the year with the visitor's current local year on load.
-- Hide the complete metadata/copyright footer at `768px` and below, and do not add it to case-study routes.
+- Hide the complete metadata/copyright footer at `767px` and below, and do not add it to case-study routes.
 - Do not append summaries, roles, marketing copy, or detached personal-image preview sections.
 
 ## Heph Case Demo

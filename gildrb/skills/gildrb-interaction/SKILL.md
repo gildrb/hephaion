@@ -33,6 +33,7 @@ Make one interaction behave predictably across pointer, touch, navigation, and b
 - Click does not leave a permanent hover/selected appearance; blur mouse-activated controls when required.
 - Theme applies immediately, persists when storage works, tolerates storage failure, and causes no broad transition.
 - Back/forward restores per-tab scroll; fresh navigation starts normally.
+- A touch drag on the mobile homepage moves the name, theme control, and content as one page; it must not treat the top row as a sticky navbar.
 - The Heph demo lives only on `/heph` and uses the canonical shared partial and live scripts.
 - Motion is absent unless necessary, no longer than `200ms`, and respects reduced motion.
 
