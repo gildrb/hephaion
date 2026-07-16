@@ -5,7 +5,7 @@ description: Use for gildrb homepage structure, project ordering, author-owned c
 
 # Portfolio
 
-Maintain the image-led index and authored case-study system.
+Maintain the text-only grouped index and authored case-study system.
 
 ## Workflow
 
@@ -21,15 +21,15 @@ Maintain the image-led index and authored case-study system.
 
 ## References
 
-- `references/homepage.md`: image-led homepage entries and designated links.
+- `references/homepage.md`: grouped text homepage entries and full-row links.
 - `references/case-study.md`: article structure, evidence, and writing.
 - `references/routing.md`: top-level routes, generation, metadata, and redirects.
 - `references/verification.md`: portfolio completion checks.
 
 ## Done
 
-- Homepage stays concise and image-led.
-- Each case-study logo uses one clear internal route.
+- Homepage stays concise and text-only, with Engineering and Design groups.
+- Each project row uses one clear internal route.
 - Persistent location uses two lines: `Gil Rodrigues` then `→ <Project>`.
 - Generated output and metadata agree.
 - Evidence is complete, uncropped, optimized, and explained.

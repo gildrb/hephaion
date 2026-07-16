@@ -1,61 +1,39 @@
 # Agent Guide
 
-Portfolio router. Read implementation first, then these contracts.
+Read the portfolio implementation before changing these contracts.
 
 ## Setup
 
 - Start with `git status --short` in the portfolio checkout.
-- Read generation scripts, templates, CSS, and the rendered route before docs.
+- Read the source, rendered route, and one matching skill.
 - Preserve the static HTML, CSS, and vanilla JavaScript boundary.
-- Identify surface: homepage, case study, design system, metadata, verification, or preview.
-- Load one matching skill.
-- When a reusable behavior changes, update `design.md`, the matching skill reference, and `scripts/check_design_docs.py` in the same change. A live-only fix is incomplete.
+- When reusable behavior changes, update `design.md`, its skill reference, and `scripts/check_design_docs.py`. A live-only fix is incomplete.
 
-## Sources
+## Sources and checks
 
-- `src/page.template.html`: homepage document source.
-- `content/<project>.md`: user-owned case-study writing source.
-- `src/case-media/<project>/`: responsive image markup referenced by Markdown.
-- `src/sections/`: homepage content sources.
-- `src/filen.template.html`: first case-study reference implementation.
-- `src/styles/`: ordered visual-system source.
-- `scripts/build-page.mjs`: generated-page owner.
-- `scripts/render-case-markdown.mjs`: Markdown-to-case-study renderer.
-- `scripts/verify-page.mjs`: generated-output and asset contract.
-- `vercel.json`: route, redirect, header, and deployment contract.
-- Rendered desktop and mobile pages outrank prose when layout claims drift.
-
-## Checks
-
-- Build: `node scripts/build-page.mjs`.
-- Verify: `node scripts/verify-page.mjs`.
-- Diff: `git diff --check`.
-- Metadata: validate JSON, XML, canonical URLs, feed, sitemap, and crawler mirrors.
-- Browser: verify homepage and every changed case route at desktop and mobile widths.
-- Images: verify full-frame aspect ratios and responsive source selection.
+- Homepage source: `src/page.template.html` and `src/sections/`.
+- Case writing: `content/<project>.md`; it is user-owned.
+- Visual source: `src/styles/`; generated output belongs to the build scripts.
+- Run `node scripts/build-page.mjs`, `node scripts/verify-page.mjs`, and `git diff --check`.
 - Design docs: `python3 gildrb/scripts/check_design_docs.py --portfolio-repo <path>`.
+- Render desktop and mobile when layout changes.
 
 ## Style
 
-- Keep the homepage image-led.
+- Keep the homepage a text-only grouped index.
 - Keep case studies authored, specific, and evidence-bound.
-- Treat case-study copy as user-owned. Do not rewrite, replace, expand, summarize, correct, or complete it without an explicit copy request.
-- Edit case-study writing only in `content/<project>.md`; never duplicate it in templates or generated HTML.
-- Layout, typography, image, route, metadata, generation, and verification tasks never authorize copy edits.
-- Keep requested copy suggestions outside source files until the user approves them; use only visibly unfinished `[Author: ...]` placeholders for missing prose.
-- Use the existing Inter font, colors, spacing, image radius, and responsive shell.
-- Render authored text in `--text-primary`, labels in `--text-secondary`, actionable text links in `--text-tertiary`, and link hover states in `--text-primary`.
+- Treat case-study copy as user-owned.
+- Edit case-study writing only in `content/<project>.md`; never duplicate it in templates.
+- Use Inter, existing colors, spacing, responsive shell, and documented type steps.
+- Render authored text in `--text-primary`, labels in `--text-secondary`, actionable links in `--text-tertiary`, and hover links in `--text-primary`.
 - Keep `Gil Rodrigues` at the same top-left location on every page.
-- Keep profile links, contact links, email action, and theme control in one shared sidebar partial used by the homepage and every case route.
+- Reuse the shared sidebar partial for profile, contact, email, and theme controls.
 - Case location uses two lines: `Gil Rodrigues` then `→ <Project>`; only `Gil Rodrigues` links home.
-- Use zero letter spacing in case-study-specific styles.
-- Use documented type steps. Do not add fluid or arbitrary text sizes.
+- Keep case-specific letter spacing at `0`; do not add fluid or arbitrary type.
 - Do not add middle-dot separators, horizontal-rule dividers, gradients, cards, or shadows.
 - Do not crop images. Use `width: 100%` and `height: auto`.
-- Optimize every new image and provide responsive sources.
-- Keep hover styles inside `@media (hover: hover)`.
-- Keep focus visible and native semantics intact.
-- Keep case articles in natural document flow. The desktop theme-toggle boundary is a maximum endpoint for long posts, never a target that stretches short posts.
+- Keep hover styles inside `@media (hover: hover)` and focus visible.
+- Keep case articles in natural flow. The desktop theme-toggle boundary is a maximum endpoint for long posts, never a target that stretches short posts.
 
 ## Routes
 
@@ -68,19 +46,17 @@ Portfolio router. Read implementation first, then these contracts.
 ## Contracts
 
 - Homepage biography: `Designing brands, interfaces, and the systems that connect them.`
-- Homepage project titles are plain text unless a project contract says otherwise.
-- A case-study project uses one designated clickable image on the homepage.
+- Homepage projects are plain-text full-row links in Engineering and Design groups.
+- Case-study pages retain their authored media and interactive Heph demo.
 - Canonical case routes are top-level: `/<project>`.
 - Legacy public routes redirect permanently; they do not remain canonical.
-- Existing and user-supplied case-study prose remains verbatim unless the user explicitly authorizes copy editing.
+- Existing and user-supplied case-study prose remains verbatim unless explicitly authorized.
 - Production stays unchanged until the user explicitly approves merge or promotion.
 
 ## PR Checklist
 
-- Matching skill loaded.
-- Source read before docs.
-- Generated files synchronized.
-- Exact routes and mirrors synchronized.
+- Matching skill loaded and source read first.
+- Docs, generated files, routes, and mirrors synchronized.
 - Desktop and mobile render verified.
 - No crop, overflow, console error, or stale asset reference.
 - Protected preview confirmed before handoff.

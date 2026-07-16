@@ -33,8 +33,9 @@ REQUIRED_DESIGN_PHRASES = (
     "Text-link hover uses `--text-primary`",
     "The same sidebar content persists on the homepage and every case-study route",
     "Do not show a `Portfolio` heading on the homepage",
-    "Order homepage projects newest to oldest",
-    "Make every below-media metadata strip a full-width link target",
+    "The homepage is a text-only index",
+    "A shared subgrid aligns the date column, title column, and right-hand arrows across both groups",
+    "The label-to-first-entry gap is `--section-content-gap` plus the row's intrinsic `8px` top padding",
     "Case-study prose is user-owned.",
     "do not imply permission to alter wording",
     "Treat that desktop boundary as a maximum endpoint, not a target baseline.",
@@ -184,8 +185,8 @@ def _portfolio_errors(portfolio_repo: Path) -> list[str]:
         "src/styles/90-responsive.css",
         "src/sections/profile-summary.html",
         "src/sections/portfolio-open.html",
-        "src/sections/portfolio-filen.html",
-        "src/sections/portfolio-ml7.html",
+        "src/sections/portfolio-engineering.html",
+        "src/sections/portfolio-design.html",
         "src/partials/sidebar-links.html",
         "src/partials/sidebar.html",
         "src/partials/theme-toggle.html",
@@ -217,8 +218,8 @@ def _portfolio_errors(portfolio_repo: Path) -> list[str]:
     responsive_css = _read(portfolio_repo / "src/styles/90-responsive.css")
     profile = _read(portfolio_repo / "src/sections/profile-summary.html")
     portfolio_open = _read(portfolio_repo / "src/sections/portfolio-open.html")
-    filen = _read(portfolio_repo / "src/sections/portfolio-filen.html")
-    ml7 = _read(portfolio_repo / "src/sections/portfolio-ml7.html")
+    engineering = _read(portfolio_repo / "src/sections/portfolio-engineering.html")
+    design = _read(portfolio_repo / "src/sections/portfolio-design.html")
     builder = _read(portfolio_repo / "scripts/build-page.mjs")
     site_config = _read(portfolio_repo / "scripts/site-config.mjs")
     renderer = _read(portfolio_repo / "scripts/render-case-markdown.mjs")
@@ -342,10 +343,6 @@ def _portfolio_errors(portfolio_repo: Path) -> list[str]:
         errors.append("desktop content must use the compact 48px vertical padding")
     if ".portfolio-card-image::after" in portfolio_css or "opacity: 0.55" in portfolio_css:
         errors.append("clickable project media must remain free of hover overlays and tint layers")
-    if not re.search(r"\.portfolio-card:hover \.portfolio-card-meta::after\s*\{[^}]*content:\s*\"Read →\"", portfolio_css, re.DOTALL):
-        errors.append("clickable project metadata must expose the Read label beside its existing arrow")
-    if not re.search(r"\.portfolio-card-link:hover::after\s*\{[^}]*content:\s*\"Read →\"", portfolio_css, re.DOTALL):
-        errors.append("Heph metadata hover must expose the same Read affordance")
     if re.search(r"\.portfolio-card-image::before\s*\{", portfolio_css):
         errors.append("project interaction labels must stay outside the image")
     if "mix-blend-mode:" in portfolio_css:
@@ -374,26 +371,74 @@ def _portfolio_errors(portfolio_repo: Path) -> list[str]:
     if "portfolio-label" in portfolio_open or 'aria-label="Portfolio"' not in portfolio_open:
         errors.append("homepage must omit the visible Portfolio label while preserving its accessible section name")
     homepage_projects = (
-        "<!-- @include:sections/portfolio-heph.html -->",
-        "<!-- @include:sections/portfolio-filen.html -->",
-        "<!-- @include:sections/portfolio-n0thing.html -->",
-        "<!-- @include:sections/portfolio-ml7.html -->",
+        "<!-- @include:sections/portfolio-engineering.html -->",
+        "<!-- @include:sections/portfolio-design.html -->",
     )
     project_positions = [homepage_template.find(project) for project in homepage_projects]
     if any(position < 0 for position in project_positions) or project_positions != sorted(project_positions):
-        errors.append("homepage projects must stay ordered newest to oldest: Heph, Filen, n0thing, mL7")
+        errors.append("homepage projects must stay ordered: Engineering before Design")
     if not re.search(r"--text-media-gap:\s*32px", base_css):
         errors.append("homepage must define the 32px optical text-to-media gap")
     if not re.search(r"\.profile-summary\s*\{[^}]*margin-bottom:\s*var\(--text-media-gap\)", preview_css, re.DOTALL):
-        errors.append("homepage description must use the optical 32px transition into the first project media")
-    if not re.search(r"\.portfolio-card-meta\s*\{[^}]*grid-template-columns:\s*minmax\(0,\s*1fr\) auto[^}]*width:\s*100%", portfolio_css, re.DOTALL):
-        errors.append("project metadata must span the card and reserve a right-aligned affordance column")
-    if not re.search(r'\.portfolio-card-meta::after\s*\{[^}]*content:\s*"→"[^}]*font-family:\s*"Inter"', portfolio_css, re.DOTALL):
-        errors.append("project metadata must show a right-aligned Inter arrow")
+        errors.append("homepage biography must use the optical 32px transition into the first project group")
+    if not re.search(
+        r"\.portfolio-section\s*\{[^}]*display:\s*grid;[^}]*grid-template-columns:\s*auto minmax\(0,\s*1fr\) auto;[^}]*column-gap:\s*16px",
+        portfolio_css,
+        re.DOTALL,
+    ):
+        errors.append("homepage must define one shared three-column grid")
+    if not re.search(
+        r"\.portfolio-group\s*\{[^}]*display:\s*grid;[^}]*grid-column:\s*1 / -1;[^}]*grid-template-columns:\s*subgrid",
+        portfolio_css,
+        re.DOTALL,
+    ) or not re.search(
+        r"\.portfolio-card-link\s*\{[^}]*grid-column:\s*1 / -1;[^}]*grid-template-columns:\s*subgrid",
+        portfolio_css,
+        re.DOTALL,
+    ):
+        errors.append("homepage groups and rows must share the portfolio subgrid")
+    if not re.search(
+        r"\.portfolio-card-arrow\s*\{[^}]*grid-column:\s*3[^}]*color:\s*var\(--text-tertiary\)[^}]*font-size:\s*16px",
+        portfolio_css,
+        re.DOTALL,
+    ):
+        errors.append("homepage arrows must be real tertiary-colored grid elements")
+    if not re.search(
+        r"\.portfolio-group \.section-title\s*\{[^}]*margin-bottom:\s*var\(--section-content-gap\)[^}]*color:\s*var\(--text-secondary\)",
+        portfolio_css,
+        re.DOTALL,
+    ):
+        errors.append("homepage group labels must use the shared secondary label gap and color")
+    if "first-of-type" in portfolio_css or not re.search(
+        r"\.portfolio-card-link\s*\{[^}]*padding:\s*8px 0",
+        portfolio_css,
+        re.DOTALL,
+    ):
+        errors.append("homepage rows must keep symmetric padding without a first-row override")
+    if not re.search(
+        r"\.portfolio-card-link \+ \.portfolio-card-link\s*\{[^}]*border-top:\s*1px solid\s*color-mix\(in srgb, var\(--text-primary\) 12%, transparent\)",
+        portfolio_css,
+        re.DOTALL,
+    ):
+        errors.append("homepage adjacent rows must retain faint structural separators")
+    if ".portfolio-card-link::after" in portfolio_css or "font-variant-numeric: tabular-nums" in portfolio_css:
+        errors.append("homepage must not use pseudo-element arrows or tabular numerals")
+    if not re.search(
+        r"@media\s*\(hover:\s*hover\)[\s\S]*?\.portfolio-card-link:hover time,\s*\n\s*\.portfolio-card-link:hover \.portfolio-card-arrow\s*\{[^}]*color:\s*var\(--text-primary\)",
+        portfolio_css,
+        re.DOTALL,
+    ):
+        errors.append("homepage row hover must brighten the date and real arrow")
     if not re.search(r"\.portfolio-card-link\s*\{[^}]*width:\s*100%", portfolio_css, re.DOTALL):
-        errors.append("standalone project metadata links must expose a full-width hit target")
-    if not re.search(r"\.portfolio-card-link:focus-visible\s*\{[^}]*outline:\s*1px solid var\(--text-primary\);[^}]*outline-offset:\s*4px", portfolio_css, re.DOTALL):
-        errors.append("standalone project metadata focus must reuse the full image-card ring")
+        errors.append("homepage project rows must expose a full-width hit target")
+    if not re.search(r"\.portfolio-card-link:focus-visible\s*\{[^}]*outline:\s*1px solid var\(--text-primary\);[^}]*outline-offset:\s*6px", portfolio_css, re.DOTALL):
+        errors.append("homepage project focus must use the 6px shared ring")
+    if not re.search(r"\.portfolio-card-link:focus-visible \.portfolio-card-title\s*\{[^}]*color:\s*var\(--text-primary\)", portfolio_css, re.DOTALL) or not re.search(
+        r"\.portfolio-card-link:focus-visible \.portfolio-card-arrow\s*\{[^}]*color:\s*var\(--text-primary\)",
+        portfolio_css,
+        re.DOTALL,
+    ):
+        errors.append("homepage project focus must brighten title and arrow")
     if not re.search(r"\.profile-copy\s*\{[^}]*color:\s*var\(--text-primary\)", preview_css, re.DOTALL):
         errors.append("homepage biography must use --text-primary")
     if not re.search(r"\.references-links\s*\{[^}]*margin-top:\s*0\s*;", preview_css, re.DOTALL):
@@ -401,12 +446,11 @@ def _portfolio_errors(portfolio_repo: Path) -> list[str]:
     if re.search(r"\.references-links\s*\{[^}]*margin-top:\s*-", responsive_css, re.DOTALL):
         errors.append("Metadata must not use a negative mobile offset")
     if not re.search(r"\.showcase\s*\{[^}]*margin-bottom:\s*32px", portfolio_css, re.DOTALL):
-        errors.append("homepage showcase entries must use the optical 32px gap")
+        errors.append("case showcase entries must retain the optical 32px gap")
     if not re.search(r"\.gallery\s*\{[^}]*margin-bottom:\s*32px", portfolio_css, re.DOTALL):
-        errors.append("homepage gallery entries must use the optical 32px gap")
+        errors.append("case gallery entries must retain the optical 32px gap")
     if "margin-bottom: 80px;" in responsive_css:
         errors.append("mobile homepage must not restore 80px project-entry gaps")
-    heph_section = _read(portfolio_repo / "src/sections/portfolio-heph.html")
     heph_demo = _read(portfolio_repo / "src/partials/heph-demo.html")
     heph_css = _read(portfolio_repo / "src/styles/30-heph-demo.css")
     if not re.search(r"\.heph-demo\s*\{[^}]*overflow:\s*visible", heph_css, re.DOTALL):
@@ -484,18 +528,14 @@ def _portfolio_errors(portfolio_repo: Path) -> list[str]:
     biography = "Designing brands, interfaces, and the systems that connect them."
     if biography not in " ".join(profile.split()):
         errors.append("homepage biography does not match the gildrb contract")
-    if 'href="/filen"' not in filen:
-        errors.append("Filen homepage image does not route to /filen")
-    if 'href="/heph"' not in heph_section or 'href="https://github.com/gildrb/heph"' in heph_section:
-        errors.append("Heph homepage metadata must route to /heph instead of GitHub")
+    if 'href="/site"' not in engineering or 'href="/heph"' not in engineering:
+        errors.append("Engineering homepage rows must route to /site and /heph")
+    if not all(route in design for route in ('href="/filen"', 'href="/n0thing"', 'href="/ml7"')):
+        errors.append("Design homepage rows must route to /filen, /n0thing, and /ml7")
     if "[GitHub repository](https://github.com/gildrb/heph)" not in _read(portfolio_repo / "content/heph.md"):
         errors.append("Heph case study must link to its GitHub repository inside the article")
-    if 'href="/ml7"' not in ml7:
-        errors.append("mL7 homepage image does not route to /ml7")
-    responsive_full_size = "(max-width: 768px) calc(100vw - 24px), (max-width: 1100px) calc(100vw - 336px), 760px"
-    for source_name, source in (("homepage preload", _read(portfolio_repo / "src/page.template.html")), ("Filen homepage media", filen), ("mL7 homepage media", ml7)):
-        if responsive_full_size not in source:
-            errors.append(f"{source_name} must use the responsive 760px media boundary")
+    if 'class="portfolio-card-arrow" aria-hidden="true">→</span>' not in engineering + design:
+        errors.append("every homepage project row must expose a real accessible-hidden arrow")
     for project in ("filen", "ml7"):
         if 'path.join(root, slug, "index.html")' not in builder:
             errors.append(f"builder does not generate /{project}")

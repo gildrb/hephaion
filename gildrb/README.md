@@ -39,7 +39,7 @@ scripts/check_design_docs.py
 
 ## Product
 
-The homepage is an image-led index. Internal project pages are authored case studies. The system demonstrates ownership through real process evidence, visual decisions, implementation details, and shipped artifacts without turning the homepage into a marketing page.
+The homepage is a text-only grouped index. Internal project pages are authored case studies. The system demonstrates ownership through real process evidence, visual decisions, implementation details, and shipped artifacts without turning the homepage into a marketing page.
 
 ## Source
 

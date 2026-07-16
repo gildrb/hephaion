@@ -33,7 +33,7 @@ Do not preserve a documented rule when current approved source intentionally rep
 
 ## Intent
 
-- Keep the homepage an image-led index.
+- Keep the homepage a text-only grouped index.
 - Let project evidence carry the claim.
 - Keep navigation stable across routes.
 - Make case studies read as part of the portfolio, not a separate magazine.
@@ -113,7 +113,7 @@ Text selection uses `--highlight-text` over `--highlight-bg`; do not restore the
 ### Portfolio shell
 
 - Name and persistent project location: `19px`, weight `400`.
-- Navigation, biography, labels, project titles, links, and default controls: `16px`, weight `400`.
+- Navigation, biography, labels, project dates, titles, arrows, links, and default controls: `16px`, weight `400`.
 - Link line height: `24px`.
 - Preserve the homepage shell values. Do not restyle them in project CSS.
 
@@ -145,7 +145,9 @@ Use the existing 4px-derived rhythm and homepage constants.
 - Image/grid gap: `20px`.
 - Related group gap: `24px` or `32px`.
 - Major internal gap: `48px` or `64px`.
-- Homepage project-entry gap: `32px` at every viewport; this optically compensates text-to-media boundaries against the `24px` text-to-text sidebar group gap.
+- Homepage group labels use `margin-bottom: var(--section-content-gap)` (`6px`), and every project row keeps symmetric `padding: 8px 0`.
+- The homepage label-to-first-entry rhythm is `--section-content-gap` plus the first row's intrinsic `8px` top padding; do not zero the first row.
+- Adjacent homepage rows keep their `8px` padding and faint separators; the Engineering-to-Design group gap is `28px`.
 - Case-study section gap: `80px` at every viewport.
 - Desktop wrapper padding: `48px`.
 - Wrapper padding below `1400px`: `32px`.
@@ -218,35 +220,28 @@ Rules:
 - Preserve each route's per-tab scroll position for browser back and forward navigation. Store on `pagehide` and when the document becomes hidden, restore only for back/forward or bfcache traversal, and tolerate unavailable `sessionStorage`. Fresh visits must retain their normal initial position.
 - On desktop case-study routes, keep authored content in its natural document flow. Reserve bottom padding derived from the shared footer and theme-toggle tokens so a long post's final authored line, whether prose or `MORE SOON`, cannot end below the theme toggle when the reader reaches the bottom. Never stretch a short post or push its final content downward to manufacture that alignment. Keep the mobile toggle in its top-mounted position.
 - Treat that desktop boundary as a maximum endpoint, not a target baseline. Article `min-height`, flex distribution, `margin-top: auto`, and last-child top padding are forbidden ending mechanisms.
-- Own the live Heph terminal once in `src/partials/heph-demo.html` and include it on both the homepage and `/heph`. The Heph case order is authored prose, the shared live demo, then the GitHub repository link.
+- Own the live Heph terminal once in `src/partials/heph-demo.html` on `/heph`. The Heph case order is authored prose, the shared live demo, then the GitHub repository link.
 - Separate authored thoughts with ordinary Markdown paragraph breaks. Use the shared `--text-media-gap` (`32px`) in both directions around case media: from preceding prose to the image, and from the caption to following prose. This mirrors the homepage's optical LinkedIn-to-Contact transition without introducing a heading or divider.
 
 ## Homepage
 
-- Keep biography first and concise.
-- Derive the Heph terminal surface with `color-mix(in srgb, var(--bg) 96%, var(--text-primary))` and its prompt/composer rows with `color-mix(in srgb, var(--bg) 94%, var(--text-primary))`. These remain the two internal terminal surfaces.
-- On mobile only, place those surfaces inside an outer frame derived with `color-mix(in srgb, var(--bg) 92%, var(--text-primary))`. This frame is outside the terminal: it is lighter than the terminal in dark mode and darker than it in light mode, making the padded boundary legible without a border.
-- Inside the Heph terminal, primary prompts, answers, and input use `--text-primary`; labels use `--text-tertiary`; values use `--text-secondary`.
-- Wrap mixed label/value rows such as `ARMORY classics`, `SCOPE 4/4`, `EXCERPTS 4`, and command hints so the label and value receive their correct shared tokens independently.
-- Keep tool output and the complete `materials: ... Details: /evidence.` source line in `--text-tertiary`.
-- The terminal may contain no private flat colors other than the red, yellow, and green macOS window controls; its two surfaces, text, cursor, outlines, and responsive frame derive from shared tokens.
-- Order homepage projects newest to oldest: `Heph`, `Filen`, `n0thing`, then `mL7`. DOM, visual, and keyboard order must agree at every viewport.
-- Keep the homepage content and every project image inside the same centered `760px` content boundary used by case studies.
-- Approved biography: `Designing brands, interfaces, and the systems that connect them.`
-- Render the approved biography in `--text-primary`; it is authored content, not a label.
+- Keep biography first and concise: `Designing brands, interfaces, and the systems that connect them.`
+- Render the biography in `--text-primary`; it is authored content, not a label.
 - Do not show a `Portfolio` heading on the homepage; keep `Portfolio` only as the accessible name of the project section.
-- Use `32px` from the biography to the first project title on desktop and `32px` from that title to its solid media. On mobile, keep the intervening biography, Links, and project-title text groups at `24px`, then use `32px` from the project title to its media.
-- Put each project date and title below its media, never inside a mobile media or demo frame.
-- Render project dates at `14px/20px` in `--text-tertiary` and project titles at `16px/24px` in `--text-secondary`.
-- Make every below-media metadata strip a full-width link target. Keep the date on its own row, then align the project title left and an Inter `→` right on the same row.
-- For interactive media such as the Heph terminal, keep the media controls usable and enlarge only the metadata link beneath it; do not place an external-link overlay over the demo.
-- Use the same optically compensated `32px` gap between every adjacent homepage project entry on desktop and mobile.
-- Use the same `32px` gap from the final project title to the `Metadata` group; never pull the footer upward with a negative margin.
-- A project with a case study exposes one designated clickable image.
-- Do not append `Read the case study`, `View project`, summaries, tags, roles, or marketing copy.
-- The designated image uses the same image-wrapper shape as the gallery.
-- Clicking the designated image navigates; it does not open the image preview.
-- Keep the homepage free of detached personal-image preview sections.
+- The homepage is a text-only index: no `<img>`, showcase/gallery entries, or Heph demo appear on this route. Case pages retain their media and shared Heph demo.
+- `src/page.template.html` includes `portfolio-open`, `portfolio-engineering`, `portfolio-design`, and `portfolio-close` in that order. The old per-project homepage section files do not exist.
+- Engineering lists newest-first: `This website` → `/site`, then `Heph` → `/heph`.
+- Design lists newest-first: `Filen` → `/filen`, `n0thing` → `/n0thing`, then `mL7` → `/ml7`.
+- Every project is a full-row `.portfolio-card-link` containing an ISO date, plain-text title, and real `<span class="portfolio-card-arrow" aria-hidden="true">→</span>`.
+- `.portfolio-section` defines `auto minmax(0, 1fr) auto` with `column-gap: 16px`; both `.portfolio-group` and `.portfolio-card-link` use `subgrid`. A shared subgrid aligns the date column, title column, and right-hand arrows across both groups.
+- Dates, titles, and arrows use `16px/24px`, weight `400`. Titles use `--text-primary`; dates and arrows use `--text-tertiary` at rest. Dates use regular numerals, never `font-variant-numeric: tabular-nums`.
+- Group labels use `.section-title` in `--text-secondary` with `margin-bottom: var(--section-content-gap)`. Every row, including the first, keeps symmetric `padding: 8px 0`. The label-to-first-entry gap is `--section-content-gap` plus the row's intrinsic `8px` top padding.
+- Adjacent rows use a faint `border-top` derived from `color-mix(in srgb, var(--text-primary) 12%, transparent)`. The group gap is `28px`.
+- `This website` renders and updates its ISO date daily through `updatePortfolioSiteDate()` in `src/scripts/10-core.js`.
+- On hover-capable devices, hovering anywhere on a row turns date and arrow to `--text-primary`; the title stays white. There is no hover background, underline, transition, transform, or `Read` label swap.
+- Focus-visible uses `outline: 1px solid var(--text-primary)` with `outline-offset: 6px` and turns title and arrow primary.
+- Keep homepage content in the centered `760px` column. Metadata uses `margin-top: auto` on desktop and mobile retains `.content { display: contents; }` and existing ordering.
+- The whole homepage fits one desktop viewport without scroll. Preserve the shared sidebar, theme toggle, and case-page contracts.
 
 ## Media
 
@@ -302,7 +297,7 @@ Rules:
 - Do not use middle-dot separators.
 - Do not add `<hr>`.
 - Do not add horizontal rules between intro, metadata, sections, or footer.
-- Do not add `border-top` or `border-bottom` as editorial dividers.
+- Do not add `border-top` or `border-bottom` as editorial dividers. Homepage project rows may use a faint structural `border-top` between adjacent entries.
 - Code blocks may keep their own enclosing border because it defines the code surface rather than separating sections.
 - Use whitespace, heading hierarchy, and text color for section boundaries.
 
@@ -312,7 +307,7 @@ Rules:
 - Image preview controls remain native buttons.
 - Case-study entry images remain native anchors.
 - The homepage biography uses `--text-primary`; case decks, paragraphs, and list items use `--text-secondary` for a quieter reading layer below white headings.
-- Labels use `--text-secondary`. This includes `Links`, `Contact`, `Metadata`, `About`, project titles, and other text that names a group or field without acting.
+- Labels use `--text-secondary`. This includes `Links`, `Contact`, `Metadata`, `About`, group labels, and other text that names a group or field without acting. Homepage project titles use `--text-primary`.
 - Dates, case metadata terms, and image captions use `--text-tertiary`.
 - Actionable text links use `--text-tertiary` at rest. This includes profile links, reference links, and email.
 - The case-study home link remains `--text-tertiary` beside the tertiary arrow while the current project is `--text-primary`.
@@ -320,14 +315,13 @@ Rules:
 - Text-link hover uses `--text-primary`, promoting an actionable item from light gray to white in dark mode.
 - Link arrows inherit the link color so the complete link changes as one unit.
 - Icon controls use `--text-tertiary` at rest and `--text-primary` on hover unless a documented component state requires otherwise.
-- Clickable project media uses a normally blended `--highlight-bg` layer at `0.55` opacity. This reuses the exact approved bright gray and pulls black and white artwork toward it without placing interface copy over the artwork.
-- While a project card is hovered or keyboard-focused, change its existing right-aligned metadata arrow from `→` to `Read →`. Keep `Read` beside the existing arrow and outside the image.
-- Apply the same `Read →` state to Heph's metadata-only link when its title row is hovered or keyboard-focused.
-- Use the same primary-color `1px` outline and `4px` offset for Heph's metadata-only keyboard focus as for image cards. Keep the enclosing `.heph-demo` overflow visible so all four sides of that outline remain unclipped.
-- Reserve enough width for `Read →` in the resting metadata grid so revealing it never shifts the project title or arrow.
-- Wrap the image in `.portfolio-card-image`; keep the overlay decorative and `pointer-events: none` so the full native anchor remains interactive.
-- Apply the same tint on `:focus-visible` while preserving the existing focus outline.
-- Do not place interaction labels over the image, and do not use opacity-only image dimming or colored tints for case-study entries.
+- Homepage project rows are full-row links; the date, title, and arrow form one stable hit target.
+- The homepage arrow is a real `.portfolio-card-arrow` element, not a pseudo-element, because Chromium does not reliably repaint a pseudo-element on ancestor hover in this subgrid layout.
+- On hover-capable devices, row hover changes date and arrow from `--text-tertiary` to `--text-primary`; keep this rule inside `@media (hover: hover)`.
+- Keep the arrow static: no `Read` label swap, transform, transition, or hover background.
+- Homepage focus uses the shared `1px` primary outline with `6px` offset and turns title and arrow primary.
+- Case-study image links remain native anchors; keep their media controls and preview behavior independent from homepage rows.
+- Case-study image overlays, when present, remain decorative and `pointer-events: none`; do not use them on the homepage.
 - Hover changes color without changing size or weight.
 - Put hover behavior inside `@media (hover: hover)`.
 - Use `:focus-visible` with a visible primary-color outline.
@@ -386,7 +380,7 @@ For every design change:
 4. Check `git diff --check`.
 5. Render desktop and mobile.
 6. Confirm persistent location coordinates and font equality.
-7. Confirm one designated homepage link per case project.
+7. Confirm one homepage row link per case project.
 8. Confirm complete image aspect ratios.
 9. Confirm responsive source selection.
 10. Confirm no middle dots or rule dividers.
@@ -397,7 +391,7 @@ For every design change:
 15. Confirm authored text is primary, labels are secondary, actionable text links are tertiary at rest, and text-link hover is primary in both themes.
 16. Confirm every generated route contains the same shared profile and contact links, and that email copy works on case pages.
 17. Confirm case studies do not repeat an email footer and that shared Links and Contact follow the article on mobile.
-18. Measure every adjacent homepage project transition and the final project-to-`Metadata` transition at desktop and mobile widths; each must resolve to `32px` while the text-to-text sidebar group gap remains `24px`.
+18. Measure the homepage label-to-first-entry rhythm, adjacent row separators, and the final project-to-`Metadata` transition at desktop and mobile widths.
 19. Confirm mobile demo metadata is outside the styled media frame and remains exposed to assistive technology.
 
 Reject a change that introduces crop, arbitrary type sizes, negative case letter spacing, a second navigation system, editorial divider rules, stale generated output, broken metadata, or an unprotected unfinished preview.
