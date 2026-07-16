@@ -1,31 +1,35 @@
 # Media And Interaction
 
-- Use real images.
-- Use `width: 100%` and `height: auto`.
+## Homepage
+
+- The homepage is text-only: it has no images, showcase/gallery entries, or Heph demo.
+- Case-study media and showcase/gallery rules remain active on case pages.
+- Each `.portfolio-card-link` is one full-row navigation target containing date, title, and arrow.
+- The arrow is a real `<span class="portfolio-card-arrow" aria-hidden="true">→</span>`, not a pseudo-element. A pseudo-element does not reliably repaint to white on ancestor `:hover` in this subgrid layout; a real element does.
+- At rest, the link carries `--text-tertiary`, and its date and arrow use `color: inherit`; on hover-capable devices, the link's `currentColor` changes to `--text-primary`, so the whole row changes as one unit while the title stays primary.
+- Keep the hover rule inside `@media (hover: hover)`. Do not add arrow transitions, transforms, background boxes, or `Read` label swaps.
+- Use `.portfolio-card-link:focus-visible` with the shared `1px` primary outline and `6px` offset; focus turns the title and arrow primary.
+
+## Case media
+
+- Use real images with `width: 100%` and `height: auto`.
 - Never use `object-fit: cover` for portfolio evidence.
 - Never create crop derivatives.
 - Provide responsive optimized sources without upscaling.
-- Preserve intrinsic dimensions.
-- Use the existing `22px` media radius.
-- Theme the Heph terminal surface from the page background and primary text with a `96%/4%` color mix, then give its prompt and composer rows a `94%/6%` mix. On mobile, wrap the terminal in a separate outer frame using a `92%/8%` mix so its padding stays distinguishable from both the page and terminal in either theme.
-- Own the Heph terminal markup once in `src/partials/heph-demo.html`. The homepage includes that partial inside its project wrapper; `src/case-media/heph/heph-demo.html` includes the same partial for the case route. Never fork or copy the terminal markup.
+- Preserve intrinsic dimensions and the existing `22px` media radius.
+
+## Heph demo
+
+- Derive the terminal body surface with `color-mix(in srgb, var(--bg) 96%, var(--text-primary))`.
+- Derive the prompt and composer row surfaces with `color-mix(in srgb, var(--bg) 94%, var(--text-primary))`.
+- On mobile only, place those surfaces inside an outer frame derived with `color-mix(in srgb, var(--bg) 92%, var(--text-primary))`. The frame is lighter than the terminal in dark mode and darker than it in light mode, giving the padded boundary a legible surface without a border.
+- The terminal uses no private flat colors other than the red, yellow, and green macOS window controls. Its surfaces, text, cursor, outlines, and responsive frame derive from shared theme tokens.
+- Separate mixed label/value rows so each label receives its label token and each value receives its value token independently. For example, preserve the distinct tokens in `ARMORY classics`, `SCOPE 4/4`, and `EXCERPTS 4`.
+
+- Own the Heph terminal markup once in `src/partials/heph-demo.html`. The case route includes that partial and never forks or copies the terminal markup.
 - In `content/heph.md`, place `![Heph demo](media:heph-demo)` after the authored prose and immediately before the GitHub repository link. The Heph case bundle must include the shared demo data and interaction scripts so this remains the live demo, not a screenshot.
 - Use primary for human-readable content, tertiary for labels and tool context, and secondary for values. Keep the traffic lights colored, but do not introduce terminal-only text grays.
-- Use the adaptive `1px`/`14%` primary-color contour on portfolio images.
-- Cover clickable project media with a normally blended `--highlight-bg` overlay at `0.55` opacity on hover and keyboard focus.
-- At the same time, change the existing right-aligned metadata arrow to `Read →`; keep this affordance below the image and reserve its width to prevent layout shift.
-- Use the same `Read →` affordance when Heph's metadata-only link is hovered or keyboard-focused.
-- Use the same primary-color `1px`/`4px` offset focus outline for the compact Heph metadata link and full image cards. Keep `.heph-demo` overflow visible so the metadata outline is not clipped by its enclosing project section.
-- Make the interaction explicit without overlaying text on artwork; do not rely on opacity-only dimming, a color-specific tint, or the original artwork's contrast.
-- Keep the tint layer inside `.portfolio-card-image`, decorative, and unable to intercept pointer events.
-- Keep mobile project date/title metadata outside demo or media frames.
+- Keep showcase/gallery media full-frame, responsive, uncropped, and outside unrelated navigation targets.
+- Keep hover inside `@media (hover: hover)` and focus visible.
 - Keep anchors for navigation and buttons for preview actions.
-- Keep homepage authored copy primary, case prose and project titles secondary, dates and captions tertiary, actionable text links tertiary, and text-link hover primary.
-- Let link arrows inherit the link color.
-- Make each homepage project metadata strip clickable across its complete width, with the title left and an Inter `→` aligned to the far right.
-- Keep interactive media outside that link target so its controls remain usable; the full-width metadata strip beneath it provides the forgiving navigation target.
-- Keep icon controls tertiary at rest and primary on hover.
-- Put hover inside `@media (hover: hover)`.
-- Keep focus visible.
-- Keep theme changes immediate.
 - Do not add editorial divider rules, middle dots, gradients, decorative cards, or shadows.
