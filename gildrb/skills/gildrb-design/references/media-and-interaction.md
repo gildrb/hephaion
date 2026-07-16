@@ -17,6 +17,15 @@
 - Never create crop derivatives.
 - Provide responsive optimized sources without upscaling.
 - Preserve intrinsic dimensions and the existing `22px` media radius.
+
+## Heph demo
+
+- Derive the terminal body surface with `color-mix(in srgb, var(--bg) 96%, var(--text-primary))`.
+- Derive the prompt and composer row surfaces with `color-mix(in srgb, var(--bg) 94%, var(--text-primary))`.
+- On mobile only, place those surfaces inside an outer frame derived with `color-mix(in srgb, var(--bg) 92%, var(--text-primary))`. The frame is lighter than the terminal in dark mode and darker than it in light mode, giving the padded boundary a legible surface without a border.
+- The terminal uses no private flat colors other than the red, yellow, and green macOS window controls. Its surfaces, text, cursor, outlines, and responsive frame derive from shared theme tokens.
+- Separate mixed label/value rows so each label receives its label token and each value receives its value token independently. For example, preserve the distinct tokens in `ARMORY classics`, `SCOPE 4/4`, and `EXCERPTS 4`.
+
 - Own the Heph terminal markup once in `src/partials/heph-demo.html`. The case route includes that partial and never forks or copies the terminal markup.
 - In `content/heph.md`, place `![Heph demo](media:heph-demo)` after the authored prose and immediately before the GitHub repository link. The Heph case bundle must include the shared demo data and interaction scripts so this remains the live demo, not a screenshot.
 - Use primary for human-readable content, tertiary for labels and tool context, and secondary for values. Keep the traffic lights colored, but do not introduce terminal-only text grays.
