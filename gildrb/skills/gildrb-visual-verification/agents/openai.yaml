@@ -1,0 +1,4 @@
+interface:
+  display_name: "Gildrb Visual Verification"
+  short_description: "Verify rendered gildrb behavior precisely"
+  default_prompt: "Use $gildrb-visual-verification to measure and verify a gildrb visual change on desktop and mobile without editing the implementation."

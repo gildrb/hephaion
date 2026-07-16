@@ -1,34 +1,33 @@
 # Case Studies
 
-This document defines the path from a homepage image to an authored project page.
+This document defines the path from a homepage project row to an authored project page.
 
 ## Route Contract
 
 - Use one top-level route per case study: `/<project>`.
 - Generate `/<project>/index.html`.
-- Link the designated homepage image directly to `/<project>`.
+- Link the complete homepage project row directly to `/<project>`.
 - Use the same project slug in canonical metadata, social metadata, JSON-LD, sitemap, feed, machine-readable mirrors, analytics route, and verifier assertions.
 - Add permanent redirects when a previously exposed route changes.
 
 Current routes:
 
+- `/site`
 - `/heph`
 - `/filen`
 - `/n0thing`
 - `/ml7`
 
-Use only the current location name for the browser-tab title: `Gil Rodrigues` on `/`, then `Heph`, `Filen`, `n0thing`, or `mL7` on each case route. Keep longer descriptive wording in social metadata rather than the `<title>` element.
+Use only the current location name for the browser-tab title: `Gil Rodrigues` on `/`, then `This website`, `Heph`, `Filen`, `n0thing`, or `mL7` on each case route. Keep longer descriptive wording in social metadata rather than the `<title>` element.
 
 ## Homepage Entry
 
-- Show the project title in the existing section-title treatment.
-- Do not link the title.
-- Do not add a project summary.
-- Do not add `Read the case study` or equivalent copy.
-- Show only the images approved for that project’s homepage entry.
-- Make the designated logo image the only case-study link.
-- Preserve its entire frame and responsive sources.
-- Give the anchor a precise accessible name.
+- Keep all projects in one global table with Date, Title, Field, and Link columns.
+- Make the complete row the case-study link and give it a precise accessible name.
+- Use the specific fields from the current source: `Design engineering` for This website, `Product design and engineering` for Heph, `Brand identity` for Filen, and `Wordmark` for n0thing and mL7.
+- Keep `Date`, `Title`, and `Field` sortable across the complete list while preserving DOM, visual, and keyboard order.
+- Reveal `View →` on direct row hover and keyboard focus without changing weight or shifting layout.
+- Do not add project summaries, marketing copy, images, or category-divider wrappers to the homepage list.
 
 ## Persistent Location
 
@@ -131,8 +130,7 @@ Use these principles only when the user explicitly requests suggestions, draftin
 
 - Project label: `Filen`.
 - Route: `/filen`.
-- Homepage entry: white Filen mark and wordmark on black.
-- Homepage image count: one.
+- Homepage entry: dated `Filen` row tagged `Brand identity`.
 - Required process evidence: complete exploration board.
 - The board must never be cropped.
 - Do not link to `filen.io` from the case page.
@@ -142,8 +140,9 @@ Use these principles only when the user explicitly requests suggestions, draftin
 
 - Project label: `Heph`.
 - Route: `/heph`.
-- Homepage entry: interactive terminal demo followed by full-width date/title metadata.
-- Link the metadata strip to `/heph`; do not link the homepage directly to the source repository and do not overlay a link on the interactive terminal.
+- Homepage entry: dated `Heph` row tagged `Product design and engineering`.
+- Link the complete row to `/heph`; do not link the homepage directly to the source repository.
+- Keep the interactive terminal only inside the Heph case study.
 - Link `https://github.com/gildrb/heph` from inside the case-study article.
 - Describe only behavior supported by the current Heph documentation and repository.
 - Location uses two lines: `Gil Rodrigues` then `→ Heph`.
@@ -152,13 +151,21 @@ Use these principles only when the user explicitly requests suggestions, draftin
 
 - Project label: `mL7`.
 - Route: `/ml7`.
-- Homepage entry: approved mL7 logo image.
-- Make that logo image the designated case-study link.
+- Homepage entry: dated `mL7` row tagged `Wordmark`.
 - Location uses two lines: `Gil Rodrigues` then `→ mL7`.
 - Reuse the Filen shell, type steps, media treatment, section spacing, shared sidebar behavior, theme behavior, and responsive layout.
 - Replace only project content and evidence.
 - Do not copy Filen-specific claims into mL7.
 - If evidence is incomplete, write only what the visible artifacts establish and leave further sections for later evidence.
+
+## This website
+
+- Project label: `This website`.
+- Route: `/site`.
+- Homepage entry: current local date row tagged `Design engineering`.
+- Keep the authored build narrative in `content/site.md` and the route chrome in `src/site.template.html`.
+- Synchronize `llms.txt`, `.well-known/llms.txt`, `humans.txt`, `sitemap.xml`, `feed.xml`, and `src/data/profile.json` whenever the public portfolio route set changes.
+- Location uses two lines: `Gil Rodrigues` then `→ This website`.
 
 ## Completion
 

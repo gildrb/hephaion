@@ -1,0 +1,4 @@
+interface:
+  display_name: "Gildrb Accessibility"
+  short_description: "Enforce keyboard and semantic accessibility"
+  default_prompt: "Use $gildrb-accessibility to audit and fix gildrb semantics, keyboard order, focus behavior, labels, and assistive output."

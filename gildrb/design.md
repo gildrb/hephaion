@@ -1,5 +1,5 @@
 ---
-version: "1.1.0"
+version: "1.2.0"
 name: "gildrb"
 description: "Visual and interaction contract for the gildrb portfolio and project case studies."
 default_theme: "dark"
@@ -31,9 +31,26 @@ Use sources in this order:
 
 Do not preserve a documented rule when current approved source intentionally replaced it. Update the package instead.
 
+## Atomic Skill Architecture
+
+Design work is routed by failure class. No broad design skill exists.
+
+| Failure class | Sole owner |
+| --- | --- |
+| Margins, padding, gaps, optical rhythm | `gildrb-spacing` |
+| Font metrics and type roles | `gildrb-typography` |
+| Semantic tokens and theme color correctness | `gildrb-color-audit` |
+| Shell columns, widths, ordering, and responsive geometry | `gildrb-shell-layout` |
+| Asset conversion, responsive sources, and full-frame delivery | `gildrb-media` |
+| Pointer, click, lifecycle, theme, demo, and navigation behavior | `gildrb-interaction` |
+| Semantics, keyboard, focus, accessible names, and announcements | `gildrb-accessibility` |
+| Read-only rendered measurement and acceptance evidence | `gildrb-visual-verification` |
+
+Load every atomic skill required by a cross-cutting task, but let each skill change only its owned concern. Each skill must declare `Mission`, `Owns`, `Excludes`, `Fixed Contract` or `Required Matrix`, `Procedure`, `Reject`, `Verify`, and `Done`. The package checker rejects the retired `gildrb-design` skill, missing sections, ambiguous ownership, TODO text, or stale router entries.
+
 ## Intent
 
-- Keep the homepage an image-led index.
+- Keep the homepage a concise, text-only, sortable project index.
 - Let project evidence carry the claim.
 - Keep navigation stable across routes.
 - Make case studies read as part of the portfolio, not a separate magazine.
@@ -145,7 +162,9 @@ Use the existing 4px-derived rhythm and homepage constants.
 - Image/grid gap: `20px`.
 - Related group gap: `24px` or `32px`.
 - Major internal gap: `48px` or `64px`.
-- Homepage project-entry gap: `32px` at every viewport; this optically compensates text-to-media boundaries against the `24px` text-to-text sidebar group gap.
+- Homepage biography-to-table gap: `32px`.
+- Homepage table header and row vertical padding: `8px`; adjacent rows remain contiguous.
+- Homepage table column gap: `16px` on desktop and `clamp(8px, 3vw, 16px)` on mobile.
 - Case-study section gap: `80px` at every viewport.
 - Desktop wrapper padding: `48px`.
 - Wrapper padding below `1400px`: `32px`.
@@ -168,14 +187,14 @@ Do not add arbitrary values when an existing step expresses the relationship. Wi
 - On desktop, reserve two `24px` location lines before the shared `24px` section gap so the Links group begins at the same coordinate on homepage and case routes.
 - Keep the Links and Contact markup in one shared source partial. Case templates must include it instead of maintaining route-specific copies.
 - The homepage location is `Gil Rodrigues`; case routes replace only that location row with a two-line `Gil Rodrigues` then `→ <Project>` location.
-- Main content uses `48px` vertical padding.
+- Main content uses shared `48px` vertical padding declared once in `src/styles/10-base.css`, which every homepage and case-study bundle loads. This keeps the desktop content top, case title, and `Gil Rodrigues` at the same `48px` coordinate; mobile resets `.content` padding to `0` inside the responsive shell.
 - `Gil Rodrigues` begins at the same wrapper coordinate on every route.
 
 ### Mobile
 
 - At `768px` and below, the layout becomes a two-column grid: content plus `32px` theme-control column.
 - Wrapper uses `12px` inline padding.
-- Layout uses `32px` vertical padding.
+- The mobile layout container has no vertical padding. The sticky name and theme-control row supplies `24px` top and `8px` bottom padding; `.content` uses `display: contents` with `0` padding.
 - Sidebar and content use `display: contents` so the same elements enter the shared mobile grid.
 - On case-study routes, keep the desktop Links and Contact group in the sidebar. On mobile, render the article immediately after the location row and place the mobile instance of that same shared partial after the article so DOM, focus, and visual order agree.
 - The mobile grid still requires article order `5` and shared navigation order `6`: `display: contents` exposes both sets of descendants to the wrapper grid, so these values preserve the same order already established in the DOM rather than contradicting it.
@@ -211,42 +230,51 @@ Rules:
 - Render the arrow in `--text-tertiary`.
 - Render the current project in `--text-primary` so the active location is the strongest part of the row.
 - Use no additional vertical gap between the two location lines; the inherited line height provides their separation.
-- Current project text is not a link.
+- Link the current project text to `#top` and keep it in `--text-primary`; only the `Gil Rodrigues` link leaves the page for `/`.
 - Use an arrow, not a middle dot, slash, breadcrumb chevron component, or Index button.
 - Do not add separate `Index`, `Back`, or `Return to index` navigation.
 - Keep the theme toggle in its existing location.
 - Preserve each route's per-tab scroll position for browser back and forward navigation. Store on `pagehide` and when the document becomes hidden, restore only for back/forward or bfcache traversal, and tolerate unavailable `sessionStorage`. Fresh visits must retain their normal initial position.
 - On desktop case-study routes, keep authored content in its natural document flow. Reserve bottom padding derived from the shared footer and theme-toggle tokens so a long post's final authored line, whether prose or `MORE SOON`, cannot end below the theme toggle when the reader reaches the bottom. Never stretch a short post or push its final content downward to manufacture that alignment. Keep the mobile toggle in its top-mounted position.
 - Treat that desktop boundary as a maximum endpoint, not a target baseline. Article `min-height`, flex distribution, `margin-top: auto`, and last-child top padding are forbidden ending mechanisms.
-- Own the live Heph terminal once in `src/partials/heph-demo.html` and include it on both the homepage and `/heph`. The Heph case order is authored prose, the shared live demo, then the GitHub repository link.
+- Own the live Heph terminal once in `src/partials/heph-demo.html` and include it only on `/heph`. The Heph case order is authored prose, the live demo, then the GitHub repository link.
 - Separate authored thoughts with ordinary Markdown paragraph breaks. Use the shared `--text-media-gap` (`32px`) in both directions around case media: from preceding prose to the image, and from the caption to following prose. This mirrors the homepage's optical LinkedIn-to-Contact transition without introducing a heading or divider.
 
 ## Homepage
 
 - Keep biography first and concise.
-- Derive the Heph terminal surface with `color-mix(in srgb, var(--bg) 96%, var(--text-primary))` and its prompt/composer rows with `color-mix(in srgb, var(--bg) 94%, var(--text-primary))`. These remain the two internal terminal surfaces.
-- On mobile only, place those surfaces inside an outer frame derived with `color-mix(in srgb, var(--bg) 92%, var(--text-primary))`. This frame is outside the terminal: it is lighter than the terminal in dark mode and darker than it in light mode, making the padded boundary legible without a border.
-- Inside the Heph terminal, primary prompts, answers, and input use `--text-primary`; labels use `--text-tertiary`; values use `--text-secondary`.
-- Wrap mixed label/value rows such as `ARMORY classics`, `SCOPE 4/4`, `EXCERPTS 4`, and command hints so the label and value receive their correct shared tokens independently.
-- Keep tool output and the complete `materials: ... Details: /evidence.` source line in `--text-tertiary`.
-- The terminal may contain no private flat colors other than the red, yellow, and green macOS window controls; its two surfaces, text, cursor, outlines, and responsive frame derive from shared tokens.
-- Order homepage projects newest to oldest: `Heph`, `Filen`, `n0thing`, then `mL7`. DOM, visual, and keyboard order must agree at every viewport.
-- Keep the homepage content and every project image inside the same centered `760px` content boundary used by case studies.
-- Approved biography: `Designing brands, interfaces, and the systems that connect them.`
+- Keep the homepage free of project images, previews, and the Heph terminal; all project evidence belongs inside case-study routes.
+- Order homepage projects newest to oldest by default: `This website`, `Heph`, `Filen`, `n0thing`, then `mL7`. DOM, visual, and keyboard order must agree at every viewport.
+- Place one `Date` / `Title` / `Field` / `Link` header row before the single global project list. Render all four labels in explicit Inter `16px/24px` and `--text-primary` on the same five-column subgrid as the project rows; `Link` is a static right-aligned heading and the fourth grid track is flexible whitespace.
+- Size the desktop Title and Field tracks to their longest content. Use the existing `16px` column gap—the width of four Inter spaces—between `This website`, the longest title, and the Field track. Use `Design engineering`, `Product design and engineering`, `Brand identity`, and `Wordmark` exactly as authored in the current rows. Render field values at `16px/24px` in `--text-tertiary`.
+- On mobile, use `max-content max-content minmax(0, 1fr) auto` with `clamp(8px, 3vw, 16px)` column gaps. Keep the table at Inter `16px/24px`, show years instead of full dates, hide `View`, and truncate long Field values with an ellipsis so the row never creates page overflow.
+- Treat the header and five project rows as one compact table block. The first project row begins immediately below the header rule with no section gap or category-divider space.
+- On desktop, align the header row's text line box exactly with the sidebar `Links` label line box. Preserve the former Engineering-to-Links axis: do not add top padding that drops `Date`, `Title`, or `Link` below it.
+- Keep `Date` and `Title` as native buttons. The first inactive Date sort is newest-first, the first inactive Title sort is A–Z, and repeated activation toggles direction. Apply the chosen ordering across the complete homepage project list, update DOM order as well as visual order, announce the result, expose the active direction accessibly, preserve focus after keyboard activation, and keep this behavior off case-study routes. Do not retain category wrappers that prevent a true global order.
+- Keep `Field` as the third native sort button. Its first activation sorts the authored field labels A–Z; repeated activation toggles Z–A.
+- Do not underline `Date`, `Title`, or `Field` on hover. They follow the site's existing restrained control language and may not introduce a bespoke text-decoration hover exception.
+- Keep the homepage content and project table inside the same centered `760px` content boundary used by case studies.
+- Approved biography: `Independent designer and engineer building brand systems, interfaces, and digital products.`
 - Render the approved biography in `--text-primary`; it is authored content, not a label.
 - Do not show a `Portfolio` heading on the homepage; keep `Portfolio` only as the accessible name of the project section.
-- Use `32px` from the biography to the first project title on desktop and `32px` from that title to its solid media. On mobile, keep the intervening biography, Links, and project-title text groups at `24px`, then use `32px` from the project title to its media.
-- Put each project date and title below its media, never inside a mobile media or demo frame.
-- Render project dates at `14px/20px` in `--text-tertiary` and project titles at `16px/24px` in `--text-secondary`.
-- Make every below-media metadata strip a full-width link target. Keep the date on its own row, then align the project title left and an Inter `→` right on the same row.
-- For interactive media such as the Heph terminal, keep the media controls usable and enlarge only the metadata link beneath it; do not place an external-link overlay over the demo.
-- Use the same optically compensated `32px` gap between every adjacent homepage project entry on desktop and mobile.
-- Use the same `32px` gap from the final project title to the `Metadata` group; never pull the footer upward with a negative margin.
-- A project with a case study exposes one designated clickable image.
-- Do not append `Read the case study`, `View project`, summaries, tags, roles, or marketing copy.
-- The designated image uses the same image-wrapper shape as the gallery.
-- Clicking the designated image navigates; it does not open the image preview.
-- Keep the homepage free of detached personal-image preview sections.
+- Use `32px` from the biography to the project table. Keep the header rule and all five rows contiguous with `8px` vertical padding and faint `12%` primary separators.
+- Render project dates and fields at `16px/24px` in `--text-tertiary`; render project titles at `16px/24px` in `--text-primary`.
+- Make every project row a full-width link target. Align date, title, field, and the Inter `→` on the shared five-column subgrid.
+- Reveal `View` immediately left of the arrow only while the row is directly hovered or keyboard-focused. Hide `View` at `768px` and below so touch layouts retain all data columns without overflow.
+- Keep the homepage footer only on `/` and only on desktop. Align `© <current year> Gil Rodrigues` with the `profile.json` text line at the far-right edge of the shared content column, with matching optical bottom margins.
+- Render the desktop copyright in explicit Inter `16px/24px` using `--text-tertiary`. Keep `2026` as the no-JavaScript fallback and replace only the year with the visitor's current local year on load.
+- Hide the complete metadata/copyright footer at `768px` and below, and do not add it to case-study routes.
+- Do not append summaries, roles, marketing copy, or detached personal-image preview sections.
+
+## Heph Case Demo
+
+- Derive the terminal surface with `color-mix(in srgb, var(--bg) 96%, var(--text-primary))` and its prompt/composer rows with `color-mix(in srgb, var(--bg) 94%, var(--text-primary))`.
+- On mobile, place those surfaces inside an outer frame derived with `color-mix(in srgb, var(--bg) 92%, var(--text-primary))`; use no border to manufacture that boundary.
+- Primary prompts, answers, and input use `--text-primary`; labels use `--text-tertiary`; values use `--text-secondary`.
+- Wrap mixed label/value rows such as `ARMORY classics`, `SCOPE 4/4`, `EXCERPTS 4`, and command hints so each role receives the correct token.
+- Keep tool output and the complete `materials: ... Details: /evidence.` source line in `--text-tertiary`.
+- Allow no private flat colors other than the red, yellow, and green macOS window controls.
+- Keep the demo's shared markup and scripts off the homepage and every non-Heph route.
 
 ## Media
 
@@ -302,32 +330,26 @@ Rules:
 - Do not use middle-dot separators.
 - Do not add `<hr>`.
 - Do not add horizontal rules between intro, metadata, sections, or footer.
-- Do not add `border-top` or `border-bottom` as editorial dividers.
+- Do not add `border-top` or `border-bottom` as editorial dividers. The homepage table's faint row separators are structural table rules, not article dividers.
 - Code blocks may keep their own enclosing border because it defines the code surface rather than separating sections.
 - Use whitespace, heading hierarchy, and text color for section boundaries.
 
 ## Interaction
 
 - Links navigate. Buttons act.
-- Image preview controls remain native buttons.
-- Case-study entry images remain native anchors.
+- Homepage project rows remain native anchors; Date, Title, and Field remain native buttons.
 - The homepage biography uses `--text-primary`; case decks, paragraphs, and list items use `--text-secondary` for a quieter reading layer below white headings.
-- Labels use `--text-secondary`. This includes `Links`, `Contact`, `Metadata`, `About`, project titles, and other text that names a group or field without acting.
-- Dates, case metadata terms, and image captions use `--text-tertiary`.
+- Labels use `--text-secondary`. This includes `Links`, `Contact`, `Metadata`, `About`, and other text that names a group or field without acting.
+- Homepage project titles use `--text-primary`; dates, fields, case metadata terms, and image captions use `--text-tertiary`.
 - Actionable text links use `--text-tertiary` at rest. This includes profile links, reference links, and email.
 - The case-study home link remains `--text-tertiary` beside the tertiary arrow while the current project is `--text-primary`.
 - On hover-capable devices, the case-study home link becomes `--text-primary` to make the return action explicit.
 - Text-link hover uses `--text-primary`, promoting an actionable item from light gray to white in dark mode.
 - Link arrows inherit the link color so the complete link changes as one unit.
 - Icon controls use `--text-tertiary` at rest and `--text-primary` on hover unless a documented component state requires otherwise.
-- Clickable project media uses a normally blended `--highlight-bg` layer at `0.55` opacity. This reuses the exact approved bright gray and pulls black and white artwork toward it without placing interface copy over the artwork.
-- While a project card is hovered or keyboard-focused, change its existing right-aligned metadata arrow from `→` to `Read →`. Keep `Read` beside the existing arrow and outside the image.
-- Apply the same `Read →` state to Heph's metadata-only link when its title row is hovered or keyboard-focused.
-- Use the same primary-color `1px` outline and `4px` offset for Heph's metadata-only keyboard focus as for image cards. Keep the enclosing `.heph-demo` overflow visible so all four sides of that outline remain unclipped.
-- Reserve enough width for `Read →` in the resting metadata grid so revealing it never shifts the project title or arrow.
-- Wrap the image in `.portfolio-card-image`; keep the overlay decorative and `pointer-events: none` so the full native anchor remains interactive.
-- Apply the same tint on `:focus-visible` while preserving the existing focus outline.
-- Do not place interaction labels over the image, and do not use opacity-only image dimming or colored tints for case-study entries.
+- While a project row is hovered or keyboard-focused, reveal `View →` in the reserved rightmost affordance column.
+- Use a primary-color `1px` outline with `6px` offset for full-row keyboard focus.
+- Hide `View` on touch-width layouts; keep the Inter arrow visible.
 - Hover changes color without changing size or weight.
 - Put hover behavior inside `@media (hover: hover)`.
 - Use `:focus-visible` with a visible primary-color outline.
@@ -337,7 +359,7 @@ Rules:
 
 ## Motion
 
-- Prefer no motion for navigation, theme changes, email copy, and image entry links.
+- Prefer no motion for navigation, sorting, theme changes, email copy, and project-row links.
 - Keep interaction motion at `200ms` or below when motion materially improves orientation.
 - Respect `prefers-reduced-motion`.
 - Do not add looping decorative animation.
@@ -350,9 +372,9 @@ Rules:
 - Give meaningful images specific alt text.
 - Use empty alt text only for decorative images.
 - Keep link purpose clear without relying on hover.
-- Preserve keyboard access for home navigation, theme control, project images, email, and preview buttons.
+- Preserve keyboard access for home navigation, theme control, sort buttons, project rows, email, and the Heph case demo.
 - Ensure focus is visible in both themes.
-- Keep page width free of horizontal overflow at `390px`.
+- Keep page width free of horizontal overflow at `320px` and `390px`.
 - Do not use color as the only state signal.
 
 ## Content
@@ -369,8 +391,8 @@ Rules:
 
 ## Metadata
 
-- Canonical project routes are top-level: `/heph`, `/filen`, `/n0thing`, `/ml7`, and future `/<project>` paths.
-- The homepage Heph metadata links to `/heph`. Its GitHub repository link belongs inside the Heph article, not on the homepage.
+- Canonical project routes are top-level: `/site`, `/heph`, `/filen`, `/n0thing`, `/ml7`, and future `/<project>` paths.
+- The homepage Heph row links to `/heph`. Its GitHub repository link belongs inside the Heph article, not on the homepage.
 - Use static directory indexes: `<project>/index.html`.
 - Synchronize canonical, Open Graph, Twitter, JSON-LD, sitemap, feed, Markdown mirrors, LLM mirrors, humans file, and structured profile graph.
 - Redirect superseded public routes permanently to the canonical route.
@@ -386,9 +408,9 @@ For every design change:
 4. Check `git diff --check`.
 5. Render desktop and mobile.
 6. Confirm persistent location coordinates and font equality.
-7. Confirm one designated homepage link per case project.
-8. Confirm complete image aspect ratios.
-9. Confirm responsive source selection.
+7. Confirm one full-width homepage row link per configured project.
+8. Confirm Date, Title, and Field sort the complete list and announce the active direction.
+9. Confirm complete case-image aspect ratios and responsive source selection.
 10. Confirm no middle dots or rule dividers.
 11. Confirm no horizontal overflow.
 12. Confirm theme switching and home navigation.
@@ -397,7 +419,7 @@ For every design change:
 15. Confirm authored text is primary, labels are secondary, actionable text links are tertiary at rest, and text-link hover is primary in both themes.
 16. Confirm every generated route contains the same shared profile and contact links, and that email copy works on case pages.
 17. Confirm case studies do not repeat an email footer and that shared Links and Contact follow the article on mobile.
-18. Measure every adjacent homepage project transition and the final project-to-`Metadata` transition at desktop and mobile widths; each must resolve to `32px` while the text-to-text sidebar group gap remains `24px`.
-19. Confirm mobile demo metadata is outside the styled media frame and remains exposed to assistive technology.
+18. Measure homepage table alignment and overflow at desktop, `390px`, and `320px`; the header and rows remain one contiguous block.
+19. Confirm the Heph demo appears only on `/heph` and remains exposed to assistive technology.
 
 Reject a change that introduces crop, arbitrary type sizes, negative case letter spacing, a second navigation system, editorial divider rules, stale generated output, broken metadata, or an unprotected unfinished preview.

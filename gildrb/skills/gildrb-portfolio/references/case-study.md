@@ -4,7 +4,7 @@
 
 - Reuse the homepage shell.
 - Keep the persistent location at the homepage name coordinate.
-- Link only `Gil Rodrigues` home.
+- Link `Gil Rodrigues` home and the current project to `#top`; no other location text navigates away.
 - Render arrow and project at the same inherited size.
 - Remove Index links and tiny project kickers.
 

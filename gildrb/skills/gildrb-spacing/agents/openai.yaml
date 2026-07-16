@@ -1,0 +1,4 @@
+interface:
+  display_name: "Gildrb Spacing"
+  short_description: "Enforce exact gildrb spatial rhythm"
+  default_prompt: "Use $gildrb-spacing to adjust and verify spacing without changing typography, color, copy, or layout structure."

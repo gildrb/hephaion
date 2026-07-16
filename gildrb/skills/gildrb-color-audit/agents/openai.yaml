@@ -1,0 +1,4 @@
+interface:
+  display_name: "Gildrb Color Audit"
+  short_description: "Audit and enforce semantic color tokens"
+  default_prompt: "Use $gildrb-color-audit to audit and fix gildrb color-token usage across both themes without changing layout or copy."

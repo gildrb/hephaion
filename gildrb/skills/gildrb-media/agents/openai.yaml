@@ -1,0 +1,4 @@
+interface:
+  display_name: "Gildrb Media"
+  short_description: "Prepare and render portfolio media safely"
+  default_prompt: "Use $gildrb-media to optimize, wire, and verify uncropped responsive portfolio media without changing authored copy."

@@ -1,4 +1,0 @@
-interface:
-  display_name: "Gildrb Design"
-  short_description: "Apply the exact gildrb visual system"
-  default_prompt: "Use $gildrb-design to implement and verify the gildrb visual system."

@@ -5,12 +5,13 @@
 - Check generated source equality.
 - Check every referenced asset exists.
 - Check canonical route count.
-- Check exactly one homepage case link per designated project.
-- Check no textual case-study call to action.
+- Check exactly one full-width homepage row link per configured project.
+- Check Date, Title, and Field sorting across the complete list.
+- Check `View →` appears without layout shift on row hover and focus.
 - Check no external project link when explicitly prohibited.
 - Check legacy redirects.
 - Validate JSON and XML.
 - Render mobile and desktop.
-- Click the designated project image.
+- Click every project row.
 - Click `Gil Rodrigues` and confirm `/`.
 - Check browser errors.

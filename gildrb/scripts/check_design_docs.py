@@ -15,12 +15,19 @@ REQUIRED_PACKAGE_FILES = (
     "design.md",
     "case-studies.md",
     "skills/gildrb-portfolio/SKILL.md",
-    "skills/gildrb-design/SKILL.md",
+    "skills/gildrb-spacing/SKILL.md",
+    "skills/gildrb-typography/SKILL.md",
+    "skills/gildrb-color-audit/SKILL.md",
+    "skills/gildrb-shell-layout/SKILL.md",
+    "skills/gildrb-media/SKILL.md",
+    "skills/gildrb-interaction/SKILL.md",
+    "skills/gildrb-accessibility/SKILL.md",
+    "skills/gildrb-visual-verification/SKILL.md",
     "skills/gildrb-publishing/SKILL.md",
 )
 
 REQUIRED_DESIGN_PHRASES = (
-    "Designing brands, interfaces, and the systems that connect them.",
+    "Independent designer and engineer building brand systems, interfaces, and digital products.",
     "Gil Rodrigues\n→ Filen",
     "Gil Rodrigues\n→ mL7",
     "Case-specific letter spacing is always `0`.",
@@ -34,11 +41,14 @@ REQUIRED_DESIGN_PHRASES = (
     "The same sidebar content persists on the homepage and every case-study route",
     "Do not show a `Portfolio` heading on the homepage",
     "Order homepage projects newest to oldest",
-    "Make every below-media metadata strip a full-width link target",
+    "Place one `Date` / `Title` / `Field` / `Link` header row",
+    "Make every project row a full-width link target.",
+    "© <current year> Gil Rodrigues",
     "Case-study prose is user-owned.",
     "do not imply permission to alter wording",
     "Treat that desktop boundary as a maximum endpoint, not a target baseline.",
-    "Own the live Heph terminal once in `src/partials/heph-demo.html`",
+    "Own the live Heph terminal once in `src/partials/heph-demo.html` and include it only on `/heph`.",
+    "No broad design skill exists.",
 )
 
 REQUIRED_OPERATIONAL_CONTRACTS = {
@@ -46,27 +56,27 @@ REQUIRED_OPERATIONAL_CONTRACTS = {
         "A live-only fix is incomplete.",
         "maximum endpoint for long posts, never a target",
     ),
-    "skills/gildrb-design/SKILL.md": (
-        "update `../../design.md`, the matching reference, and `../../scripts/check_design_docs.py`",
-        "Reused interfaces have one canonical partial",
+    "skills/gildrb-spacing/SKILL.md": (
+        "Never use article `min-height`, flex distribution, `margin-top: auto`, or last-child top padding",
+        "applied once per boundary",
+        "declared once in shared `src/styles/10-base.css`",
     ),
-    "skills/gildrb-design/references/typography-and-spacing.md": (
-        "Do not use article `min-height`, flex distribution, `margin-top: auto`, or last-child `padding-top`",
-        "This is a maximum endpoint for a long post",
-        "Use `--text-media-gap: 32px` exactly once",
+    "skills/gildrb-shell-layout/SKILL.md": (
+        "Heph demo markup has one canonical owner: `src/partials/heph-demo.html`",
+        "Project location uses two lines",
     ),
-    "skills/gildrb-design/references/media-and-interaction.md": (
-        "Own the Heph terminal markup once in `src/partials/heph-demo.html`",
-        "immediately before the GitHub repository link",
+    "skills/gildrb-typography/SKILL.md": (
+        "Case-study Markdown uses compact `###` headings",
+        "explicit `.case-code-arrow` span",
     ),
-    "skills/gildrb-design/references/verification.md": (
-        "a short case page keeps its final content directly after the preceding content",
-        "a long desktop case page ends at or above the theme toggle",
-        "submitting a question in either Heph demo produces a cited response",
+    "skills/gildrb-visual-verification/SKILL.md": (
+        "Short case natural flow and long case ending at or above the desktop theme control",
+        "returns a cited answer",
+        "both top edges resolve to `48px`",
     ),
 }
 
-REQUIRED_CASE_ROUTES = ("/heph", "/filen", "/n0thing", "/ml7")
+REQUIRED_CASE_ROUTES = ("/site", "/heph", "/filen", "/n0thing", "/ml7")
 REQUIRED_SKILL_REFERENCES = {
     "skills/gildrb-portfolio/SKILL.md": (
         "references/homepage.md",
@@ -74,17 +84,32 @@ REQUIRED_SKILL_REFERENCES = {
         "references/routing.md",
         "references/verification.md",
     ),
-    "skills/gildrb-design/SKILL.md": (
-        "references/typography-and-spacing.md",
-        "references/shell-and-navigation.md",
-        "references/media-and-interaction.md",
-        "references/verification.md",
-    ),
     "skills/gildrb-publishing/SKILL.md": (
         "references/preview.md",
         "references/release.md",
     ),
 }
+
+REQUIRED_ATOMIC_SKILLS = {
+    "gildrb-spacing": "Change or audit spatial distance",
+    "gildrb-typography": "Change or audit text metrics",
+    "gildrb-color-audit": "Prove that every visible color",
+    "gildrb-shell-layout": "Preserve one shared responsive shell",
+    "gildrb-media": "Publish complete, uncropped, optimized evidence",
+    "gildrb-interaction": "Make one interaction behave predictably",
+    "gildrb-accessibility": "Ensure the existing interface is operable",
+    "gildrb-visual-verification": "Produce measured, reproducible acceptance evidence",
+}
+
+ATOMIC_SKILL_SECTIONS = (
+    "## Mission",
+    "## Owns",
+    "## Excludes",
+    "## Procedure",
+    "## Reject",
+    "## Verify",
+    "## Done",
+)
 
 
 def _read(path: Path) -> str:
@@ -129,6 +154,14 @@ def _package_errors() -> list[str]:
     if agent_path.is_file() and _filled_lines(agent_path) > 80:
         errors.append("gildrb/AGENTS.md exceeds 80 filled lines")
 
+    readme_path = PACKAGE_ROOT / "README.md"
+    if readme_path.is_file():
+        readme = _read(readme_path)
+        if "Each skill has one mission and one owned failure class." not in readme:
+            errors.append("gildrb/README.md does not define atomic skill ownership")
+        if "skills/gildrb-design/" in readme:
+            errors.append("gildrb/README.md still routes the retired broad design skill")
+
     root_agent = _read(HEPHAION_ROOT / "AGENTS.md")
     root_readme = _read(HEPHAION_ROOT / "README.md")
     if "gildrb/AGENTS.md" not in root_agent:
@@ -148,8 +181,49 @@ def _package_errors() -> list[str]:
                 errors.append(f"{skill_relative} does not route {reference}")
             if not (skill_path.parent / reference).is_file():
                 errors.append(f"missing skill reference: {skill_relative}/{reference}")
+    retired_design_skill = PACKAGE_ROOT / "skills/gildrb-design/SKILL.md"
+    if retired_design_skill.exists():
+        errors.append("retired broad skill still exists: skills/gildrb-design/SKILL.md")
+    registered_skills = set(REQUIRED_ATOMIC_SKILLS) | {"gildrb-portfolio", "gildrb-publishing"}
+    for skill_directory in (PACKAGE_ROOT / "skills").iterdir():
+        if skill_directory.is_dir() and (skill_directory / "SKILL.md").is_file() and skill_directory.name not in registered_skills:
+            errors.append(f"unregistered or broad skill exists: {skill_directory.name}")
+    for skill_name, mission in REQUIRED_ATOMIC_SKILLS.items():
+        skill_path = PACKAGE_ROOT / f"skills/{skill_name}/SKILL.md"
+        if not skill_path.is_file():
+            continue
+        skill = _read(skill_path)
+        if not _frontmatter_valid(skill):
+            errors.append(f"invalid atomic skill frontmatter: {skill_name}")
+        frontmatter_name = re.search(r"^name: ([a-z0-9-]+)$", skill, re.MULTILINE)
+        if not frontmatter_name or frontmatter_name.group(1) != skill_name:
+            errors.append(f"atomic skill frontmatter name does not match its directory: {skill_name}")
+        description = re.search(r"^description: (.+)$", skill, re.MULTILINE)
+        if not description or "Do not use" not in description.group(1):
+            errors.append(f"atomic skill description lacks an explicit trigger boundary: {skill_name}")
+        if mission not in skill:
+            errors.append(f"atomic skill has an ambiguous mission: {skill_name}")
+        if skill.count("## Mission") != 1 or skill.count("## Owns") != 1 or skill.count("## Excludes") != 1:
+            errors.append(f"atomic skill ownership sections are not singular: {skill_name}")
+        for section in ATOMIC_SKILL_SECTIONS:
+            if section not in skill:
+                errors.append(f"atomic skill missing section {section}: {skill_name}")
+        section_positions = [skill.find(section) for section in ATOMIC_SKILL_SECTIONS]
+        if section_positions != sorted(section_positions):
+            errors.append(f"atomic skill sections are out of required order: {skill_name}")
+        if "## Fixed Contract" not in skill and "## Required Matrix" not in skill:
+            errors.append(f"atomic skill missing deterministic contract: {skill_name}")
+        if "[TODO" in skill or "gildrb-design" in skill:
+            errors.append(f"atomic skill contains stale or unfinished guidance: {skill_name}")
+        agent_metadata = skill_path.parent / "agents/openai.yaml"
+        if not agent_metadata.is_file():
+            errors.append(f"atomic skill missing agents/openai.yaml: {skill_name}")
+        else:
+            metadata = _read(agent_metadata)
+            if f"${skill_name}" not in metadata:
+                errors.append(f"atomic skill metadata does not invoke ${skill_name}")
     two_line_location = "two lines: `Gil Rodrigues` then `→ <Project>`"
-    for relative in ("AGENTS.md", "case-studies.md", "skills/gildrb-portfolio/SKILL.md", "skills/gildrb-design/references/shell-and-navigation.md"):
+    for relative in ("AGENTS.md", "case-studies.md", "skills/gildrb-portfolio/SKILL.md", "skills/gildrb-shell-layout/SKILL.md"):
         path = PACKAGE_ROOT / relative
         if path.is_file() and two_line_location not in _read(path):
             errors.append(f"{relative} does not preserve the two-line case location")
@@ -179,23 +253,29 @@ def _portfolio_errors(portfolio_repo: Path) -> list[str]:
     required = (
         "src/styles/10-base.css",
         "src/styles/20-portfolio-media.css",
+        "src/styles/30-heph-demo.css",
         "src/styles/40-preview-content.css",
         "src/styles/50-case-study.css",
         "src/styles/90-responsive.css",
         "src/sections/profile-summary.html",
         "src/sections/portfolio-open.html",
-        "src/sections/portfolio-filen.html",
-        "src/sections/portfolio-ml7.html",
+        "src/sections/portfolio-engineering.html",
+        "src/sections/portfolio-design.html",
+        "src/partials/references.html",
+        "src/partials/heph-demo.html",
         "src/partials/sidebar-links.html",
         "src/partials/sidebar.html",
         "src/partials/theme-toggle.html",
         "src/filen.template.html",
         "src/heph.template.html",
+        "src/site.template.html",
         "src/page.template.html",
         "src/ml7.template.html",
         "src/n0thing.template.html",
         "src/scripts/30-email.js",
+        "src/scripts/15-portfolio-sort.js",
         "scripts/build-page.mjs",
+        "scripts/site-config.mjs",
         "scripts/render-case-markdown.mjs",
         "scripts/verify-page.mjs",
         "content/README.md",
@@ -203,6 +283,15 @@ def _portfolio_errors(portfolio_repo: Path) -> list[str]:
         "content/heph.md",
         "content/ml7.md",
         "content/n0thing.md",
+        "content/site.md",
+        "src/data/profile.json",
+        "llms.txt",
+        "index.html.md",
+        ".well-known/llms.txt",
+        "humans.txt",
+        "sitemap.xml",
+        "feed.xml",
+        "scripts/check-public.mjs",
         "vercel.json",
     )
     for relative in required:
@@ -217,20 +306,31 @@ def _portfolio_errors(portfolio_repo: Path) -> list[str]:
     responsive_css = _read(portfolio_repo / "src/styles/90-responsive.css")
     profile = _read(portfolio_repo / "src/sections/profile-summary.html")
     portfolio_open = _read(portfolio_repo / "src/sections/portfolio-open.html")
-    filen = _read(portfolio_repo / "src/sections/portfolio-filen.html")
-    ml7 = _read(portfolio_repo / "src/sections/portfolio-ml7.html")
+    portfolio_engineering = _read(portfolio_repo / "src/sections/portfolio-engineering.html")
+    portfolio_design = _read(portfolio_repo / "src/sections/portfolio-design.html")
     builder = _read(portfolio_repo / "scripts/build-page.mjs")
     site_config = _read(portfolio_repo / "scripts/site-config.mjs")
     renderer = _read(portfolio_repo / "scripts/render-case-markdown.mjs")
     homepage_template = _read(portfolio_repo / "src/page.template.html")
+    homepage_references = _read(portfolio_repo / "src/partials/references.html")
     sidebar_links = _read(portfolio_repo / "src/partials/sidebar-links.html")
     homepage_sidebar = _read(portfolio_repo / "src/partials/sidebar.html")
     filen_template = _read(portfolio_repo / "src/filen.template.html")
     heph_template = _read(portfolio_repo / "src/heph.template.html")
+    site_template = _read(portfolio_repo / "src/site.template.html")
     ml7_template = _read(portfolio_repo / "src/ml7.template.html")
     n0thing_template = _read(portfolio_repo / "src/n0thing.template.html")
     core_script = _read(portfolio_repo / "src/scripts/10-core.js")
+    portfolio_sort_script = _read(portfolio_repo / "src/scripts/15-portfolio-sort.js")
     email_script = _read(portfolio_repo / "src/scripts/30-email.js")
+    content_guide = _read(portfolio_repo / "content/README.md")
+    structured_profile = json.loads(_read(portfolio_repo / "src/data/profile.json"))
+    public_portfolio_docs = tuple(
+        _read(portfolio_repo / relative)
+        for relative in ("llms.txt", ".well-known/llms.txt", "humans.txt", "index.html.md")
+    )
+    sitemap = _read(portfolio_repo / "sitemap.xml")
+    feed = _read(portfolio_repo / "feed.xml")
     vercel = json.loads(_read(portfolio_repo / "vercel.json"))
 
     if 'from "./render-case-markdown.mjs"' not in builder:
@@ -240,12 +340,14 @@ def _portfolio_errors(portfolio_repo: Path) -> list[str]:
         "heph": heph_template,
         "ml7": ml7_template,
         "n0thing": n0thing_template,
+        "site": site_template,
     }
     route_titles = {
         "filen": "Filen",
         "heph": "Heph",
         "ml7": "mL7",
         "n0thing": "n0thing",
+        "site": "This website",
     }
     if "<title>Gil Rodrigues</title>" not in homepage_template:
         errors.append("homepage browser title must be only Gil Rodrigues")
@@ -310,10 +412,10 @@ def _portfolio_errors(portfolio_repo: Path) -> list[str]:
             errors.append(f"portfolio semantic color drift: {message}")
 
     case_color_rules = (
-        (r"\.case-location \.case-home-link,\s*\n\.case-arrow\s*\{[^}]*color:\s*var\(--text-tertiary\)", "case home link must use --text-tertiary at rest"),
+        (r"\.case-location \.case-home-link,\s*\n\.case-arrow\s*\{[^}]*color:\s*var\(--text-tertiary\)", "case home link and location arrow must use --text-tertiary at rest"),
         (r"\.case-arrow\s*\{[^}]*color:\s*var\(--text-tertiary\)", "case location arrow must use --text-tertiary"),
         (r"\.case-location \.case-current-link\s*\{[^}]*color:\s*var\(--text-primary\)", "current case project must use --text-primary"),
-        (r"\.case-home-link:hover\s*\{[^}]*color:\s*var\(--text-primary\)", "case home-link hover must use --text-primary"),
+        (r"\.case-location \.case-home-link:hover\s*\{[^}]*color:\s*var\(--text-primary\)", "case home-link hover must use --text-primary"),
         (r"\.case-location\s*\{[^}]*flex-wrap:\s*wrap", "case location must wrap onto two lines"),
         (r"\.case-home-link\s*\{[^}]*flex-basis:\s*100%", "case home link must occupy the first location line"),
         (r"\.case-location\s*\{[^}]*row-gap:\s*0", "case location lines must not add an extra vertical gap"),
@@ -336,22 +438,77 @@ def _portfolio_errors(portfolio_repo: Path) -> list[str]:
 
     if not re.search(r"\.layout\s*\{[^}]*max-width:\s*calc\(\s*var\(--sidebar-column\) \+ var\(--layout-gap\) \+ var\(--content-column\)\s*\)[^}]*margin:\s*0 auto", base_css, re.DOTALL):
         errors.append("desktop layout must center the sidebar and 760px content column as one unit")
-    if not re.search(r"\.content\s*\{[^}]*max-width:\s*var\(--content-column\)", portfolio_css, re.DOTALL):
-        errors.append("homepage content must use the shared 760px content boundary")
-    if not re.search(r"\.content\s*\{[^}]*padding:\s*48px 0", portfolio_css, re.DOTALL):
-        errors.append("desktop content must use the compact 48px vertical padding")
-    if ".portfolio-card-image::after" in portfolio_css or "opacity: 0.55" in portfolio_css:
-        errors.append("clickable project media must remain free of hover overlays and tint layers")
-    if not re.search(r"\.portfolio-card:hover \.portfolio-card-meta::after\s*\{[^}]*content:\s*\"Read →\"", portfolio_css, re.DOTALL):
-        errors.append("clickable project metadata must expose the Read label beside its existing arrow")
-    if not re.search(r"\.portfolio-card-link:hover::after\s*\{[^}]*content:\s*\"Read →\"", portfolio_css, re.DOTALL):
-        errors.append("Heph metadata hover must expose the same Read affordance")
-    if re.search(r"\.portfolio-card-image::before\s*\{", portfolio_css):
-        errors.append("project interaction labels must stay outside the image")
-    if "mix-blend-mode:" in portfolio_css:
-        errors.append("project media hover must use normal blending")
-    if ".case-study-entry:hover img" in case_css:
-        errors.append("case-study entries must not use opacity-only image hover")
+    if not re.search(r"\.content\s*\{[^}]*max-width:\s*var\(--content-column\)", base_css, re.DOTALL):
+        errors.append("shared content must use the 760px boundary from the base bundle")
+    if not re.search(r"\.content\s*\{[^}]*padding:\s*48px 0", base_css, re.DOTALL):
+        errors.append("shared desktop content must use 48px vertical padding from the base bundle")
+    if re.search(r"\.content\s*\{", portfolio_css):
+        errors.append("homepage-only CSS must not own or duplicate the shared content shell")
+    if not re.search(r"\.portfolio-section\s*\{[^}]*display:\s*grid[^}]*grid-template-columns:\s*auto max-content max-content minmax\(0,\s*1fr\) auto", portfolio_css, re.DOTALL):
+        errors.append("homepage project rows must share date, title, field, spacer, and affordance columns")
+    if not re.search(r"\.portfolio-card-link\s*\{[^}]*grid-column:\s*1 / -1[^}]*grid-template-columns:\s*subgrid[^}]*width:\s*100%[^}]*color:\s*var\(--text-tertiary\)", portfolio_css, re.DOTALL):
+        errors.append("homepage project rows must be full-width subgrid links using --text-tertiary at rest")
+    if not re.search(r'\.portfolio-card-arrow\s*\{[^}]*grid-column:\s*5[^}]*font-family:\s*"Inter",\s*sans-serif[^}]*font-size:\s*16px', portfolio_css, re.DOTALL):
+        errors.append("homepage project rows must show a right-aligned 16px Inter arrow")
+    if not re.search(r"\.portfolio-card-link:hover \.portfolio-card-view\s*\{[^}]*visibility:\s*visible", portfolio_css, re.DOTALL):
+        errors.append("homepage project row hover must expose the View label")
+    if not re.search(r"\.portfolio-card-link:focus-visible\s*\{[^}]*outline:\s*1px solid var\(--text-primary\)[^}]*outline-offset:\s*6px", portfolio_css, re.DOTALL):
+        errors.append("homepage project row focus must use the full-width focus ring")
+    if 'class="portfolio-table-header"' not in portfolio_open or not all(
+        token in portfolio_open
+        for token in ('data-sort-key="date"', 'data-sort-key="title"', 'data-sort-key="field"', ">Link</span>", 'class="portfolio-list"')
+    ):
+        errors.append("homepage must place the Date, Title, Field, and Link header before its global project list")
+    if not re.search(r'\.portfolio-table-header\s*\{[^}]*display:\s*grid[^}]*grid-template-columns:\s*subgrid[^}]*color:\s*var\(--text-primary\)[^}]*font-family:\s*"Inter",\s*sans-serif[^}]*font-size:\s*16px[^}]*line-height:\s*24px', portfolio_css, re.DOTALL):
+        errors.append("homepage column headings must use the project subgrid and primary Inter at 16px/24px")
+    if not re.search(r"@media \(min-width:\s*769px\)[\s\S]*?\.portfolio-table-header\s*\{[^}]*padding-top:\s*0", portfolio_css):
+        errors.append("desktop column headings must share the sidebar Links text axis")
+    if re.search(r"\.portfolio-sort-button:hover\s*\{[^}]*text-decoration:\s*underline", portfolio_css, re.DOTALL):
+        errors.append("homepage sort controls must not introduce a bespoke underline hover state")
+    if not all(
+        token in portfolio_sort_script
+        for token in (
+            '".portfolio-sort-button"',
+            'document.querySelector(".portfolio-list")',
+            "titleCollator.compare(leftValue, rightValue)",
+            'querySelector(`.portfolio-card-${key}`)',
+            'getAttribute("datetime")',
+            "leftValue.localeCompare(rightValue)",
+            "rows.forEach((row) => portfolioList.append(row));",
+            "announce(`Projects sorted by ${key}, ${description}.`)",
+            "if (event.detail !== 0) button.blur();",
+            'key === "field"',
+            '"A to Z"',
+            '"Z to A"',
+        )
+    ):
+        errors.append("homepage Date, Title, and Field controls must globally reorder all projects and announce the active direction")
+    if not re.search(r"\.portfolio-list\s*\{[^}]*display:\s*grid[^}]*grid-template-columns:\s*subgrid[^}]*margin-top:\s*0", portfolio_css, re.DOTALL) or ".portfolio-group" in portfolio_css:
+        errors.append("homepage projects must use one sortable subgrid list without category wrappers")
+    if not re.search(r"\.portfolio-section\s*\{[^}]*grid-template-columns:\s*auto max-content max-content minmax\(0,\s*1fr\) auto[^}]*column-gap:\s*16px", portfolio_css, re.DOTALL):
+        errors.append("homepage Field track must begin four Inter spaces after the longest Title track")
+    if not re.search(r"\.portfolio-card-field\s*\{[^}]*grid-column:\s*3[^}]*color:\s*var\(--text-tertiary\)[^}]*font-size:\s*16px[^}]*line-height:\s*24px", portfolio_css, re.DOTALL):
+        errors.append("homepage field tags must use tertiary 16px/24px text in column three")
+    field_markup = portfolio_engineering + portfolio_design
+    expected_fields = {
+        "Design engineering": 1,
+        "Product design and engineering": 1,
+        "Brand identity": 1,
+        "Wordmark": 2,
+    }
+    for field, count in expected_fields.items():
+        if field_markup.count(f'class="portfolio-card-field">{field}') != count:
+            errors.append(f"homepage field tags must preserve {count} {field} row(s)")
+    if not re.search(
+        r"@media \(max-width:\s*768px\)[\s\S]*?\.portfolio-section\s*\{[^}]*grid-template-columns:\s*max-content max-content minmax\(0,\s*1fr\) auto[^}]*column-gap:\s*clamp\(8px,\s*3vw,\s*16px\)[\s\S]*?\.portfolio-card-field\s*\{[^}]*min-width:\s*0[^}]*overflow:\s*hidden[^}]*text-overflow:\s*ellipsis",
+        portfolio_css,
+    ):
+        errors.append("homepage project table must keep 16px type and truncate long fields inside the flexible mobile track")
+    if not re.search(
+        r"@media \(max-width:\s*768px\)[\s\S]*?\.portfolio-card-view\s*\{[^}]*display:\s*none",
+        portfolio_css,
+    ):
+        errors.append("mobile homepage rows must hide View while preserving the Inter arrow")
     if not re.search(r"\.case-copy p,\s*\n\.case-copy li\s*\{[^}]*color:\s*var\(--text-secondary\)", case_css, re.DOTALL):
         errors.append("case prose must use --text-secondary")
     if not re.search(r"\.case-caption[^}]*color:\s*var\(--text-tertiary\)", case_css, re.DOTALL):
@@ -374,45 +531,59 @@ def _portfolio_errors(portfolio_repo: Path) -> list[str]:
     if "portfolio-label" in portfolio_open or 'aria-label="Portfolio"' not in portfolio_open:
         errors.append("homepage must omit the visible Portfolio label while preserving its accessible section name")
     homepage_projects = (
-        "<!-- @include:sections/portfolio-heph.html -->",
-        "<!-- @include:sections/portfolio-filen.html -->",
-        "<!-- @include:sections/portfolio-n0thing.html -->",
-        "<!-- @include:sections/portfolio-ml7.html -->",
+        "<!-- @include:sections/portfolio-engineering.html -->",
+        "<!-- @include:sections/portfolio-design.html -->",
     )
     project_positions = [homepage_template.find(project) for project in homepage_projects]
     if any(position < 0 for position in project_positions) or project_positions != sorted(project_positions):
-        errors.append("homepage projects must stay ordered newest to oldest: Heph, Filen, n0thing, mL7")
+        errors.append("homepage must place Engineering rows before Design rows in its authored default order")
+    default_project_ids = (
+        "portfolio-site-title",
+        "portfolio-heph-title",
+        "portfolio-filen-title",
+        "portfolio-n0thing-title",
+        "portfolio-ml7-title",
+    )
+    portfolio_markup = portfolio_engineering + portfolio_design
+    default_positions = [portfolio_markup.find(f'id="{project_id}"') for project_id in default_project_ids]
+    if any(position < 0 for position in default_positions) or default_positions != sorted(default_positions):
+        errors.append("homepage projects must default newest-first: This website, Heph, Filen, n0thing, mL7")
     if not re.search(r"--text-media-gap:\s*32px", base_css):
         errors.append("homepage must define the 32px optical text-to-media gap")
     if not re.search(r"\.profile-summary\s*\{[^}]*margin-bottom:\s*var\(--text-media-gap\)", preview_css, re.DOTALL):
-        errors.append("homepage description must use the optical 32px transition into the first project media")
-    if not re.search(r"\.portfolio-card-meta\s*\{[^}]*grid-template-columns:\s*minmax\(0,\s*1fr\) auto[^}]*width:\s*100%", portfolio_css, re.DOTALL):
-        errors.append("project metadata must span the card and reserve a right-aligned affordance column")
-    if not re.search(r'\.portfolio-card-meta::after\s*\{[^}]*content:\s*"→"[^}]*font-family:\s*"Inter"', portfolio_css, re.DOTALL):
-        errors.append("project metadata must show a right-aligned Inter arrow")
+        errors.append("homepage description must use the optical 32px transition into the project table")
     if not re.search(r"\.portfolio-card-link\s*\{[^}]*width:\s*100%", portfolio_css, re.DOTALL):
         errors.append("standalone project metadata links must expose a full-width hit target")
-    if not re.search(r"\.portfolio-card-link:focus-visible\s*\{[^}]*outline:\s*1px solid var\(--text-primary\);[^}]*outline-offset:\s*4px", portfolio_css, re.DOTALL):
-        errors.append("standalone project metadata focus must reuse the full image-card ring")
     if not re.search(r"\.profile-copy\s*\{[^}]*color:\s*var\(--text-primary\)", preview_css, re.DOTALL):
         errors.append("homepage biography must use --text-primary")
+    if '<footer class="site-footer">' not in homepage_references:
+        errors.append("homepage Metadata and copyright must share one semantic footer")
+    if '© <span id="copyright-year">2026</span> Gil Rodrigues' not in homepage_references:
+        errors.append("homepage copyright must preserve the 2026 no-JavaScript fallback")
+    if not re.search(r"\.site-footer\s*\{[^}]*display:\s*grid[^}]*grid-template-columns:\s*minmax\(0,\s*1fr\) auto[^}]*align-items:\s*end", preview_css, re.DOTALL):
+        errors.append("homepage footer must align profile.json left and copyright right")
+    if not re.search(r'\.copyright\s*\{[^}]*color:\s*var\(--text-tertiary\)[^}]*font-family:\s*"Inter",\s*sans-serif[^}]*font-size:\s*16px[^}]*line-height:\s*var\(--link-line-height\)[^}]*margin-bottom:\s*var\(--footer-stack-bottom-gap\)', preview_css, re.DOTALL):
+        errors.append("homepage copyright must use dark-gray Inter at 16px/24px and share profile.json's optical bottom margin")
+    if not re.search(r"@media \(max-width:\s*768px\)[\s\S]*?\.site-footer\s*\{[^}]*display:\s*none", responsive_css):
+        errors.append("homepage metadata and copyright footer must stay desktop-only")
+    if 'document.querySelector("#copyright-year")' not in core_script or "copyrightYear.textContent = year;" not in core_script:
+        errors.append("homepage copyright year must update from the visitor's current local year")
+    if any('<!-- @include:partials/references.html -->' in template for template in case_templates.values()):
+        errors.append("case-study routes must not include the homepage copyright footer")
     if not re.search(r"\.references-links\s*\{[^}]*margin-top:\s*0\s*;", preview_css, re.DOTALL):
         errors.append("Metadata must not use a negative desktop offset")
     if re.search(r"\.references-links\s*\{[^}]*margin-top:\s*-", responsive_css, re.DOTALL):
         errors.append("Metadata must not use a negative mobile offset")
-    if not re.search(r"\.showcase\s*\{[^}]*margin-bottom:\s*32px", portfolio_css, re.DOTALL):
-        errors.append("homepage showcase entries must use the optical 32px gap")
-    if not re.search(r"\.gallery\s*\{[^}]*margin-bottom:\s*32px", portfolio_css, re.DOTALL):
-        errors.append("homepage gallery entries must use the optical 32px gap")
-    if "margin-bottom: 80px;" in responsive_css:
-        errors.append("mobile homepage must not restore 80px project-entry gaps")
-    heph_section = _read(portfolio_repo / "src/sections/portfolio-heph.html")
     heph_demo = _read(portfolio_repo / "src/partials/heph-demo.html")
     heph_css = _read(portfolio_repo / "src/styles/30-heph-demo.css")
     if not re.search(r"\.heph-demo\s*\{[^}]*overflow:\s*visible", heph_css, re.DOTALL):
         errors.append("Heph project section must not clip its metadata focus outline")
     if 'class="heph-demo-frame"' not in heph_demo:
         errors.append("mobile Heph terminal must use a dedicated decorative frame")
+    if "<!-- @include:partials/heph-demo.html -->" in homepage_template:
+        errors.append("the Heph terminal must stay off the text-only homepage")
+    if _read(portfolio_repo / "content/heph.md").count("![Heph demo](media:heph-demo)") != 1:
+        errors.append("the Heph case study must include the canonical terminal media exactly once")
     if not re.search(r"@media\s*\(max-width:\s*700px\)[\s\S]*?\.heph-demo-frame\s*\{[^}]*padding:\s*34px 14px[^}]*background:\s*var\(--heph-demo-mobile-bg\)", heph_css, re.DOTALL):
         errors.append("mobile Heph panel must use its distinct outer frame surface")
     heph_hex_colors = {color.lower() for color in re.findall(r"#[0-9a-f]{6}", heph_css, re.IGNORECASE)}
@@ -481,24 +652,42 @@ def _portfolio_errors(portfolio_repo: Path) -> list[str]:
         if banned in case_css:
             errors.append(f"case CSS contains banned rule: {banned}")
 
-    biography = "Designing brands, interfaces, and the systems that connect them."
+    biography = "Independent designer and engineer building brand systems, interfaces, and digital products."
     if biography not in " ".join(profile.split()):
         errors.append("homepage biography does not match the gildrb contract")
-    if 'href="/filen"' not in filen:
-        errors.append("Filen homepage image does not route to /filen")
-    if 'href="/heph"' not in heph_section or 'href="https://github.com/gildrb/heph"' in heph_section:
-        errors.append("Heph homepage metadata must route to /heph instead of GitHub")
+    if not all(f'href="/{slug}"' in portfolio_design for slug in ("filen", "n0thing", "ml7")):
+        errors.append("homepage project list must route to Filen, n0thing, and mL7")
+    if 'href="/heph"' not in portfolio_engineering or 'href="https://github.com/gildrb/heph"' in portfolio_engineering:
+        errors.append("Heph homepage row must route to /heph instead of GitHub")
     if "[GitHub repository](https://github.com/gildrb/heph)" not in _read(portfolio_repo / "content/heph.md"):
         errors.append("Heph case study must link to its GitHub repository inside the article")
-    if 'href="/ml7"' not in ml7:
-        errors.append("mL7 homepage image does not route to /ml7")
-    responsive_full_size = "(max-width: 768px) calc(100vw - 24px), (max-width: 1100px) calc(100vw - 336px), 760px"
-    for source_name, source in (("homepage preload", _read(portfolio_repo / "src/page.template.html")), ("Filen homepage media", filen), ("mL7 homepage media", ml7)):
-        if responsive_full_size not in source:
-            errors.append(f"{source_name} must use the responsive 760px media boundary")
-    for project in ("filen", "ml7"):
-        if 'path.join(root, slug, "index.html")' not in builder:
-            errors.append(f"builder does not generate /{project}")
+    if 'href="/site"' not in portfolio_engineering:
+        errors.append("homepage project list must route to the website case study")
+    if "siteConfig.caseStudies.map" not in builder or 'path.join(root, slug, "index.html")' not in builder:
+        errors.append("builder must generate every configured top-level case-study route")
+    profile_graph = structured_profile.get("@graph", [])
+    website_profile = next(
+        (entry for entry in profile_graph if entry.get("@id") == "https://gildrb.com/#website"),
+        {},
+    )
+    website_parts = {
+        entry.get("@id") for entry in website_profile.get("hasPart", [])
+    }
+    for slug in case_templates:
+        route = f"https://gildrb.com/{slug}"
+        case_id = f"{route}#case-study"
+        if f'- `{slug}.md`' not in content_guide:
+            errors.append(f"content guide does not enumerate content/{slug}.md")
+        if not all(route in document for document in public_portfolio_docs):
+            errors.append(f"public agent documentation does not enumerate /{slug}")
+        if f"<loc>{route}</loc>" not in sitemap:
+            errors.append(f"sitemap does not enumerate /{slug}")
+        if f"<link>{route}</link>" not in feed:
+            errors.append(f"feed does not enumerate /{slug}")
+        if not any(entry.get("@id") == case_id for entry in profile_graph):
+            errors.append(f"structured profile does not define /{slug}#case-study")
+        if case_id not in website_parts:
+            errors.append(f"structured profile website does not include /{slug}#case-study")
     required_sidebar_links = (
         "https://behance.net/gildrb",
         "https://github.com/gildrb",
@@ -517,8 +706,10 @@ def _portfolio_errors(portfolio_repo: Path) -> list[str]:
         errors.append("homepage does not include the shared theme control")
     for template_name, template in (
         ("Filen", filen_template),
+        ("Heph", heph_template),
         ("mL7", ml7_template),
         ("n0thing", n0thing_template),
+        ("This website", site_template),
     ):
         if "<!-- @include:partials/sidebar-links.html -->" not in template:
             errors.append(f"{template_name} does not include the shared sidebar links")
@@ -557,7 +748,7 @@ def _portfolio_errors(portfolio_repo: Path) -> list[str]:
     for stylesheet, pattern, message in responsive_visibility_rules:
         if not re.search(pattern, stylesheet, re.DOTALL):
             errors.append(message)
-    if not all(token in site_config for token in ('"10-core.js"', '"20-theme.js"', '"30-email.js"')):
+    if not re.search(r"const sharedCaseScripts = Object\.freeze\(\[\s*\"10-core\.js\",\s*\"20-theme\.js\",\s*\"30-email\.js\",?\s*\]\)", site_config):
         errors.append("case-page script bundle does not include shared email behavior")
     if 'querySelectorAll(".email")' not in email_script:
         errors.append("shared email behavior does not bind every responsive email control")

@@ -1,0 +1,4 @@
+interface:
+  display_name: "Gildrb Interaction"
+  short_description: "Implement deterministic interface states"
+  default_prompt: "Use $gildrb-interaction to implement and verify gildrb pointer, click, hover, theme, and navigation state behavior."

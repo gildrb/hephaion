@@ -1,0 +1,4 @@
+interface:
+  display_name: "Gildrb Typography"
+  short_description: "Enforce the exact gildrb type system"
+  default_prompt: "Use $gildrb-typography to adjust and verify font family, size, weight, line height, and letter spacing only."
