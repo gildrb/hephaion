@@ -398,11 +398,19 @@ def _portfolio_errors(portfolio_repo: Path) -> list[str]:
     ):
         errors.append("homepage groups and rows must share the portfolio subgrid")
     if not re.search(
-        r"\.portfolio-card-arrow\s*\{[^}]*grid-column:\s*3[^}]*color:\s*var\(--text-tertiary\)[^}]*font-size:\s*16px",
+        r"\.portfolio-card-link\s*\{[^}]*color:\s*var\(--text-tertiary\)",
+        portfolio_css,
+        re.DOTALL,
+    ) or not re.search(
+        r"\.portfolio-card-link time\s*\{[^}]*color:\s*inherit",
+        portfolio_css,
+        re.DOTALL,
+    ) or not re.search(
+        r"\.portfolio-card-arrow\s*\{[^}]*grid-column:\s*3[^}]*color:\s*inherit[^}]*font-size:\s*16px",
         portfolio_css,
         re.DOTALL,
     ):
-        errors.append("homepage arrows must be real tertiary-colored grid elements")
+        errors.append("homepage date and arrow must inherit the tertiary row color")
     if not re.search(
         r"\.portfolio-group \.section-title\s*\{[^}]*margin-bottom:\s*var\(--section-content-gap\)[^}]*color:\s*var\(--text-secondary\)",
         portfolio_css,
@@ -424,21 +432,23 @@ def _portfolio_errors(portfolio_repo: Path) -> list[str]:
     if ".portfolio-card-link::after" in portfolio_css or "font-variant-numeric: tabular-nums" in portfolio_css:
         errors.append("homepage must not use pseudo-element arrows or tabular numerals")
     if not re.search(
-        r"@media\s*\(hover:\s*hover\)[\s\S]*?\.portfolio-card-link:hover time,\s*\n\s*\.portfolio-card-link:hover \.portfolio-card-arrow\s*\{[^}]*color:\s*var\(--text-primary\)",
+        r"@media\s*\(hover:\s*hover\)[\s\S]*?\.portfolio-card-link:hover\s*\{[^}]*color:\s*var\(--text-primary\)",
         portfolio_css,
         re.DOTALL,
     ):
-        errors.append("homepage row hover must brighten the date and real arrow")
+        errors.append("homepage row hover must set the link currentColor to primary")
     if not re.search(r"\.portfolio-card-link\s*\{[^}]*width:\s*100%", portfolio_css, re.DOTALL):
         errors.append("homepage project rows must expose a full-width hit target")
-    if not re.search(r"\.portfolio-card-link:focus-visible\s*\{[^}]*outline:\s*1px solid var\(--text-primary\);[^}]*outline-offset:\s*6px", portfolio_css, re.DOTALL):
-        errors.append("homepage project focus must use the 6px shared ring")
-    if not re.search(r"\.portfolio-card-link:focus-visible \.portfolio-card-title\s*\{[^}]*color:\s*var\(--text-primary\)", portfolio_css, re.DOTALL) or not re.search(
-        r"\.portfolio-card-link:focus-visible \.portfolio-card-arrow\s*\{[^}]*color:\s*var\(--text-primary\)",
-        portfolio_css,
+    if not re.search(r"\.portfolio-card-link:focus-visible\s*\{[^}]*color:\s*var\(--text-primary\)[^}]*outline:\s*1px solid var\(--text-primary\);[^}]*outline-offset:\s*6px", portfolio_css, re.DOTALL):
+        errors.append("homepage project focus must set link currentColor and use the 6px ring")
+    if re.search(r"\.portfolio-card-link:focus-visible\s+\.portfolio-card-(?:title|arrow)", portfolio_css):
+        errors.append("homepage focus must not use redundant descendant color rules")
+    if not re.search(
+        r"\.name\s*\{[^}]*min-height:\s*calc\(var\(--link-line-height\) \* 2\);[^}]*margin-bottom:\s*calc\(\s*var\(--section-gap\) \+ var\(--section-content-gap\) \+\s*var\(--text-media-gap\) - var\(--link-line-height\)\s*\)",
+        base_css,
         re.DOTALL,
     ):
-        errors.append("homepage project focus must brighten title and arrow")
+        errors.append("sidebar name spacing must align Links with the first homepage project group")
     if not re.search(r"\.profile-copy\s*\{[^}]*color:\s*var\(--text-primary\)", preview_css, re.DOTALL):
         errors.append("homepage biography must use --text-primary")
     if not re.search(r"\.references-links\s*\{[^}]*margin-top:\s*0\s*;", preview_css, re.DOTALL):

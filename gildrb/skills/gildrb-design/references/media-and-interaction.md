@@ -6,7 +6,7 @@
 - Case-study media and showcase/gallery rules remain active on case pages.
 - Each `.portfolio-card-link` is one full-row navigation target containing date, title, and arrow.
 - The arrow is a real `<span class="portfolio-card-arrow" aria-hidden="true">→</span>`, not a pseudo-element. A pseudo-element does not reliably repaint to white on ancestor `:hover` in this subgrid layout; a real element does.
-- At rest, dates and arrows use `--text-tertiary`; on hover-capable devices, row hover turns date and arrow to `--text-primary` while the title stays primary.
+- At rest, the link carries `--text-tertiary`, and its date and arrow use `color: inherit`; on hover-capable devices, the link's `currentColor` changes to `--text-primary`, so the whole row changes as one unit while the title stays primary.
 - Keep the hover rule inside `@media (hover: hover)`. Do not add arrow transitions, transforms, background boxes, or `Read` label swaps.
 - Use `.portfolio-card-link:focus-visible` with the shared `1px` primary outline and `6px` offset; focus turns the title and arrow primary.
 

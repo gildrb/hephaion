@@ -241,6 +241,7 @@ Rules:
 - On hover-capable devices, hovering anywhere on a row turns date and arrow to `--text-primary`; the title stays white. There is no hover background, underline, transition, transform, or `Read` label swap.
 - Focus-visible uses `outline: 1px solid var(--text-primary)` with `outline-offset: 6px` and turns title and arrow primary.
 - Keep homepage content in the centered `760px` column. Metadata uses `margin-top: auto` on desktop and mobile retains `.content { display: contents; }` and existing ordering.
+- The sidebar `.name` uses `margin-bottom: calc(var(--section-gap) + var(--section-content-gap) + var(--text-media-gap) - var(--link-line-height))`, aligning the `Links` label with the first homepage project group. The fixed two-line name height keeps this coordinate identical on case pages.
 - The whole homepage fits one desktop viewport without scroll. Preserve the shared sidebar, theme toggle, and case-page contracts.
 
 ## Media
@@ -317,6 +318,7 @@ Rules:
 - Icon controls use `--text-tertiary` at rest and `--text-primary` on hover unless a documented component state requires otherwise.
 - Homepage project rows are full-row links; the date, title, and arrow form one stable hit target.
 - The homepage arrow is a real `.portfolio-card-arrow` element, not a pseudo-element, because Chromium does not reliably repaint a pseudo-element on ancestor hover in this subgrid layout.
+- The arrow and date inherit the link's `currentColor`, so the whole row changes as one unit on `:hover`.
 - On hover-capable devices, row hover changes date and arrow from `--text-tertiary` to `--text-primary`; keep this rule inside `@media (hover: hover)`.
 - Keep the arrow static: no `Read` label swap, transform, transition, or hover background.
 - Homepage focus uses the shared `1px` primary outline with `6px` offset and turns title and arrow primary.

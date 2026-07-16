@@ -50,4 +50,4 @@ Keep this sentence synchronized across visible and machine-readable surfaces. Th
 
 ## Shell
 
-Keep the homepage content in the shared `760px` column. The group gap is `28px`. Metadata is bottom-aligned on desktop through `.references-links { margin-top: auto; }` at `min-width: 769px`. Mobile keeps `.content { display: contents; }` and the existing ordering.
+Keep the homepage content in the shared `760px` column. The group gap is `28px`. Metadata is bottom-aligned on desktop through `.references-links { margin-top: auto; }` at `min-width: 769px`. Mobile keeps `.content { display: contents; }` and the existing ordering. The sidebar `.name` uses `margin-bottom: calc(var(--section-gap) + var(--section-content-gap) + var(--text-media-gap) - var(--link-line-height))` so `Links` aligns with the first project group; the fixed two-line name height preserves that coordinate on case pages.
