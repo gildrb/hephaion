@@ -194,7 +194,7 @@ Do not add arbitrary values when an existing step expresses the relationship. Wi
 
 - At `767px` and below, the layout becomes a two-column grid: content plus `32px` theme-control column.
 - Wrapper uses `12px` inline padding.
-- The mobile layout container has no vertical padding. The name and theme-control row supplies `24px` top and `8px` bottom padding; `.content` uses `display: contents` with `0` padding. On the homepage both controls stay in document flow so a touch drag moves the whole page as one surface; case-study routes keep the row sticky for reading navigation.
+- The mobile layout container has no vertical padding. The name and theme-control row supplies `24px` top and `8px` bottom padding; `.content` uses `display: contents` with `0` padding. On the homepage both controls stay in document flow so a touch drag moves the whole page as one surface; keep native root overscroll available for pull-to-refresh. Case-study routes keep the row sticky for reading navigation.
 - Sidebar and content use `display: contents` so the same elements enter the shared mobile grid.
 - On case-study routes, keep the desktop Links and Contact group in the sidebar. On mobile, render the article immediately after the location row and place the mobile instance of that same shared partial after the article so DOM, focus, and visual order agree.
 - The mobile grid still requires article order `5` and shared navigation order `6`: `display: contents` exposes both sets of descendants to the wrapper grid, so these values preserve the same order already established in the DOM rather than contradicting it.

@@ -68,6 +68,7 @@ REQUIRED_OPERATIONAL_CONTRACTS = {
     ),
     "skills/gildrb-interaction/SKILL.md": (
         "A touch drag on the mobile homepage moves the name, theme control, and content as one page",
+        "Pull-to-refresh remains available",
     ),
     "skills/gildrb-typography/SKILL.md": (
         "Case-study Markdown uses compact `###` headings",
