@@ -352,7 +352,7 @@ def _portfolio_errors(portfolio_repo: Path) -> list[str]:
         "heph": "Heph",
         "ml7": "mL7",
         "n0thing": "n0thing",
-        "site": "This website",
+        "site": "gildrb.com",
     }
     if "<title>Gil Rodrigues</title>" not in homepage_template:
         errors.append("homepage browser title must be only Gil Rodrigues")
@@ -552,7 +552,7 @@ def _portfolio_errors(portfolio_repo: Path) -> list[str]:
     portfolio_markup = portfolio_engineering + portfolio_design
     default_positions = [portfolio_markup.find(f'id="{project_id}"') for project_id in default_project_ids]
     if any(position < 0 for position in default_positions) or default_positions != sorted(default_positions):
-        errors.append("homepage projects must default newest-first: This website, Heph, Filen, n0thing, mL7")
+        errors.append("homepage projects must default newest-first: gildrb.com, Heph, Filen, n0thing, mL7")
     if not re.search(r"--text-media-gap:\s*32px", base_css):
         errors.append("homepage must define the 32px optical text-to-media gap")
     if not re.search(r"\.profile-summary\s*\{[^}]*margin-bottom:\s*var\(--text-media-gap\)", preview_css, re.DOTALL):
@@ -714,7 +714,7 @@ def _portfolio_errors(portfolio_repo: Path) -> list[str]:
         ("Heph", heph_template),
         ("mL7", ml7_template),
         ("n0thing", n0thing_template),
-        ("This website", site_template),
+        ("gildrb.com", site_template),
     ):
         if "<!-- @include:partials/sidebar-links.html -->" not in template:
             errors.append(f"{template_name} does not include the shared sidebar links")

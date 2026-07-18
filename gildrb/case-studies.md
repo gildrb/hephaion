@@ -18,13 +18,13 @@ Current routes:
 - `/n0thing`
 - `/ml7`
 
-Use only the current location name for the browser-tab title: `Gil Rodrigues` on `/`, then `This website`, `Heph`, `Filen`, `n0thing`, or `mL7` on each case route. Keep longer descriptive wording in social metadata rather than the `<title>` element.
+Use only the current location name for the browser-tab title: `Gil Rodrigues` on `/`, then `gildrb.com`, `Heph`, `Filen`, `n0thing`, or `mL7` on each case route. Keep longer descriptive wording in social metadata rather than the `<title>` element.
 
 ## Homepage Entry
 
 - Keep all projects in one global table with Date, Title, Field, and Link columns.
 - Make the complete row the case-study link and give it a precise accessible name.
-- Use the specific fields from the current source: `Design engineering` for This website, `Product design and engineering` for Heph, `Brand identity` for Filen, and `Wordmark` for n0thing and mL7.
+- Use the specific fields from the current source: `Design engineering` for gildrb.com, `Product design and engineering` for Heph, `Brand identity` for Filen, and `Wordmark` for n0thing and mL7.
 - Keep `Date`, `Title`, and `Field` sortable across the complete list while preserving DOM, visual, and keyboard order.
 - Reveal `View →` on direct row hover and keyboard focus without changing weight or shifting layout.
 - Do not add project summaries, marketing copy, images, or category-divider wrappers to the homepage list.
@@ -158,14 +158,14 @@ Use these principles only when the user explicitly requests suggestions, draftin
 - Do not copy Filen-specific claims into mL7.
 - If evidence is incomplete, write only what the visible artifacts establish and leave further sections for later evidence.
 
-## This website
+## gildrb.com
 
-- Project label: `This website`.
+- Project label: `gildrb.com`.
 - Route: `/site`.
 - Homepage entry: current local date row tagged `Design engineering`.
 - Keep the authored build narrative in `content/site.md` and the route chrome in `src/site.template.html`.
 - Synchronize `llms.txt`, `.well-known/llms.txt`, `humans.txt`, `sitemap.xml`, `feed.xml`, and `src/data/profile.json` whenever the public portfolio route set changes.
-- Location uses two lines: `Gil Rodrigues` then `→ This website`.
+- Location uses two lines: `Gil Rodrigues` then `→ gildrb.com`.
 
 ## Completion
 
