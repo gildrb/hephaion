@@ -136,7 +136,7 @@ Text selection uses `--highlight-text` over `--highlight-bg`; do not restore the
 
 ### Case-study steps
 
-Case-specific letter spacing is always `0`. Do not use negative letter spacing.
+Case titles use `-0.02em` letter spacing. Other case-study text uses `0`; do not add negative spacing to those roles.
 
 - Page title desktop: `28px`, weight `500`, line height `36px`.
 - Page title mobile: `24px`, weight `500`, line height `32px`.
@@ -422,4 +422,4 @@ For every design change:
 18. Measure homepage table alignment and overflow at desktop, `390px`, and `320px`; the header and rows remain one contiguous block.
 19. Confirm the Heph demo appears only on `/heph` and remains exposed to assistive technology.
 
-Reject a change that introduces crop, arbitrary type sizes, negative case letter spacing, a second navigation system, editorial divider rules, stale generated output, broken metadata, or an unprotected unfinished preview.
+Reject a change that introduces crop, arbitrary type sizes, negative letter spacing outside the case-title role, a second navigation system, editorial divider rules, stale generated output, broken metadata, or an unprotected unfinished preview.

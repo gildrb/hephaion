@@ -30,7 +30,7 @@ REQUIRED_DESIGN_PHRASES = (
     "Independent designer and engineer building brand systems, interfaces, and digital products.",
     "Gil Rodrigues\n→ Filen",
     "Gil Rodrigues\n→ mL7",
-    "Case-specific letter spacing is always `0`.",
+    "Case titles use `-0.02em` letter spacing.",
     "Do not use middle-dot separators.",
     "Do not crop process images.",
     "Page title desktop: `28px`, weight `500`, line height `36px`.",
@@ -619,10 +619,17 @@ def _portfolio_errors(portfolio_repo: Path) -> list[str]:
         "line-height: 32px;",
         "line-height: 28px;",
         "letter-spacing: 0;",
+        "letter-spacing: -0.02em;",
     )
     for rule in required_case_rules:
         if rule not in case_css:
             errors.append(f"case CSS missing rule: {rule}")
+    if not re.search(
+        r"\.case-title\s*\{[^}]*letter-spacing:\s*-0\.02em",
+        case_css,
+        re.DOTALL,
+    ):
+        errors.append("case titles must use -0.02em letter spacing")
     if not re.search(
         r"@media\s*\(min-width:\s*769px\)[\s\S]*?\.case-article article > :last-child\s*\{[^}]*padding-bottom:\s*calc\([^}]*var\(--footer-title-center-offset\)[^}]*var\(--theme-toggle-size\)",
         case_css,
