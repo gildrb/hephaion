@@ -244,9 +244,9 @@ Rules:
 
 - Keep biography first and concise.
 - Keep the homepage free of project images, previews, and the Heph terminal; all project evidence belongs inside case-study routes.
-- Order homepage projects newest to oldest by default: `This website`, `Heph`, `Filen`, `n0thing`, then `mL7`. DOM, visual, and keyboard order must agree at every viewport.
+- Order homepage projects newest to oldest by default: `gildrb.com`, `Heph`, `Filen`, `n0thing`, then `mL7`. DOM, visual, and keyboard order must agree at every viewport.
 - Place one `Date` / `Title` / `Field` / `Link` header row before the single global project list. Render all four labels in explicit Inter `16px/24px` and `--text-primary` on the same five-column subgrid as the project rows; `Link` is a static right-aligned heading and the fourth grid track is flexible whitespace.
-- Size the desktop Title and Field tracks to their longest content. Use the existing `16px` column gap—the width of four Inter spaces—between `This website`, the longest title, and the Field track. Use `Design engineering`, `Product design and engineering`, `Brand identity`, and `Wordmark` exactly as authored in the current rows. Render field values at `16px/24px` in `--text-tertiary`.
+- Size the desktop Title and Field tracks to their longest content. Use the existing `16px` column gap—the width of four Inter spaces—between `gildrb.com`, the longest title, and the Field track. Use `Design engineering`, `Product design and engineering`, `Brand identity`, and `Wordmark` exactly as authored in the current rows. Render field values at `16px/24px` in `--text-tertiary`.
 - On mobile, use `max-content max-content minmax(0, 1fr) auto` with `clamp(8px, 3vw, 16px)` column gaps. Keep the table at Inter `16px/24px`, show years instead of full dates, hide `View`, and truncate long Field values with an ellipsis so the row never creates page overflow.
 - Treat the header and five project rows as one compact table block. The first project row begins immediately below the header rule with no section gap or category-divider space.
 - On desktop, align the header row's text line box exactly with the sidebar `Links` label line box. Preserve the former Engineering-to-Links axis: do not add top padding that drops `Date`, `Title`, or `Link` below it.
