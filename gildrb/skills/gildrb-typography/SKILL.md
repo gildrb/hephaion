@@ -34,8 +34,8 @@ Change or audit text metrics while preserving layout spacing, color, behavior, a
 - Compact heading: `19px/28px`, weight `500`.
 - Caption and metadata: `14px/20px`, weight `400`.
 - Case code: `14px/20px`, weight `400`.
-- Case letter spacing: `0`.
-- Never use weights below `400`, fluid case type, `clamp()`, negative letter spacing, or invented intermediate sizes.
+- Case-title letter spacing: `-0.02em`; other case-study text: `0`.
+- Never use weights below `400`, fluid case type, `clamp()`, negative letter spacing outside the case-title role, or invented intermediate sizes.
 - Never change font weight between rest, hover, focus, active, or selected states.
 - On desktop, the title's top edge aligns with the top edge of `Gil Rodrigues`; the title margin remains `0` and neither column is independently nudged.
 

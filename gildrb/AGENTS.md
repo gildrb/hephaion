@@ -50,7 +50,7 @@ Portfolio router. Read implementation first, then these contracts.
 - Keep `Gil Rodrigues` at the same top-left location on every page.
 - Keep profile links, contact links, email action, and theme control in one shared sidebar partial used by the homepage and every case route.
 - Case location uses two lines: `Gil Rodrigues` then `→ <Project>`; only `Gil Rodrigues` links home.
-- Use zero letter spacing in case-study-specific styles.
+- Use `-0.02em` letter spacing for case titles and zero for other case-study text.
 - Use documented type steps. Do not add fluid or arbitrary text sizes.
 - Do not add middle-dot separators, horizontal-rule dividers, gradients, cards, or shadows.
 - Do not crop images. Use `width: 100%` and `height: auto`.
