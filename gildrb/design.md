@@ -90,6 +90,7 @@ The live portfolio token names remain authoritative.
   --section-content-gap: 6px;
   --link-line-height: 24px;
   --theme-toggle-size: 32px;
+  --theme-toggle-optical-offset: 2px;
   --sidebar-column: 240px;
   --content-column: 760px;
   --layout-gap: 48px;
@@ -194,7 +195,7 @@ Do not add arbitrary values when an existing step expresses the relationship. Wi
 
 - At `767px` and below, the layout becomes a two-column grid: content plus `32px` theme-control column.
 - Wrapper uses `12px` inline padding.
-- The mobile layout container has no vertical padding. The name and theme-control row supplies `24px` top and `8px` bottom padding; `.content` uses `display: contents` with `0` padding. On the homepage both controls stay in document flow so a touch drag moves the whole page as one surface; keep native root overscroll available for pull-to-refresh. Case-study routes keep the row sticky for reading navigation.
+- The mobile layout container has no vertical padding. The name supplies `24px` top and `8px` bottom padding. On the homepage and every case-study route, the shared theme control keeps the same fixed `56px` row height in both themes and centers both icon sizes inside its content area so switching cannot move or resize the button. It shifts that shared icon center `2px` lower with `--theme-toggle-optical-offset`, using `26px` top and `6px` bottom padding for optical alignment with the first `Gil Rodrigues` line. `.content` uses `display: contents` with `0` padding. On the homepage both controls stay in document flow so a touch drag moves the whole page as one surface; keep native root overscroll available for pull-to-refresh. Case-study routes keep the row sticky for reading navigation.
 - Sidebar and content use `display: contents` so the same elements enter the shared mobile grid.
 - On case-study routes, keep the desktop Links and Contact group in the sidebar. On mobile, render the article immediately after the location row and place the mobile instance of that same shared partial after the article so DOM, focus, and visual order agree.
 - The mobile grid still requires article order `5` and shared navigation order `6`: `display: contents` exposes both sets of descendants to the wrapper grid, so these values preserve the same order already established in the DOM rather than contradicting it.

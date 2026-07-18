@@ -389,10 +389,17 @@ def _portfolio_errors(portfolio_repo: Path) -> list[str]:
         "--content-column": "760px",
         "--layout-gap": "48px",
         "--media-radius": "22px",
+        "--theme-toggle-optical-offset": "2px",
     }
     for name, value in expected_tokens.items():
         if not re.search(rf"{re.escape(name)}:\s*{re.escape(value)}\s*;", base_css):
             errors.append(f"portfolio token drift: {name} must be {value}")
+    if not re.search(
+        r"\.theme-toggle\s*\{[^}]*height:\s*calc\(24px \+ var\(--link-line-height\) \+ 8px\)[^}]*padding:\s*calc\(24px \+ var\(--theme-toggle-optical-offset\)\) 0\s*calc\(8px - var\(--theme-toggle-optical-offset\)\)[^}]*align-items:\s*center",
+        responsive_css,
+        re.DOTALL,
+    ):
+        errors.append("mobile theme toggle must keep a stable 56px box and icon center while applying the 2px optical offset")
     if not re.search(r"::selection\s*\{[^}]*color:\s*var\(--highlight-text\)[^}]*background:\s*var\(--highlight-bg\)", base_css, re.DOTALL):
         errors.append("text selection must use white over the approved bright-gray highlight")
     scroll_contract = (

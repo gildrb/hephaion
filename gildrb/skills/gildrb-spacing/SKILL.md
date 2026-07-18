@@ -25,13 +25,14 @@ Change or audit spatial distance without changing any other design dimension.
 
 ## Fixed Contract
 
-- Allowed scale: `4`, `8`, `12`, `16`, `20`, `24`, `32`, `48`, `64`, `80`, `120` pixels.
+- Allowed scale: `4`, `8`, `12`, `16`, `20`, `24`, `32`, `48`, `64`, `80`, `120` pixels. The only sub-scale exception is the documented `2px` `--theme-toggle-optical-offset`.
 - Image-grid gap: `20px`.
 - Sidebar text-to-text group gap: `24px`.
 - Homepage biography to project table: `32px`.
 - Project table header and rows form one contiguous block with no category or section gap.
 - Project header and row block padding: `8px` vertically.
 - Homepage table column gap: `16px` on desktop and `clamp(8px, 3vw, 16px)` on mobile.
+- On the homepage and every case route, mobile theme-toggle padding uses the `2px` optical offset to move the shared icon center down while preserving a fixed `56px` row height: `26px` above and `6px` below.
 - Desktop `.content` padding: `48px 0`, declared once in shared `src/styles/10-base.css` so homepage and case titles align with the sidebar name. Mobile resets it to `0` in `90-responsive.css`.
 - Case section gap: `80px`.
 - Prose-to-media and media-to-following-copy: `var(--text-media-gap)`, exactly `32px`, applied once per boundary.
@@ -43,13 +44,13 @@ Change or audit spatial distance without changing any other design dimension.
 2. Read `src/styles/10-base.css`, the owning stylesheet, and the matching markup.
 3. Identify every CSS contribution to the measured distance: margin collapse, parent gap, padding, line box, caption margin, and media wrapper.
 4. Measure the current boundary in the browser. Do not infer it from one declaration.
-5. Reuse an existing token. Add no value outside the fixed scale.
+5. Reuse an existing token. Add no value outside the fixed scale or its single documented optical exception.
 6. Apply the distance once at the owning boundary; remove double-counted adjacent spacing.
 7. Measure desktop and mobile after rebuilding.
 
 ## Reject
 
-- Any arbitrary pixel value.
+- Any arbitrary pixel value other than the documented theme-toggle optical offset.
 - Any fix based only on visual guessing.
 - Any equal numeric gap claimed as optically equal without rendered comparison.
 - Any negative margin used to pull unrelated sections together.
