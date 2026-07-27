@@ -266,7 +266,7 @@ Rules:
 - Render project dates and scopes at `16px/24px` in `--text-tertiary`; render project titles at `16px/24px` in `--text-primary`.
 - Make every project row a full-width link target. Align date, project, scope, and the Inter `View →` affordance on the shared four-column subgrid.
 - Reveal `View` immediately left of the arrow only while the row is directly hovered or keyboard-focused. Hide `View` at `767px` and below so touch layouts retain all data columns without overflow.
-- `/all` starts immediately with the generated case studies. It adds no introduction, duplicates no authored case content, and orders its `.all-case` articles from the `sort` and `direction` URL parameters.
+- `/all` starts immediately with the generated case studies. It adds no introduction, duplicates no authored case content, orders its `.all-case` articles from the `sort` and `direction` URL parameters, and always places the homepage-derived `site` entry last.
 - Keep the homepage Metadata footer only on `/` and only on desktop. It lists `humans.txt`, `llms.txt`, and `profile.json` as a vertical `--section-content-gap` stack; it contains no copyright line.
 - Hide the complete Metadata footer at `767px` and below, and do not add it to case-study or `/all` routes.
 - Do not append summaries, roles, marketing copy, or detached personal-image preview sections.

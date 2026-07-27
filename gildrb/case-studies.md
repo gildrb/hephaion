@@ -32,7 +32,7 @@ Use only the current location name for the browser-tab title: `Gil Rodrigues` on
 
 - Generate `/all/index.html` from the existing homepage project rows and case-study Markdown renderer; do not duplicate project metadata or case copy.
 - Start with the first case study. Do not add an introductory heading or summary.
-- Sort `.all-case` articles from `sort` and `direction` query parameters.
+- Sort `.all-case` articles from `sort` and `direction` query parameters, then place the homepage-derived `site` entry last. This route always presents project work before the portfolio's own case study.
 - Separate adjacent `.all-case` articles with `var(--all-case-gap)`, exactly `24px × 1.618` (`38.832px`) from the case-title-to-text boundary.
 - Reveal `View →` on direct row hover and keyboard focus without changing weight or shifting layout.
 - Do not add project summaries, marketing copy, images, or category-divider wrappers to the homepage list.

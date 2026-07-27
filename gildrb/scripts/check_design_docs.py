@@ -44,6 +44,7 @@ REQUIRED_DESIGN_PHRASES = (
     "Place one `Date` / `Project` / `Scope` / `All` header row",
     "Make every project row a full-width link target.",
     "var(--all-case-gap)",
+    "always places the homepage-derived `site` entry last",
     "Case-study prose is user-owned.",
     "do not imply permission to alter wording",
     "Treat that desktop boundary as a maximum endpoint, not a target baseline.",
@@ -365,8 +366,10 @@ def _portfolio_errors(portfolio_repo: Path) -> list[str]:
         or '<!-- @all-cases -->' not in all_template
         or 'class="all-cases"' not in all_template
         or 'const allSortKey = allSortParams.get("sort");' not in all_sort_script
+        or 'if (left.dataset.slug === "site") return 1;' not in all_sort_script
+        or 'if (right.dataset.slug === "site") return -1;' not in all_sort_script
     ):
-        errors.append("continuous all-projects route must use the current title, generated articles, and scope sorting")
+        errors.append("continuous all-projects route must use the current title, generated articles, scope sorting, and a final site case")
     for slug, template in case_templates.items():
         markdown = _read(portfolio_repo / f"content/{slug}.md")
         if f"<!-- @case-markdown:{slug} -->" not in template:
