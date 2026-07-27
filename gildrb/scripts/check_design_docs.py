@@ -44,7 +44,6 @@ REQUIRED_DESIGN_PHRASES = (
     "Place one `Date` / `Project` / `Scope` / `All` header row",
     "Make every project row a full-width link target.",
     "var(--all-case-gap)",
-    "sort=field` remains a legacy alias for `sort=scope`",
     "Case-study prose is user-owned.",
     "do not imply permission to alter wording",
     "Treat that desktop boundary as a maximum endpoint, not a target baseline.",
@@ -365,9 +364,9 @@ def _portfolio_errors(portfolio_repo: Path) -> list[str]:
         "<title>All</title>" not in all_template
         or '<!-- @all-cases -->' not in all_template
         or 'class="all-cases"' not in all_template
-        or 'requestedAllSortKey === "field" ? "scope"' not in all_sort_script
+        or 'const allSortKey = allSortParams.get("sort");' not in all_sort_script
     ):
-        errors.append("continuous all-projects route must use the current title, generated articles, and legacy scope sorting")
+        errors.append("continuous all-projects route must use the current title, generated articles, and scope sorting")
     for slug, template in case_templates.items():
         markdown = _read(portfolio_repo / f"content/{slug}.md")
         if f"<!-- @case-markdown:{slug} -->" not in template:
