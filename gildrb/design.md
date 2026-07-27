@@ -89,7 +89,8 @@ The live portfolio token names remain authoritative.
   --section-gap: 24px;
   --section-content-gap: 6px;
   --text-media-gap: 32px;
-  --all-case-gap: 120px;
+  --case-title-text-gap: 24px;
+  --all-case-gap: calc(var(--case-title-text-gap) * 1.618);
   --link-line-height: 24px;
   --theme-toggle-size: 32px;
   --theme-toggle-optical-offset: 2px;
@@ -169,7 +170,8 @@ Use the existing 4px-derived rhythm and homepage constants.
 - Homepage table header and row vertical padding: `8px`; adjacent rows remain contiguous.
 - Homepage table column gap: `16px` on desktop and `clamp(8px, 3vw, 16px)` on mobile.
 - Case-study section gap: `80px` at every viewport.
-- Continuous `/all` case gap: `var(--all-case-gap)`, exactly `120px`. It derives from one `80px` case-section cadence, one `24px` related-group cadence, and one `16px` text-group cadence; apply it once between adjacent `.all-case` articles.
+- Case-title-to-text gap: `var(--case-title-text-gap)`, exactly `24px`.
+- Continuous `/all` case gap: `var(--all-case-gap)`, exactly `24px × 1.618` (`38.832px`). It derives from the established case-title-to-text boundary; apply it once between adjacent `.all-case` articles.
 - Desktop wrapper padding: `48px`.
 - Wrapper padding below `1400px`: `32px`.
 - Current mobile wrapper padding: `12px`.
@@ -413,7 +415,7 @@ For every design change:
 6. Confirm persistent location coordinates and font equality.
 7. Confirm one full-width homepage row link per configured project.
 8. Confirm Date, Project, and Scope sort the complete list, All preserves that state in its `/all` URL, and each ordering is announced.
-9. Confirm `/all` uses the shared `120px` `--all-case-gap` between generated articles at desktop and mobile widths.
+9. Confirm `/all` uses `--all-case-gap`, derived as the `24px` case-title-to-text gap multiplied by `1.618`, between generated articles at desktop and mobile widths.
 10. Confirm complete case-image aspect ratios and responsive source selection.
 11. Confirm no middle dots or rule dividers.
 12. Confirm no horizontal overflow.

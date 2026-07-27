@@ -396,7 +396,8 @@ def _portfolio_errors(portfolio_repo: Path) -> list[str]:
         "--text-tertiary": "#767676",
         "--highlight-bg": "#b3b3b3",
         "--highlight-text": "#ffffff",
-        "--all-case-gap": "120px",
+        "--case-title-text-gap": "24px",
+        "--all-case-gap": "calc(var(--case-title-text-gap) * 1.618)",
         "--sidebar-column": "240px",
         "--content-column": "760px",
         "--layout-gap": "48px",
@@ -557,7 +558,7 @@ def _portfolio_errors(portfolio_repo: Path) -> list[str]:
     if not re.search(r"\.case-section\s*\{[^}]*margin-top:\s*80px", case_css, re.DOTALL):
         errors.append("case sections must use the compact 80px rhythm")
     if not re.search(r"\.all-case \+ \.all-case\s*\{[^}]*margin-top:\s*var\(--all-case-gap\)", case_css, re.DOTALL):
-        errors.append("continuous all-projects cases must use the shared 120px spacing token")
+        errors.append("continuous all-projects cases must use the title-gap-derived spacing token")
     if not re.search(r"\.name\s*\{[^}]*line-height:\s*var\(--link-line-height\)[^}]*min-height:\s*calc\(var\(--link-line-height\) \* 2\)", base_css, re.DOTALL):
         errors.append("desktop location must reserve two lines so shared links never move")
     preview_css = _read(portfolio_repo / "src/styles/40-preview-content.css")
@@ -638,7 +639,7 @@ def _portfolio_errors(portfolio_repo: Path) -> list[str]:
             errors.append(f"Heph terminal does not separate label and value: {mixed_value}")
 
     required_case_rules = (
-        "margin: 0 0 24px;",
+        "margin: 0 0 var(--case-title-text-gap);",
         "font-size: 28px;",
         "font-size: 24px;",
         "font-size: 19px;",
