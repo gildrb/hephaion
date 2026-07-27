@@ -27,7 +27,7 @@ REQUIRED_PACKAGE_FILES = (
 )
 
 REQUIRED_DESIGN_PHRASES = (
-    "Independent designer and engineer building brand systems, interfaces, and digital products.",
+    "Brand designer based in Germany, building identity systems for software.",
     "Gil Rodrigues\n→ Filen",
     "Gil Rodrigues\n→ mL7",
     "Case titles use `-0.02em` letter spacing.",
@@ -41,9 +41,10 @@ REQUIRED_DESIGN_PHRASES = (
     "The same sidebar content persists on the homepage and every case-study route",
     "Do not show a `Portfolio` heading on the homepage",
     "Order homepage projects newest to oldest",
-    "Place one `Date` / `Title` / `Field` / `Link` header row",
+    "Place one `Date` / `Project` / `Scope` / `All` header row",
     "Make every project row a full-width link target.",
-    "© <current year> Gil Rodrigues",
+    "var(--all-case-gap)",
+    "sort=field` remains a legacy alias for `sort=scope`",
     "Case-study prose is user-owned.",
     "do not imply permission to alter wording",
     "Treat that desktop boundary as a maximum endpoint, not a target baseline.",
@@ -81,7 +82,7 @@ REQUIRED_OPERATIONAL_CONTRACTS = {
     ),
 }
 
-REQUIRED_CASE_ROUTES = ("/site", "/heph", "/filen", "/n0thing", "/ml7")
+REQUIRED_CASE_ROUTES = ("/site", "/heph", "/filen", "/n0thing", "/ml7", "/all")
 REQUIRED_SKILL_REFERENCES = {
     "skills/gildrb-portfolio/SKILL.md": (
         "references/homepage.md",
@@ -271,6 +272,7 @@ def _portfolio_errors(portfolio_repo: Path) -> list[str]:
         "src/partials/sidebar-links.html",
         "src/partials/sidebar.html",
         "src/partials/theme-toggle.html",
+        "src/all.template.html",
         "src/filen.template.html",
         "src/heph.template.html",
         "src/site.template.html",
@@ -279,6 +281,7 @@ def _portfolio_errors(portfolio_repo: Path) -> list[str]:
         "src/n0thing.template.html",
         "src/scripts/30-email.js",
         "src/scripts/15-portfolio-sort.js",
+        "src/scripts/60-all-sort.js",
         "scripts/build-page.mjs",
         "scripts/site-config.mjs",
         "scripts/render-case-markdown.mjs",
@@ -317,6 +320,8 @@ def _portfolio_errors(portfolio_repo: Path) -> list[str]:
     site_config = _read(portfolio_repo / "scripts/site-config.mjs")
     renderer = _read(portfolio_repo / "scripts/render-case-markdown.mjs")
     homepage_template = _read(portfolio_repo / "src/page.template.html")
+    all_template = _read(portfolio_repo / "src/all.template.html")
+    all_sort_script = _read(portfolio_repo / "src/scripts/60-all-sort.js")
     homepage_references = _read(portfolio_repo / "src/partials/references.html")
     sidebar_links = _read(portfolio_repo / "src/partials/sidebar-links.html")
     homepage_sidebar = _read(portfolio_repo / "src/partials/sidebar.html")
@@ -356,6 +361,13 @@ def _portfolio_errors(portfolio_repo: Path) -> list[str]:
     }
     if "<title>Gil Rodrigues</title>" not in homepage_template:
         errors.append("homepage browser title must be only Gil Rodrigues")
+    if (
+        "<title>All</title>" not in all_template
+        or '<!-- @all-cases -->' not in all_template
+        or 'class="all-cases"' not in all_template
+        or 'requestedAllSortKey === "field" ? "scope"' not in all_sort_script
+    ):
+        errors.append("continuous all-projects route must use the current title, generated articles, and legacy scope sorting")
     for slug, template in case_templates.items():
         markdown = _read(portfolio_repo / f"content/{slug}.md")
         if f"<!-- @case-markdown:{slug} -->" not in template:
@@ -385,6 +397,7 @@ def _portfolio_errors(portfolio_repo: Path) -> list[str]:
         "--text-tertiary": "#767676",
         "--highlight-bg": "#b3b3b3",
         "--highlight-text": "#ffffff",
+        "--all-case-gap": "120px",
         "--sidebar-column": "240px",
         "--content-column": "760px",
         "--layout-gap": "48px",
@@ -414,8 +427,8 @@ def _portfolio_errors(portfolio_repo: Path) -> list[str]:
 
     semantic_color_rules = (
         (r"\.links-label\s*\{[^}]*color:\s*var\(--text-secondary\)", "labels must use --text-secondary"),
-        (r"\.external-link,\s*\n\.reference-link\s*\{[^}]*color:\s*var\(--text-tertiary\)", "text links must use --text-tertiary at rest"),
-        (r"\.external-link:hover,\s*\n\s*\.reference-link:hover\s*\{[^}]*color:\s*var\(--text-primary\)", "text-link hover must use --text-primary"),
+        (r"\.external-link,\s*\n\.internal-link,\s*\n\.reference-link\s*\{[^}]*color:\s*var\(--text-tertiary\)", "text links must use --text-tertiary at rest"),
+        (r"\.external-link:hover,\s*\n\s*\.internal-link:hover,\s*\n\s*\.reference-link:hover\s*\{[^}]*color:\s*var\(--text-primary\)", "text-link hover must use --text-primary"),
         (r"\.email\s*\{[^}]*color:\s*var\(--text-tertiary\)", "email must use --text-tertiary at rest"),
         (r"\.theme-toggle\s*\{[^}]*color:\s*var\(--text-tertiary\)", "icon controls must use --text-tertiary at rest"),
     )
@@ -456,11 +469,11 @@ def _portfolio_errors(portfolio_repo: Path) -> list[str]:
         errors.append("shared desktop content must use 48px vertical padding from the base bundle")
     if re.search(r"\.content\s*\{", portfolio_css):
         errors.append("homepage-only CSS must not own or duplicate the shared content shell")
-    if not re.search(r"\.portfolio-section\s*\{[^}]*display:\s*grid[^}]*grid-template-columns:\s*auto max-content max-content minmax\(0,\s*1fr\) auto", portfolio_css, re.DOTALL):
-        errors.append("homepage project rows must share date, title, field, spacer, and affordance columns")
+    if not re.search(r"\.portfolio-section\s*\{[^}]*display:\s*grid[^}]*grid-template-columns:\s*max-content max-content minmax\(0,\s*1fr\) auto", portfolio_css, re.DOTALL):
+        errors.append("homepage project rows must share date, project, scope, and affordance columns")
     if not re.search(r"\.portfolio-card-link\s*\{[^}]*grid-column:\s*1 / -1[^}]*grid-template-columns:\s*subgrid[^}]*width:\s*100%[^}]*color:\s*var\(--text-tertiary\)", portfolio_css, re.DOTALL):
         errors.append("homepage project rows must be full-width subgrid links using --text-tertiary at rest")
-    if not re.search(r'\.portfolio-card-arrow\s*\{[^}]*grid-column:\s*5[^}]*font-family:\s*"Inter",\s*sans-serif[^}]*font-size:\s*16px', portfolio_css, re.DOTALL):
+    if not re.search(r'\.portfolio-card-arrow\s*\{[^}]*grid-column:\s*4[^}]*font-family:\s*"Inter",\s*sans-serif[^}]*font-size:\s*16px', portfolio_css, re.DOTALL):
         errors.append("homepage project rows must show a right-aligned 16px Inter arrow")
     if not re.search(r"\.portfolio-card-link:hover \.portfolio-card-view\s*\{[^}]*visibility:\s*visible", portfolio_css, re.DOTALL):
         errors.append("homepage project row hover must expose the View label")
@@ -468,11 +481,11 @@ def _portfolio_errors(portfolio_repo: Path) -> list[str]:
         errors.append("homepage project row focus must use the full-width focus ring")
     if 'class="portfolio-table-header"' not in portfolio_open or not all(
         token in portfolio_open
-        for token in ('data-sort-key="date"', 'data-sort-key="title"', 'data-sort-key="field"', ">Link</span>", 'class="portfolio-list"')
+        for token in ('data-sort-key="date"', 'data-sort-key="title"', 'data-sort-key="scope"', 'href="/all?sort=date&direction=descending"', 'class="portfolio-list"')
     ):
-        errors.append("homepage must place the Date, Title, Field, and Link header before its global project list")
-    if not re.search(r'\.portfolio-table-header\s*\{[^}]*display:\s*grid[^}]*grid-template-columns:\s*subgrid[^}]*color:\s*var\(--text-primary\)[^}]*font-family:\s*"Inter",\s*sans-serif[^}]*font-size:\s*16px[^}]*line-height:\s*24px', portfolio_css, re.DOTALL):
-        errors.append("homepage column headings must use the project subgrid and primary Inter at 16px/24px")
+        errors.append("homepage must place the Date, Project, Scope, and All header before its global project list")
+    if not re.search(r'\.portfolio-table-header\s*\{[^}]*display:\s*grid[^}]*grid-template-columns:\s*subgrid[^}]*color:\s*var\(--text-secondary\)[^}]*font-family:\s*"Inter",\s*sans-serif[^}]*font-size:\s*16px[^}]*line-height:\s*24px', portfolio_css, re.DOTALL):
+        errors.append("homepage column headings must use the project subgrid and secondary Inter at 16px/24px")
     if not re.search(r"@media \(min-width:\s*768px\)[\s\S]*?\.portfolio-table-header\s*\{[^}]*padding-top:\s*0", portfolio_css):
         errors.append("desktop column headings must share the sidebar Links text axis")
     if re.search(r"\.portfolio-sort-button:hover\s*\{[^}]*text-decoration:\s*underline", portfolio_css, re.DOTALL):
@@ -489,33 +502,40 @@ def _portfolio_errors(portfolio_repo: Path) -> list[str]:
             "rows.forEach((row) => portfolioList.append(row));",
             "announce(`Projects sorted by ${key}, ${description}.`)",
             "if (event.detail !== 0) button.blur();",
-            'key === "field"',
+            "portfolioAllLink.href = `/all?sort=${key}&direction=${direction}`;",
             '"A to Z"',
             '"Z to A"',
         )
     ):
-        errors.append("homepage Date, Title, and Field controls must globally reorder all projects and announce the active direction")
+        errors.append("homepage Date, Project, and Scope controls must globally reorder all projects and announce the active direction")
     if not re.search(r"\.portfolio-list\s*\{[^}]*display:\s*grid[^}]*grid-template-columns:\s*subgrid[^}]*margin-top:\s*0", portfolio_css, re.DOTALL) or ".portfolio-group" in portfolio_css:
         errors.append("homepage projects must use one sortable subgrid list without category wrappers")
-    if not re.search(r"\.portfolio-section\s*\{[^}]*grid-template-columns:\s*auto max-content max-content minmax\(0,\s*1fr\) auto[^}]*column-gap:\s*16px", portfolio_css, re.DOTALL):
-        errors.append("homepage Field track must begin four Inter spaces after the longest Title track")
-    if not re.search(r"\.portfolio-card-field\s*\{[^}]*grid-column:\s*3[^}]*color:\s*var\(--text-tertiary\)[^}]*font-size:\s*16px[^}]*line-height:\s*24px", portfolio_css, re.DOTALL):
-        errors.append("homepage field tags must use tertiary 16px/24px text in column three")
-    field_markup = portfolio_engineering + portfolio_design
-    expected_fields = {
+    if not re.search(r"\.portfolio-section\s*\{[^}]*grid-template-columns:\s*max-content max-content minmax\(0,\s*1fr\) auto[^}]*column-gap:\s*16px", portfolio_css, re.DOTALL):
+        errors.append("homepage Scope track must begin after the Project track using the documented 16px gap")
+    if not re.search(r"\.portfolio-card-scope\s*\{[^}]*grid-column:\s*3[^}]*color:\s*var\(--text-tertiary\)[^}]*font-size:\s*16px[^}]*line-height:\s*24px", portfolio_css, re.DOTALL):
+        errors.append("homepage scope values must use tertiary 16px/24px text in column three")
+    scope_markup = portfolio_engineering + portfolio_design
+    expected_scopes = {
         "Design engineering": 1,
         "Product design and engineering": 1,
         "Brand identity": 1,
         "Wordmark": 2,
     }
-    for field, count in expected_fields.items():
-        if field_markup.count(f'class="portfolio-card-field">{field}') != count:
-            errors.append(f"homepage field tags must preserve {count} {field} row(s)")
-    if not re.search(
-        r"@media \(max-width:\s*767px\)[\s\S]*?\.portfolio-section\s*\{[^}]*grid-template-columns:\s*max-content max-content minmax\(0,\s*1fr\) auto[^}]*column-gap:\s*clamp\(8px,\s*3vw,\s*16px\)[\s\S]*?\.portfolio-card-field\s*\{[^}]*min-width:\s*0[^}]*overflow:\s*hidden[^}]*text-overflow:\s*ellipsis",
-        portfolio_css,
+    for scope, count in expected_scopes.items():
+        if scope_markup.count(f'class="portfolio-card-scope">{scope}') != count:
+            errors.append(f"homepage scope values must preserve {count} {scope} row(s)")
+    if not (
+        re.search(
+            r"@media \(max-width:\s*767px\)[\s\S]*?\.portfolio-section\s*\{[^}]*grid-template-columns:\s*max-content max-content minmax\(0,\s*1fr\) auto[^}]*column-gap:\s*clamp\(8px,\s*3vw,\s*16px",
+            portfolio_css,
+        )
+        and re.search(
+            r"\.portfolio-card-scope\s*\{[^}]*min-width:\s*0[^}]*overflow:\s*hidden[^}]*text-overflow:\s*ellipsis",
+            portfolio_css,
+            re.DOTALL,
+        )
     ):
-        errors.append("homepage project table must keep 16px type and truncate long fields inside the flexible mobile track")
+        errors.append("homepage project table must keep 16px type and truncate long scopes inside the flexible mobile track")
     if not re.search(
         r"@media \(max-width:\s*767px\)[\s\S]*?\.portfolio-card-view\s*\{[^}]*display:\s*none",
         portfolio_css,
@@ -537,6 +557,8 @@ def _portfolio_errors(portfolio_repo: Path) -> list[str]:
             errors.append(f"case media captions must contain one to five words: {markdown_path.name}")
     if not re.search(r"\.case-section\s*\{[^}]*margin-top:\s*80px", case_css, re.DOTALL):
         errors.append("case sections must use the compact 80px rhythm")
+    if not re.search(r"\.all-case \+ \.all-case\s*\{[^}]*margin-top:\s*var\(--all-case-gap\)", case_css, re.DOTALL):
+        errors.append("continuous all-projects cases must use the shared 120px spacing token")
     if not re.search(r"\.name\s*\{[^}]*line-height:\s*var\(--link-line-height\)[^}]*min-height:\s*calc\(var\(--link-line-height\) \* 2\)", base_css, re.DOTALL):
         errors.append("desktop location must reserve two lines so shared links never move")
     preview_css = _read(portfolio_repo / "src/styles/40-preview-content.css")
@@ -569,19 +591,19 @@ def _portfolio_errors(portfolio_repo: Path) -> list[str]:
     if not re.search(r"\.profile-copy\s*\{[^}]*color:\s*var\(--text-primary\)", preview_css, re.DOTALL):
         errors.append("homepage biography must use --text-primary")
     if '<footer class="site-footer">' not in homepage_references:
-        errors.append("homepage Metadata and copyright must share one semantic footer")
-    if '© <span id="copyright-year">2026</span> Gil Rodrigues' not in homepage_references:
-        errors.append("homepage copyright must preserve the 2026 no-JavaScript fallback")
-    if not re.search(r"\.site-footer\s*\{[^}]*display:\s*grid[^}]*grid-template-columns:\s*minmax\(0,\s*1fr\) auto[^}]*align-items:\s*end", preview_css, re.DOTALL):
-        errors.append("homepage footer must align profile.json left and copyright right")
-    if not re.search(r'\.copyright\s*\{[^}]*color:\s*var\(--text-tertiary\)[^}]*font-family:\s*"Inter",\s*sans-serif[^}]*font-size:\s*16px[^}]*line-height:\s*var\(--link-line-height\)[^}]*margin-bottom:\s*var\(--footer-stack-bottom-gap\)', preview_css, re.DOTALL):
-        errors.append("homepage copyright must use dark-gray Inter at 16px/24px and share profile.json's optical bottom margin")
+        errors.append("homepage Metadata links must share one semantic footer")
+    if not all(value in homepage_references for value in ("humans.txt", "llms.txt", "profile.json")):
+        errors.append("homepage Metadata footer must expose the current public references")
+    if "copyright-year" in homepage_references or "copyrightYear" in core_script:
+        errors.append("homepage must not retain stale copyright behavior")
+    if not re.search(r"\.site-footer\s*\{[^}]*margin-top:\s*0", preview_css, re.DOTALL):
+        errors.append("homepage Metadata footer must begin without an arbitrary offset")
+    if not re.search(r"@media \(min-width:\s*769px\)[\s\S]*?\.site-footer\s*\{[^}]*margin-top:\s*auto", preview_css):
+        errors.append("desktop Metadata footer must remain at the natural shell endpoint")
     if not re.search(r"@media \(max-width:\s*767px\)[\s\S]*?\.site-footer\s*\{[^}]*display:\s*none", responsive_css):
-        errors.append("homepage metadata and copyright footer must stay desktop-only")
-    if 'document.querySelector("#copyright-year")' not in core_script or "copyrightYear.textContent = year;" not in core_script:
-        errors.append("homepage copyright year must update from the visitor's current local year")
+        errors.append("homepage Metadata footer must stay desktop-only")
     if any('<!-- @include:partials/references.html -->' in template for template in case_templates.values()):
-        errors.append("case-study routes must not include the homepage copyright footer")
+        errors.append("case-study routes must not include the homepage Metadata footer")
     if not re.search(r"\.references-links\s*\{[^}]*margin-top:\s*0\s*;", preview_css, re.DOTALL):
         errors.append("Metadata must not use a negative desktop offset")
     if re.search(r"\.references-links\s*\{[^}]*margin-top:\s*-", responsive_css, re.DOTALL):
@@ -671,7 +693,7 @@ def _portfolio_errors(portfolio_repo: Path) -> list[str]:
         if banned in case_css:
             errors.append(f"case CSS contains banned rule: {banned}")
 
-    biography = "Independent designer and engineer building brand systems, interfaces, and digital products."
+    biography = "Brand designer based in Germany, building identity systems for software."
     if biography not in " ".join(profile.split()):
         errors.append("homepage biography does not match the gildrb contract")
     if not all(f'href="/{slug}"' in portfolio_design for slug in ("filen", "n0thing", "ml7")):

@@ -88,6 +88,8 @@ The live portfolio token names remain authoritative.
   --highlight-text: #ffffff;
   --section-gap: 24px;
   --section-content-gap: 6px;
+  --text-media-gap: 32px;
+  --all-case-gap: 120px;
   --link-line-height: 24px;
   --theme-toggle-size: 32px;
   --theme-toggle-optical-offset: 2px;
@@ -167,6 +169,7 @@ Use the existing 4px-derived rhythm and homepage constants.
 - Homepage table header and row vertical padding: `8px`; adjacent rows remain contiguous.
 - Homepage table column gap: `16px` on desktop and `clamp(8px, 3vw, 16px)` on mobile.
 - Case-study section gap: `80px` at every viewport.
+- Continuous `/all` case gap: `var(--all-case-gap)`, exactly `120px`. It derives from one `80px` case-section cadence, one `24px` related-group cadence, and one `16px` text-group cadence; apply it once between adjacent `.all-case` articles.
 - Desktop wrapper padding: `48px`.
 - Wrapper padding below `1400px`: `32px`.
 - Current mobile wrapper padding: `12px`.
@@ -246,25 +249,24 @@ Rules:
 - Keep biography first and concise.
 - Keep the homepage free of project images, previews, and the Heph terminal; all project evidence belongs inside case-study routes.
 - Order homepage projects newest to oldest by default: `gildrb.com`, `Heph`, `Filen`, `n0thing`, then `mL7`. DOM, visual, and keyboard order must agree at every viewport.
-- Place one `Date` / `Title` / `Field` / `Link` header row before the single global project list. Render all four labels in explicit Inter `16px/24px` and `--text-primary` on the same five-column subgrid as the project rows; `Link` is a static right-aligned heading and the fourth grid track is flexible whitespace.
-- Size the desktop Title and Field tracks to their longest content. Use the existing `16px` column gap—the width of four Inter spaces—between `gildrb.com`, the longest title, and the Field track. Use `Design engineering`, `Product design and engineering`, `Brand identity`, and `Wordmark` exactly as authored in the current rows. Render field values at `16px/24px` in `--text-tertiary`.
-- On mobile, use `max-content max-content minmax(0, 1fr) auto` with `clamp(8px, 3vw, 16px)` column gaps. Keep the table at Inter `16px/24px`, show years instead of full dates, hide `View`, and truncate long Field values with an ellipsis so the row never creates page overflow.
+- Place one `Date` / `Project` / `Scope` / `All` header row before the single global project list. Render all four labels in explicit Inter `16px/24px` and `--text-secondary` on the same four-column subgrid as the project rows; `All` is a right-aligned link to `/all` that includes the active sort state.
+- Size the desktop Project and Scope tracks to their longest content. Use the existing `16px` column gap between `gildrb.com`, the longest project title, and Scope. Use `Design engineering`, `Product design and engineering`, `Brand identity`, and `Wordmark` exactly as authored in the current rows. Render scope values at `16px/24px` in `--text-tertiary`.
+- On mobile, use `max-content max-content minmax(0, 1fr) auto` with `clamp(8px, 3vw, 16px)` column gaps. Keep the table at Inter `16px/24px`, show years instead of full dates, hide `View`, and truncate long Scope values with an ellipsis so the row never creates page overflow.
 - Treat the header and five project rows as one compact table block. The first project row begins immediately below the header rule with no section gap or category-divider space.
-- On desktop, align the header row's text line box exactly with the sidebar `Links` label line box. Preserve the former Engineering-to-Links axis: do not add top padding that drops `Date`, `Title`, or `Link` below it.
-- Keep `Date` and `Title` as native buttons. The first inactive Date sort is newest-first, the first inactive Title sort is A–Z, and repeated activation toggles direction. Apply the chosen ordering across the complete homepage project list, update DOM order as well as visual order, announce the result, expose the active direction accessibly, preserve focus after keyboard activation, and keep this behavior off case-study routes. Do not retain category wrappers that prevent a true global order.
-- Keep `Field` as the third native sort button. Its first activation sorts the authored field labels A–Z; repeated activation toggles Z–A.
-- Do not underline `Date`, `Title`, or `Field` on hover. They follow the site's existing restrained control language and may not introduce a bespoke text-decoration hover exception.
+- On desktop, align the header row's text line box exactly with the sidebar `Links` label line box. Do not add top padding that drops `Date`, `Project`, `Scope`, or `All` below it.
+- Keep `Date`, `Project`, and `Scope` as native buttons. The first inactive Date sort is newest-first; Project and Scope begin A–Z. Repeated activation toggles direction. Apply the chosen ordering across the complete homepage project list, update DOM order as well as visual order, announce the result, expose the active direction accessibly, preserve focus after keyboard activation, and keep this behavior off case-study routes. Do not retain category wrappers that prevent a true global order.
+- Do not underline `Date`, `Project`, or `Scope` on hover. They follow the site's existing restrained control language and may not introduce a bespoke text-decoration hover exception.
 - Keep the homepage content and project table inside the same centered `760px` content boundary used by case studies.
-- Approved biography: `Independent designer and engineer building brand systems, interfaces, and digital products.`
+- Approved biography: `Brand designer based in Germany, building identity systems for software.`
 - Render the approved biography in `--text-primary`; it is authored content, not a label.
 - Do not show a `Portfolio` heading on the homepage; keep `Portfolio` only as the accessible name of the project section.
 - Use `32px` from the biography to the project table. Keep the header rule and all five rows contiguous with `8px` vertical padding and faint `12%` primary separators.
-- Render project dates and fields at `16px/24px` in `--text-tertiary`; render project titles at `16px/24px` in `--text-primary`.
-- Make every project row a full-width link target. Align date, title, field, and the Inter `→` on the shared five-column subgrid.
+- Render project dates and scopes at `16px/24px` in `--text-tertiary`; render project titles at `16px/24px` in `--text-primary`.
+- Make every project row a full-width link target. Align date, project, scope, and the Inter `View →` affordance on the shared four-column subgrid.
 - Reveal `View` immediately left of the arrow only while the row is directly hovered or keyboard-focused. Hide `View` at `767px` and below so touch layouts retain all data columns without overflow.
-- Keep the homepage footer only on `/` and only on desktop. Align `© <current year> Gil Rodrigues` with the `profile.json` text line at the far-right edge of the shared content column, with matching optical bottom margins.
-- Render the desktop copyright in explicit Inter `16px/24px` using `--text-tertiary`. Keep `2026` as the no-JavaScript fallback and replace only the year with the visitor's current local year on load.
-- Hide the complete metadata/copyright footer at `767px` and below, and do not add it to case-study routes.
+- `/all` starts immediately with the generated case studies. It adds no introduction, duplicates no authored case content, and orders its `.all-case` articles from the `sort` and `direction` URL parameters. `sort=field` remains a legacy alias for `sort=scope`.
+- Keep the homepage Metadata footer only on `/` and only on desktop. It lists `humans.txt`, `llms.txt`, and `profile.json` as a vertical `--section-content-gap` stack; it contains no copyright line.
+- Hide the complete Metadata footer at `767px` and below, and do not add it to case-study or `/all` routes.
 - Do not append summaries, roles, marketing copy, or detached personal-image preview sections.
 
 ## Heph Case Demo
@@ -338,10 +340,10 @@ Rules:
 ## Interaction
 
 - Links navigate. Buttons act.
-- Homepage project rows remain native anchors; Date, Title, and Field remain native buttons.
+- Homepage project rows remain native anchors; Date, Project, and Scope remain native buttons. All is a link to `/all` with the active sort state.
 - The homepage biography uses `--text-primary`; case decks, paragraphs, and list items use `--text-secondary` for a quieter reading layer below white headings.
-- Labels use `--text-secondary`. This includes `Links`, `Contact`, `Metadata`, `About`, and other text that names a group or field without acting.
-- Homepage project titles use `--text-primary`; dates, fields, case metadata terms, and image captions use `--text-tertiary`.
+- Labels use `--text-secondary`. This includes `Links`, `Contact`, `Metadata`, `About`, and other non-actionable group labels.
+- Homepage project titles use `--text-primary`; dates, scopes, case metadata terms, and image captions use `--text-tertiary`.
 - Actionable text links use `--text-tertiary` at rest. This includes profile links, reference links, and email.
 - The case-study home link remains `--text-tertiary` beside the tertiary arrow while the current project is `--text-primary`.
 - On hover-capable devices, the case-study home link becomes `--text-primary` to make the return action explicit.
@@ -392,9 +394,9 @@ Rules:
 
 ## Metadata
 
-- Canonical project routes are top-level: `/site`, `/heph`, `/filen`, `/n0thing`, `/ml7`, and future `/<project>` paths.
+- Canonical project routes are top-level: `/site`, `/heph`, `/filen`, `/n0thing`, `/ml7`, `/all`, and future `/<project>` paths.
 - The homepage Heph row links to `/heph`. Its GitHub repository link belongs inside the Heph article, not on the homepage.
-- Use static directory indexes: `<project>/index.html`.
+- Use static directory indexes: `<project>/index.html` and `all/index.html`.
 - Synchronize canonical, Open Graph, Twitter, JSON-LD, sitemap, feed, Markdown mirrors, LLM mirrors, humans file, and structured profile graph.
 - Redirect superseded public routes permanently to the canonical route.
 - Do not retain a duplicate canonical page at the old path.
@@ -410,17 +412,18 @@ For every design change:
 5. Render desktop and mobile.
 6. Confirm persistent location coordinates and font equality.
 7. Confirm one full-width homepage row link per configured project.
-8. Confirm Date, Title, and Field sort the complete list and announce the active direction.
-9. Confirm complete case-image aspect ratios and responsive source selection.
-10. Confirm no middle dots or rule dividers.
-11. Confirm no horizontal overflow.
-12. Confirm theme switching and home navigation.
-13. Check browser console errors.
-14. Confirm preview protection before sharing.
-15. Confirm authored text is primary, labels are secondary, actionable text links are tertiary at rest, and text-link hover is primary in both themes.
-16. Confirm every generated route contains the same shared profile and contact links, and that email copy works on case pages.
-17. Confirm case studies do not repeat an email footer and that shared Links and Contact follow the article on mobile.
-18. Measure homepage table alignment and overflow at desktop, `390px`, and `320px`; the header and rows remain one contiguous block.
-19. Confirm the Heph demo appears only on `/heph` and remains exposed to assistive technology.
+8. Confirm Date, Project, and Scope sort the complete list, All preserves that state in its `/all` URL, and each ordering is announced.
+9. Confirm `/all` uses the shared `120px` `--all-case-gap` between generated articles at desktop and mobile widths.
+10. Confirm complete case-image aspect ratios and responsive source selection.
+11. Confirm no middle dots or rule dividers.
+12. Confirm no horizontal overflow.
+13. Confirm theme switching and home navigation.
+14. Check browser console errors.
+15. Confirm preview protection before sharing.
+16. Confirm authored text is primary, labels are secondary, actionable text links are tertiary at rest, and text-link hover is primary in both themes.
+17. Confirm every generated route contains the same shared profile and contact links, and that email copy works on case pages.
+18. Confirm case studies do not repeat an email footer and that shared Links and Contact follow the article on mobile.
+19. Measure homepage table alignment and overflow at desktop, `390px`, and `320px`; the header and rows remain one contiguous block.
+20. Confirm the Heph demo appears only on `/heph` and remains exposed to assistive technology.
 
 Reject a change that introduces crop, arbitrary type sizes, negative letter spacing outside the case-title role, a second navigation system, editorial divider rules, stale generated output, broken metadata, or an unprotected unfinished preview.

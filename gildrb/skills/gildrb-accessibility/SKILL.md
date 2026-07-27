@@ -30,7 +30,7 @@ Ensure the existing interface is operable and understandable without a mouse or 
 - Case mobile order: location, article, shared navigation; theme control remains reachable in its visible position.
 - The Heph terminal exposes only its chat input as an internal Tab stop, then the case repository link; decorative terminal chrome is not focusable.
 - Homepage project rows use an unclipped `1px` primary focus ring with `6px` offset.
-- Date, Title, and Field expose their active sort state and announce each completed ordering.
+- Date, Project, and Scope expose their active sort state and announce each completed ordering.
 - Status changes such as email copy are announced near the trigger.
 - Link purpose remains clear without relying on hover or color alone.
 - Page remains operable at `320px` and `390px` without horizontal overflow.

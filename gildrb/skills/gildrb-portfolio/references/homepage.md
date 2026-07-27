@@ -2,8 +2,8 @@
 
 ## Table
 
-- Use one Date / Title / Field / Link header and one global project list.
-- Keep `Date`, `Title`, and `Field` as native sort buttons; keep `Link` static.
+- Use one Date / Project / Scope / All header and one global project list.
+- Keep `Date`, `Project`, and `Scope` as native sort buttons; make `All` a link to `/all` with the active sort state.
 - Make each complete project row an accessible link to its case route.
 - Default to newest-first: gildrb.com, Heph, Filen, n0thing, then mL7.
 - Reveal `View →` on direct row hover and keyboard focus without layout shift.
@@ -14,7 +14,7 @@
 Use exactly:
 
 ```text
-Independent designer and engineer building brand systems, interfaces, and digital products.
+Brand designer based in Germany, building identity systems for software.
 ```
 
 Keep this sentence synchronized across visible and machine-readable surfaces.

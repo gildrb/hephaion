@@ -27,7 +27,7 @@ Change or audit text metrics while preserving layout spacing, color, behavior, a
 - Case-code `pre` uses pure `"Geist Mono", monospace`. Arrow glyphs use an explicit `.case-code-arrow` span with `"Inter", sans-serif` so they match navigation arrows.
 - Shell location: `19px`, weight `400`.
 - Default interface and prose: `16px/24px`, weight `400`.
-- Homepage table remains Inter `16px/24px`, weight `400`, on mobile; long Field values truncate inside the flexible track rather than shrinking the type.
+- Homepage table remains Inter `16px/24px`, weight `400`, on mobile; long Scope values truncate inside the flexible track rather than shrinking the type.
 - Desktop case title: `28px/36px`, weight `500`.
 - Mobile case title: `24px/32px`, weight `500`.
 - Section heading: `24px/32px`, weight `500`.

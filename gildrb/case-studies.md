@@ -17,15 +17,23 @@ Current routes:
 - `/filen`
 - `/n0thing`
 - `/ml7`
+- `/all`
 
-Use only the current location name for the browser-tab title: `Gil Rodrigues` on `/`, then `gildrb.com`, `Heph`, `Filen`, `n0thing`, or `mL7` on each case route. Keep longer descriptive wording in social metadata rather than the `<title>` element.
+Use only the current location name for the browser-tab title: `Gil Rodrigues` on `/`, `All` on `/all`, then `gildrb.com`, `Heph`, `Filen`, `n0thing`, or `mL7` on each case route. Keep longer descriptive wording in social metadata rather than the `<title>` element.
 
 ## Homepage Entry
 
-- Keep all projects in one global table with Date, Title, Field, and Link columns.
+- Keep all projects in one global table with Date, Project, Scope, and All columns.
 - Make the complete row the case-study link and give it a precise accessible name.
-- Use the specific fields from the current source: `Design engineering` for gildrb.com, `Product design and engineering` for Heph, `Brand identity` for Filen, and `Wordmark` for n0thing and mL7.
-- Keep `Date`, `Title`, and `Field` sortable across the complete list while preserving DOM, visual, and keyboard order.
+- Use the specific scopes from the current source: `Design engineering` for gildrb.com, `Product design and engineering` for Heph, `Brand identity` for Filen, and `Wordmark` for n0thing and mL7.
+- Keep `Date`, `Project`, and `Scope` sortable across the complete list while preserving DOM, visual, and keyboard order. The All link carries the active sort to `/all`.
+
+## Continuous Projects
+
+- Generate `/all/index.html` from the existing homepage project rows and case-study Markdown renderer; do not duplicate project metadata or case copy.
+- Start with the first case study. Do not add an introductory heading or summary.
+- Sort `.all-case` articles from `sort` and `direction` query parameters. Accept legacy `sort=field` as an alias for `sort=scope`.
+- Separate adjacent `.all-case` articles with `var(--all-case-gap)`, exactly `120px` from the documented `80px + 24px + 16px` cadence.
 - Reveal `View →` on direct row hover and keyboard focus without changing weight or shifting layout.
 - Do not add project summaries, marketing copy, images, or category-divider wrappers to the homepage list.
 

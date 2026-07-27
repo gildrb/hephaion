@@ -6,7 +6,7 @@
 - Check every referenced asset exists.
 - Check canonical route count.
 - Check exactly one full-width homepage row link per configured project.
-- Check Date, Title, and Field sorting across the complete list.
+- Check Date, Project, and Scope sorting across the complete list.
 - Check `View →` appears without layout shift on row hover and focus.
 - Check no external project link when explicitly prohibited.
 - Check legacy redirects.

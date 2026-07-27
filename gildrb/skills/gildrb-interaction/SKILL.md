@@ -25,8 +25,8 @@ Make one interaction behave predictably across pointer, touch, navigation, and b
 
 - Links navigate; buttons act.
 - Hover CSS exists only inside `@media (hover:hover)`.
-- Homepage project rows are anchors; Date, Title, and Field sort controls are buttons.
-- Each project row is one full-width link with aligned date, title, field, and reserved affordance columns.
+- Homepage project rows are anchors; Date, Project, and Scope sort controls are buttons. All links to `/all` with the active sort state.
+- Each project row is one full-width link with aligned date, project, scope, and affordance columns.
 - Hover/focus affordance reads `View →`; it changes no font weight and causes no layout shift.
 - Decorative layers use `pointer-events:none`.
 - Interactive controls have no dead visual areas.

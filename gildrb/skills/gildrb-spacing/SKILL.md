@@ -35,6 +35,7 @@ Change or audit spatial distance without changing any other design dimension.
 - On the homepage and every case route, mobile theme-toggle padding uses the `2px` optical offset to move the shared icon center down while preserving a fixed `56px` row height: `26px` above and `6px` below.
 - Desktop `.content` padding: `48px 0`, declared once in shared `src/styles/10-base.css` so homepage and case titles align with the sidebar name. Mobile resets it to `0` in `90-responsive.css`.
 - Case section gap: `80px`.
+- Adjacent `/all` case studies: `var(--all-case-gap)`, exactly `120px`, derived from the `80px` case-section, `24px` related-group, and `16px` text-group steps; apply it only to `.all-case + .all-case`.
 - Prose-to-media and media-to-following-copy: `var(--text-media-gap)`, exactly `32px`, applied once per boundary.
 - Case articles remain in natural block flow. Desktop bottom padding is a maximum endpoint for long posts, not a target baseline. Never use article `min-height`, flex distribution, `margin-top: auto`, or last-child top padding.
 

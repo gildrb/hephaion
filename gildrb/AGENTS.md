@@ -76,10 +76,10 @@ Portfolio router. Read implementation first, then these contracts.
 
 ## Contracts
 
-- Homepage biography: `Independent designer and engineer building brand systems, interfaces, and digital products.`
-- Homepage project rows are full-width links with Date, Title, Field, and Link columns.
-- `Date`, `Title`, and `Field` are native sort buttons; the Link heading is static.
-- Canonical case routes are top-level: `/<project>`.
+- Homepage biography: `Brand designer based in Germany, building identity systems for software.`
+- Homepage project rows are full-width links with Date, Project, Scope, and All columns.
+- `Date`, `Project`, and `Scope` are native sort buttons; `All` links to `/all` with the active sort state.
+- Canonical case routes are top-level: `/<project>`, plus `/all` for the continuous project sequence.
 - Legacy public routes redirect permanently; they do not remain canonical.
 - Existing and user-supplied case-study prose remains verbatim unless the user explicitly authorizes copy editing.
 - Production stays unchanged until the user explicitly approves merge or promotion.
