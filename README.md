@@ -1,7 +1,5 @@
 # Hephaion
 
-Hephaion is agent documentation for product work.
-
 Agents start at the root, identify the product, load its package, apply its rules, and verify the changed surface.
 
 ### Quick Start
