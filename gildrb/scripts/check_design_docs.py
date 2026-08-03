@@ -474,6 +474,7 @@ def _portfolio_errors(portfolio_repo: Path) -> list[str]:
         (r"\.case-next-list\s*\{[^}]*display:\s*grid[^}]*grid-template-columns:\s*max-content max-content minmax\(0,\s*1fr\) auto[^}]*column-gap:\s*16px", "case-next rows must mirror the homepage grid"),
         (r"\.case-next-row\s*\{[^}]*display:\s*grid[^}]*grid-template-columns:\s*subgrid[^}]*padding:\s*8px 0", "case-next rows must use the homepage row padding"),
         (r"\.case-next-row \+ \.case-next-row[\s\S]*?border-top:", "case-next rows must use homepage-style separators"),
+        (r"@media\s*\(min-width:\s*769px\)[\s\S]*?\.case-next-row:last-child\s*\{[^}]*padding-bottom:\s*calc\([^}]*var\(--footer-title-center-offset\)[^}]*var\(--theme-toggle-size\)", "desktop case-next final row must use the footer/theme-toggle endpoint calculation"),
         (r"\.case-article article:has\(\+ \.case-next\) > :last-child\s*\{[^}]*padding-bottom:\s*0", "case-next must disable article endpoint padding when it follows"),
         (r"\.case-next-link:hover[\s\S]*?\.case-next-link:focus-visible", "case-next must define hover and focus states"),
         (r"@media \(max-width:\s*768px\)[\s\S]*?\.case-next-view\s*\{[^}]*display:\s*none", "case-next must hide View on mobile"),
