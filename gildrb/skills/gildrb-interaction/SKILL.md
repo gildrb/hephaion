@@ -36,6 +36,7 @@ Make one interaction behave predictably across pointer, touch, navigation, and b
 - Back/forward restores per-tab scroll; fresh navigation starts normally.
 - A touch drag on the mobile homepage moves the name, theme control, and content as one page; it must not treat the top row as a sticky navbar.
 - Pull-to-refresh remains available; viewport fitting must not set `overflow: hidden` or `overscroll-behavior: none` on the page root.
+- When the mobile homepage is viewport-locked, the filter row remains outside the native-scrolling table rows. The table uses `overscroll-behavior: auto`; never contain its rubber-band at the top or let it drag the filter row.
 - The Heph demo lives only on `/heph` and uses the canonical shared partial and live scripts.
 - Motion is absent unless necessary, no longer than `200ms`, and respects reduced motion. The homepage first-paint entry is the single documented exception.
 - The homepage stays hidden behind `homepage-first-paint-pending` until theme, `Inter`, dates, and mobile columns are settled, then reveals once as a staggered diagonal and marks itself complete. Every path, including the `2800ms` fallback, must remove the pending class; a silent failure must never leave the page blank.

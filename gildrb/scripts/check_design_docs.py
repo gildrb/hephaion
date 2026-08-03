@@ -75,6 +75,7 @@ REQUIRED_OPERATIONAL_CONTRACTS = {
     "skills/gildrb-interaction/SKILL.md": (
         "A touch drag on the mobile homepage moves the name, theme control, and content as one page",
         "Pull-to-refresh remains available",
+        "the filter row remains outside the native-scrolling table rows",
         "The homepage stays hidden behind `homepage-first-paint-pending`",
     ),
     "skills/gildrb-media/SKILL.md": (
@@ -967,7 +968,9 @@ def _portfolio_errors(portfolio_repo: Path) -> list[str]:
         (r"html\.homepage-scroll-locked body \.layout\s*\{[^}]*height:\s*100dvh[^}]*grid-template-rows:\s*auto auto minmax\(0, 1fr\) auto", "mobile homepage must use a locked dynamic-viewport grid"),
         (r"html\.homepage-scroll-locked body \.portfolio-section\s*\{[^}]*align-content:\s*start[^}]*overflow-y:\s*auto", "mobile homepage table must own the flexible inner scroll"),
         (r"html\.homepage-scroll-locked body \.links\s*\{[^}]*padding-bottom:\s*24px", "mobile homepage footer must preserve the 24px bottom edge offset"),
-        (r"html\.homepage-scroll-locked body \.portfolio-table-header[\s\S]*?position:\s*sticky[\s\S]*?background:\s*var\(--bg\)", "mobile homepage table header must remain pinned with an opaque backdrop"),
+        (r"html\.homepage-scroll-locked body \.portfolio-scroll-frame\s*\{[^}]*grid-template-rows:\s*auto minmax\(0, 1fr\)", "mobile homepage wrapper must reserve a non-scrolling filter row"),
+        (r"html\.homepage-scroll-locked body \.portfolio-section\s*\{[^}]*overflow-y:\s*auto[^}]*overscroll-behavior:\s*auto", "mobile homepage table must preserve native overscroll"),
+        (r"html\.homepage-scroll-locked body \.portfolio-table-header[\s\S]*?position:\s*relative[\s\S]*?background:\s*var\(--bg\)", "mobile homepage filter row must remain outside scrolling rows with an opaque backdrop"),
         (r"\.portfolio-scroll-frame::before[\s\S]*?height:\s*56px", "mobile homepage fades must match the case-page 56px treatment"),
         (r"\.portfolio-scroll-frame::after[\s\S]*?bottom:\s*0[^}]*z-index:\s*2", "mobile homepage bottom fade must stay anchored to the wrapper clipping edge above rows"),
         (r"\.portfolio-scroll-frame::before[\s\S]*?\.portfolio-scroll-frame::after[\s\S]*?opacity:\s*0", "mobile homepage table must own conditional scroll fades"),
