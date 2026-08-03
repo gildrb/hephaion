@@ -74,7 +74,7 @@ REQUIRED_OPERATIONAL_CONTRACTS = {
     ),
     "skills/gildrb-interaction/SKILL.md": (
         "A touch drag on the mobile homepage scrolls the normal document beneath the shared sticky name and theme-control header",
-        "The shared sticky header uses an opaque page-background band and a gradient below its bottom edge",
+        "The shared sticky header uses an always-opaque page-background band and a scroll-conditional gradient below its bottom edge",
         "Pull-to-refresh remains available",
         "The mobile homepage table remains in normal document flow below the shared sticky header",
         "The homepage stays hidden behind `homepage-first-paint-pending`",
@@ -534,6 +534,9 @@ def _portfolio_errors(portfolio_repo: Path) -> list[str]:
         'window.addEventListener("pageshow", restoreScrollPosition);',
         'navigationType !== "back_forward"',
         "window.sessionStorage.setItem(",
+        "function updateStickyHeaderFade()",
+        'window.addEventListener("scroll", updateStickyHeaderFade,',
+        "updateStickyHeaderFade();",
     )
     if not all(token in core_script for token in scroll_contract):
         errors.append("shared navigation must preserve per-tab scroll position only across back/forward traversal")
@@ -1001,6 +1004,11 @@ def _portfolio_errors(portfolio_repo: Path) -> list[str]:
         responsive_css,
     ):
         errors.append("mobile homepage and shared routes must fade content below the opaque sticky header")
+    if not re.search(
+        r"\.name::after\s*\{[^}]*opacity:\s*0[^}]*transition:\s*opacity\s*180ms\s+ease",
+        responsive_css,
+    ) or "html.has-sticky-header-fade .name::after" not in responsive_css:
+        errors.append("mobile sticky header fade must be conditional on document scroll")
     if not re.search(
         r"@media\s*\(max-width:\s*767px\)[\s\S]*?\.theme-toggle\s*\{[^}]*position:\s*sticky[^}]*top:\s*0",
         responsive_css,
