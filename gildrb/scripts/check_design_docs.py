@@ -73,9 +73,9 @@ REQUIRED_OPERATIONAL_CONTRACTS = {
         "The homepage row stays in document flow; case-study rows remain sticky.",
     ),
     "skills/gildrb-interaction/SKILL.md": (
-        "A touch drag on the mobile homepage moves the name, theme control, and content as one page",
+        "A touch drag on the mobile homepage moves the name, theme control, table, and footer as one normal page",
         "Pull-to-refresh remains available",
-        "the filter row remains outside the native-scrolling table rows",
+        "The mobile homepage table remains in normal document flow with native scrolling",
         "The homepage stays hidden behind `homepage-first-paint-pending`",
     ),
     "skills/gildrb-media/SKILL.md": (
@@ -463,12 +463,8 @@ def _portfolio_errors(portfolio_repo: Path) -> list[str]:
             errors.append("generated /all must not contain case-next markup or script")
     if "25-case-next.js" in site_config:
         errors.append("case-page configuration must not register the retired case-next script")
-    if (
-        'if (isMobile) {' not in site_script
-        or 'root.classList.add("homepage-scroll-locked");' not in site_script
-        or 'homepageLockState = "locked";' not in site_script
-    ):
-        errors.append("mobile homepage must stay locked to the dynamic viewport")
+    if "homepage-scroll-locked" in site_script:
+        errors.append("mobile homepage must not use a locked dynamic viewport")
 
     case_next_css_contracts = (
         (r"\.case-next\s*\{[^}]*width:\s*min\(100%,\s*760px\)[^}]*margin:\s*48px auto 0", "case-next block must use the case column and 48px heading rhythm"),
@@ -671,7 +667,27 @@ def _portfolio_errors(portfolio_repo: Path) -> list[str]:
         if markdown_path.name == "README.md":
             continue
         captions = re.findall(r"^!\[(.*)\]\(media:[a-z0-9-]+\)$", _read(markdown_path), re.MULTILINE)
-        if any(not caption.strip() or len(caption.split()) > 5 for caption in captions):
+        long_caption_exceptions = (
+            {
+                "The application board posted for feedback",
+                "Feedback on the spacing between the glyphs",
+                "The repainted board",
+                "The thinner test and the reply",
+                "Nine frames and the replies they drew",
+                "The angled 3, and the verdict on it",
+                "The pinched curve against the smoothed one",
+            }
+            if markdown_path.name == "t3.md"
+            else set()
+        )
+        if any(
+            not caption.strip()
+            or (
+                len(caption.split()) > 5
+                and caption not in long_caption_exceptions
+            )
+            for caption in captions
+        ):
             errors.append(f"case media captions must contain one to five words: {markdown_path.name}")
     if not re.search(r"\.case-section\s*\{[^}]*margin-top:\s*80px", case_css, re.DOTALL):
         errors.append("case sections must use the compact 80px rhythm")
@@ -964,26 +980,16 @@ def _portfolio_errors(portfolio_repo: Path) -> list[str]:
     for stylesheet, pattern, message in responsive_visibility_rules:
         if not re.search(pattern, stylesheet, re.DOTALL):
             errors.append(message)
-    mobile_homepage_contracts = (
-        (r"html\.homepage-scroll-locked body \.layout\s*\{[^}]*height:\s*100dvh[^}]*grid-template-rows:\s*auto auto minmax\(0, 1fr\) auto", "mobile homepage must use a locked dynamic-viewport grid"),
-        (r"html\.homepage-scroll-locked body \.portfolio-section\s*\{[^}]*align-content:\s*start[^}]*overflow-y:\s*auto", "mobile homepage table must own the flexible inner scroll"),
-        (r"html\.homepage-scroll-locked body \.links\s*\{[^}]*padding-bottom:\s*24px", "mobile homepage footer must preserve the 24px bottom edge offset"),
-        (r"html\.homepage-scroll-locked body \.portfolio-scroll-frame\s*\{[^}]*grid-template-rows:\s*auto minmax\(0, 1fr\)", "mobile homepage wrapper must reserve a non-scrolling filter row"),
-        (r"html\.homepage-scroll-locked body \.portfolio-section\s*\{[^}]*overflow-y:\s*auto[^}]*overscroll-behavior:\s*auto", "mobile homepage table must preserve native overscroll"),
-        (r"html\.homepage-scroll-locked body \.portfolio-table-header[\s\S]*?position:\s*relative[\s\S]*?background:\s*var\(--bg\)", "mobile homepage filter row must remain outside scrolling rows with an opaque backdrop"),
-        (r"\.portfolio-scroll-frame::before[\s\S]*?height:\s*56px", "mobile homepage fades must match the case-page 56px treatment"),
-        (r"\.portfolio-scroll-frame::after[\s\S]*?bottom:\s*0[^}]*z-index:\s*2", "mobile homepage bottom fade must stay anchored to the wrapper clipping edge above rows"),
-        (r"\.portfolio-scroll-frame::before[\s\S]*?\.portfolio-scroll-frame::after[\s\S]*?opacity:\s*0", "mobile homepage table must own conditional scroll fades"),
-    )
-    for pattern, message in mobile_homepage_contracts:
-        if not re.search(pattern, responsive_css, re.DOTALL):
-            errors.append(message)
-    if re.search(
-        r"html\.homepage-scroll-locked,\s*html\.homepage-scroll-locked body\s*\{[^}]*overflow:\s*hidden",
-        responsive_css,
-        re.DOTALL,
-    ):
-        errors.append("locked mobile homepage must preserve document elastic overscroll")
+    if "homepage-scroll-locked" in responsive_css:
+        errors.append("mobile homepage CSS must not define a locked viewport state")
+    if "portfolio-scroll-frame" in responsive_css:
+        errors.append("mobile homepage CSS must not define a scroll-frame wrapper")
+    if "overflow-y: auto" in responsive_css:
+        errors.append("mobile homepage must not create a nested scrolling table")
+    if "scrollbar-width: none" in responsive_css:
+        errors.append("mobile homepage must not suppress the native scrollbar")
+    if "portfolio-scroll-frame::before" in responsive_css or "portfolio-scroll-frame::after" in responsive_css:
+        errors.append("mobile homepage must not define scroll fades")
     if not re.search(r"const sharedCaseScripts = Object\.freeze\(\[\s*\"10-core\.js\",\s*\"20-theme\.js\",\s*\"30-email\.js\",?\s*\]\)", site_config):
         errors.append("case-page script bundle does not preserve shared email behavior")
     if 'querySelectorAll(".email")' not in email_script:

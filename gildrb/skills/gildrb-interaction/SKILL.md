@@ -34,9 +34,9 @@ Make one interaction behave predictably across pointer, touch, navigation, and b
 - Theme applies immediately, persists when storage works, tolerates storage failure, and causes no broad transition.
 - On the mobile homepage and every case route, switching themes keeps the toggle's fixed row-height hit box and shared icon center stationary even though the sun and moon SVGs have different sizes.
 - Back/forward restores per-tab scroll; fresh navigation starts normally.
-- A touch drag on the mobile homepage moves the name, theme control, and content as one page; it must not treat the top row as a sticky navbar.
+- A touch drag on the mobile homepage moves the name, theme control, table, and footer as one normal page; it must not treat the top row as a sticky navbar or create a nested scroll region.
 - Pull-to-refresh remains available; viewport fitting must not set `overflow: hidden` or `overscroll-behavior: none` on the page root.
-- When the mobile homepage is viewport-locked, the filter row remains outside the native-scrolling table rows. The table uses `overscroll-behavior: auto`; never contain its rubber-band at the top or let it drag the filter row.
+- The mobile homepage table remains in normal document flow with native scrolling. Do not add a locked viewport, nested table scroll, sticky filter row, scroll fades, scrollbar suppression, or scroll-chaining workaround.
 - The Heph demo lives only on `/heph` and uses the canonical shared partial and live scripts.
 - Motion is absent unless necessary, no longer than `200ms`, and respects reduced motion. The homepage first-paint entry is the single documented exception.
 - The homepage stays hidden behind `homepage-first-paint-pending` until theme, `Inter`, dates, and mobile columns are settled, then reveals once as a staggered diagonal and marks itself complete. Every path, including the `2800ms` fallback, must remove the pending class; a silent failure must never leave the page blank.
