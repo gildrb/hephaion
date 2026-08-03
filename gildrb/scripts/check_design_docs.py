@@ -961,6 +961,14 @@ def _portfolio_errors(portfolio_repo: Path) -> list[str]:
     for stylesheet, pattern, message in responsive_visibility_rules:
         if not re.search(pattern, stylesheet, re.DOTALL):
             errors.append(message)
+    mobile_homepage_contracts = (
+        (r"html\.homepage-scroll-locked body \.layout\s*\{[^}]*height:\s*100dvh[^}]*grid-template-rows:\s*auto auto minmax\(0, 1fr\) auto", "mobile homepage must use a locked dynamic-viewport grid"),
+        (r"html\.homepage-scroll-locked body \.portfolio-section\s*\{[^}]*align-content:\s*start[^}]*overflow-y:\s*auto", "mobile homepage table must own the flexible inner scroll"),
+        (r"html\.homepage-scroll-locked body \.links\s*\{[^}]*padding-bottom:\s*24px", "mobile homepage footer must preserve the 24px bottom edge offset"),
+    )
+    for pattern, message in mobile_homepage_contracts:
+        if not re.search(pattern, responsive_css, re.DOTALL):
+            errors.append(message)
     if not re.search(r"const sharedCaseScripts = Object\.freeze\(\[\s*\"10-core\.js\",\s*\"20-theme\.js\",\s*\"30-email\.js\",?\s*\]\)", site_config):
         errors.append("case-page script bundle does not preserve shared email behavior")
     if 'querySelectorAll(".email")' not in email_script:
