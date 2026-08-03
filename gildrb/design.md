@@ -279,7 +279,7 @@ Every generated case-study route ends with a build-generated `View next` block i
 - Keep every row visible in homepage default order. Do not add sort buttons, an `All` column, randomization, visited state, or client JavaScript for this table.
 - Do not force the desktop theme-toggle endpoint under the eight-row table. Keep the 48px content-column bottom padding. On mobile, let the homepage grow naturally with every project row and the footer in one document flow.
 - On the mobile homepage, keep the name and theme toggle sticky at the shared top offset while Links/Contact follows the table. Use native document scrolling so keyboard, screen-reader, and touch access traverse the complete page.
-- Keep the block text-only. Do not add cards, borders, gradients, new colors, or arbitrary sizes.
+- Keep the block text-only. Do not add cards, borders, new colors, or arbitrary sizes; the shared sticky header backdrop is the only allowed gradient.
 - Reveal `View` on hover and keyboard focus using the homepage interaction convention; keep focus visible.
 - At mobile widths, preserve the date, project, scope, and arrow columns and hide only the `View` label, as on the homepage.
 - The rows and metadata are build-time HTML. The table must not load client JavaScript.

@@ -74,6 +74,7 @@ REQUIRED_OPERATIONAL_CONTRACTS = {
     ),
     "skills/gildrb-interaction/SKILL.md": (
         "A touch drag on the mobile homepage scrolls the normal document beneath the shared sticky name and theme-control header",
+        "The shared sticky header uses an opaque page-background band and a gradient below its bottom edge",
         "Pull-to-refresh remains available",
         "The mobile homepage table remains in normal document flow below the shared sticky header",
         "The homepage stays hidden behind `homepage-first-paint-pending`",
@@ -991,10 +992,15 @@ def _portfolio_errors(portfolio_repo: Path) -> list[str]:
     if "portfolio-scroll-frame::before" in responsive_css or "portfolio-scroll-frame::after" in responsive_css:
         errors.append("mobile homepage must not define scroll fades")
     if not re.search(
-        r"@media\s*\(max-width:\s*767px\)[\s\S]*?\.name\s*\{[^}]*position:\s*sticky[^}]*top:\s*0[^}]*background:\s*linear-gradient",
+        r"@media\s*\(max-width:\s*767px\)[\s\S]*?\.name\s*\{[^}]*position:\s*sticky[^}]*top:\s*0[^}]*background:\s*var\(--bg\)",
         responsive_css,
     ):
         errors.append("mobile homepage and shared routes must keep the name header sticky with the shared gradient backdrop")
+    if not re.search(
+        r"@media\s*\(max-width:\s*767px\)[\s\S]*?\.name::after\s*\{[^}]*top:\s*100%[^}]*height:\s*56px[^}]*background:\s*linear-gradient",
+        responsive_css,
+    ):
+        errors.append("mobile homepage and shared routes must fade content below the opaque sticky header")
     if not re.search(
         r"@media\s*\(max-width:\s*767px\)[\s\S]*?\.theme-toggle\s*\{[^}]*position:\s*sticky[^}]*top:\s*0",
         responsive_css,
