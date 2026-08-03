@@ -966,7 +966,8 @@ def _portfolio_errors(portfolio_repo: Path) -> list[str]:
         (r"html\.homepage-scroll-locked body \.layout\s*\{[^}]*height:\s*100dvh[^}]*grid-template-rows:\s*auto auto minmax\(0, 1fr\) auto", "mobile homepage must use a locked dynamic-viewport grid"),
         (r"html\.homepage-scroll-locked body \.portfolio-section\s*\{[^}]*align-content:\s*start[^}]*overflow-y:\s*auto", "mobile homepage table must own the flexible inner scroll"),
         (r"html\.homepage-scroll-locked body \.links\s*\{[^}]*padding-bottom:\s*24px", "mobile homepage footer must preserve the 24px bottom edge offset"),
-        (r"html\.homepage-scroll-locked body \.portfolio-table-header[\s\S]*?position:\s*sticky[\s\S]*?background:\s*linear-gradient", "mobile homepage table header must remain pinned with the case fade treatment"),
+        (r"html\.homepage-scroll-locked body \.portfolio-table-header[\s\S]*?position:\s*sticky[\s\S]*?background:\s*var\(--bg\)", "mobile homepage table header must remain pinned with an opaque backdrop"),
+        (r"\.portfolio-section::before[\s\S]*?height:\s*56px", "mobile homepage fades must match the case-page 56px treatment"),
         (r"\.portfolio-section::before[\s\S]*?\.portfolio-section::after[\s\S]*?opacity:\s*0", "mobile homepage table must own conditional scroll fades"),
     )
     for pattern, message in mobile_homepage_contracts:
