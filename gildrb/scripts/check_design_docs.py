@@ -968,6 +968,7 @@ def _portfolio_errors(portfolio_repo: Path) -> list[str]:
         (r"html\.homepage-scroll-locked body \.links\s*\{[^}]*padding-bottom:\s*24px", "mobile homepage footer must preserve the 24px bottom edge offset"),
         (r"html\.homepage-scroll-locked body \.portfolio-table-header[\s\S]*?position:\s*sticky[\s\S]*?background:\s*var\(--bg\)", "mobile homepage table header must remain pinned with an opaque backdrop"),
         (r"\.portfolio-section::before[\s\S]*?height:\s*56px", "mobile homepage fades must match the case-page 56px treatment"),
+        (r"\.portfolio-section::after\s*\{[^}]*bottom:\s*-8px[^}]*z-index:\s*2", "mobile homepage bottom fade must reach the real clipping edge above rows"),
         (r"\.portfolio-section::before[\s\S]*?\.portfolio-section::after[\s\S]*?opacity:\s*0", "mobile homepage table must own conditional scroll fades"),
     )
     for pattern, message in mobile_homepage_contracts:
