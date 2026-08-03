@@ -274,12 +274,13 @@ Every generated case-study route ends with a build-generated `Read next` block i
 - Use existing tokens only: `--text-primary`, `--text-tertiary`, 16px/24px type, and the existing case-section rhythm.
 - Keep 48px between the article's final block and `Read next`, matching the existing compact-heading (`###`) top margin. On desktop, remove the article's final-line boundary padding when this block follows; the suggestions block owns the endpoint alignment.
 - Use `var(--theme-toggle-optical-offset)` for the vertical row padding so the heading's optical center aligns with the desktop theme-toggle center at max scroll while preserving the content column's 48px bottom padding. This alignment does not apply on mobile.
-- Keep 48px between the article's final block and `Read next`, matching the existing compact-heading (`###`) top margin. On desktop, remove the article's final-line boundary padding when this block follows; the suggestions block owns the endpoint alignment.
-- Use `var(--theme-toggle-optical-offset)` for the vertical row padding so the heading's optical center aligns with the desktop theme-toggle center at max scroll while preserving the content column's 48px bottom padding. This alignment does not apply on mobile.
+- Render every other project as a real anchor at build time. Keep only three anchors visible by default with the remaining anchors carrying the native `hidden` attribute.
+- The case script may reveal a different three-anchor set per visit. Hidden anchors must remain excluded from keyboard and assistive-technology navigation, and the visible set must always contain exactly three rows.
+- Store visited case slugs in one guarded `localStorage` key. Record the current route on load; if storage fails, use random selection without throwing. Prefer unvisited candidates, shuffle within each group, and isolate the preference switch to one line.
 - Keep the block text-only. Do not add cards, borders, gradients, new colors, or arbitrary sizes.
 - Reveal `View` on hover and keyboard focus using the homepage interaction convention; keep focus visible.
 - At mobile widths, preserve the date, project, scope, and arrow columns and hide only the `View` label, as on the homepage.
-- The block is build-time HTML and does not load client JavaScript.
+- The anchors and metadata are build-time HTML. A small vanilla case script may change which three are visible; it must not fetch or construct rows.
 - `/all` starts immediately with the generated case studies. It adds no introduction, duplicates no authored case content, and orders its `.all-case` articles from the `sort` and `direction` URL parameters. Its generated default order always places the homepage-derived `site` entry last; an explicit sort request orders every article, `site` included.
 - Keep the homepage Metadata footer only on `/` and only on desktop. It lists `humans.txt`, `llms.txt`, and a `source` link to the site's public repository as a vertical `--section-content-gap` stack; it contains no copyright line.
 - Hide the complete Metadata footer at `767px` and below, and do not add it to case-study or `/all` routes.

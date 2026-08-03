@@ -323,6 +323,7 @@ def _portfolio_errors(portfolio_repo: Path) -> list[str]:
         "src/scripts/30-email.js",
         "src/scripts/15-portfolio-sort.js",
         "src/scripts/60-all-sort.js",
+        "src/scripts/25-case-next.js",
         "scripts/build-page.mjs",
         "scripts/site-config.mjs",
         "scripts/render-case-markdown.mjs",
@@ -470,11 +471,12 @@ def _portfolio_errors(portfolio_repo: Path) -> list[str]:
         if not re.search(pattern, case_css, re.DOTALL):
             errors.append(message)
     builder_contracts = (
-        "function getCaseSuggestions(slug)",
+        "function getCaseCandidates(slug)",
         'if (portfolioCase.scope === current.scope) return 1;',
         'getPortfolioFamily(portfolioCase.scope) === currentFamily',
         "return 3;",
-        ".slice(0, 3);",
+        'data-case-slug="${slug}"',
+        'index >= 3 ? " hidden" : ""',
         '"<!-- @case-next -->"',
         "renderCaseSuggestions(slug)",
     )
@@ -483,7 +485,8 @@ def _portfolio_errors(portfolio_repo: Path) -> list[str]:
             errors.append(f"builder missing case-next contract: {contract}")
     verifier_contracts = (
         'const suggestionBlockPattern =',
-        'suggestions.length === 3',
+        "suggestions.length === portfolioCases.length - 1",
+        'suggestions.filter(({ hidden }) => !hidden).length === 3',
         "targetSlug !== slug",
         "configuredCaseSlugs.has(targetSlug)",
         "expectedTarget?.slug === targetSlug",
@@ -493,6 +496,16 @@ def _portfolio_errors(portfolio_repo: Path) -> list[str]:
     for contract in verifier_contracts:
         if contract not in verifier_source:
             errors.append(f"page verifier missing case-next assertion: {contract}")
+    case_next_script = _read(portfolio_repo / "src/scripts/25-case-next.js")
+    for contract in (
+        'const visitedKey = "gildrb:visited-cases";',
+        "localStorage",
+        "const prioritizeUnvisited = true;",
+        "Math.random()",
+        "link.hidden = !visible.has(link);",
+    ):
+        if contract not in case_next_script:
+            errors.append(f"case-next script missing visited-selection contract: {contract}")
 
     expected_tokens = {
         "--bg": "#000000",
@@ -952,8 +965,8 @@ def _portfolio_errors(portfolio_repo: Path) -> list[str]:
     for stylesheet, pattern, message in responsive_visibility_rules:
         if not re.search(pattern, stylesheet, re.DOTALL):
             errors.append(message)
-    if not re.search(r"const sharedCaseScripts = Object\.freeze\(\[\s*\"10-core\.js\",\s*\"20-theme\.js\",\s*\"30-email\.js\",?\s*\]\)", site_config):
-        errors.append("case-page script bundle does not include shared email behavior")
+    if not re.search(r"const sharedCaseScripts = Object\.freeze\(\[\s*\"10-core\.js\",\s*\"20-theme\.js\",\s*\"25-case-next\.js\",\s*\"30-email\.js\",?\s*\]\)", site_config):
+        errors.append("case-page script bundle does not include case-next and shared email behavior")
     if 'querySelectorAll(".email")' not in email_script:
         errors.append("shared email behavior does not bind every responsive email control")
     redirect_pairs = {
