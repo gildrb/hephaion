@@ -44,7 +44,12 @@ REQUIRED_DESIGN_PHRASES = (
     "Place one `Date` / `Project` / `Scope` / `All` header row",
     "Make every project row a full-width link target.",
     "var(--all-case-gap)",
-    "always places the homepage-derived `site` entry last",
+    "Its generated default order always places the homepage-derived `site` entry last",
+    "Ship a monochrome brand mark as an SVG file referenced from a normal `<img>`",
+    "Cover all three theme states",
+    "The homepage runs exactly one entry animation, on first paint.",
+    "Stagger the table as a diagonal wave.",
+    "a `source` link to the site's public repository",
     "Case-study prose is user-owned.",
     "do not imply permission to alter wording",
     "Treat that desktop boundary as a maximum endpoint, not a target baseline.",
@@ -70,6 +75,21 @@ REQUIRED_OPERATIONAL_CONTRACTS = {
     "skills/gildrb-interaction/SKILL.md": (
         "A touch drag on the mobile homepage moves the name, theme control, and content as one page",
         "Pull-to-refresh remains available",
+        "The homepage stays hidden behind `homepage-first-paint-pending`",
+    ),
+    "skills/gildrb-media/SKILL.md": (
+        "Ship a monochrome brand mark as an SVG",
+        "Slicing is not cropping",
+    ),
+    "skills/gildrb-portfolio/references/homepage.md": (
+        "Default to newest-first: gildrb.com, T3, Ben Davis, Heph, Filen, n0thing, CURVES, then mL7.",
+        "ordered segments of that one list, not categories",
+    ),
+    "skills/gildrb-portfolio/references/routing.md": (
+        "Register the case study in `scripts/site-config.mjs`",
+    ),
+    "skills/gildrb-portfolio/references/verification.md": (
+        "emits the Vercel headers from `vercel.json`",
     ),
     "skills/gildrb-typography/SKILL.md": (
         "Case-study Markdown uses compact `###` headings",
@@ -82,7 +102,21 @@ REQUIRED_OPERATIONAL_CONTRACTS = {
     ),
 }
 
-REQUIRED_CASE_ROUTES = ("/site", "/heph", "/filen", "/n0thing", "/ml7", "/all")
+REQUIRED_CASE_ROUTES = (
+    "/site",
+    "/t3",
+    "/ben-davis",
+    "/heph",
+    "/filen",
+    "/n0thing",
+    "/curves",
+    "/ml7",
+    "/all",
+)
+THEME_INVERTING_MARKS = {
+    "heph": ("30-heph-demo.css", "heph-lockup"),
+    "ben-davis": ("30-ben-davis.css", "ben-davis-brandmark"),
+}
 REQUIRED_SKILL_REFERENCES = {
     "skills/gildrb-portfolio/SKILL.md": (
         "references/homepage.md",
@@ -273,12 +307,19 @@ def _portfolio_errors(portfolio_repo: Path) -> list[str]:
         "src/partials/sidebar.html",
         "src/partials/theme-toggle.html",
         "src/all.template.html",
+        "src/styles/30-ben-davis.css",
+        "src/ben-davis.template.html",
+        "src/curves.template.html",
+        "src/t3.template.html",
         "src/filen.template.html",
         "src/heph.template.html",
         "src/site.template.html",
         "src/page.template.html",
         "src/ml7.template.html",
         "src/n0thing.template.html",
+        "src/styles/15-homepage-entry.css",
+        "src/scripts/10-core.js",
+        "src/scripts/12-homepage-entry.js",
         "src/scripts/30-email.js",
         "src/scripts/15-portfolio-sort.js",
         "src/scripts/60-all-sort.js",
@@ -287,6 +328,9 @@ def _portfolio_errors(portfolio_repo: Path) -> list[str]:
         "scripts/render-case-markdown.mjs",
         "scripts/verify-page.mjs",
         "content/README.md",
+        "content/ben-davis.md",
+        "content/curves.md",
+        "content/t3.md",
         "content/filen.md",
         "content/heph.md",
         "content/ml7.md",
@@ -318,6 +362,7 @@ def _portfolio_errors(portfolio_repo: Path) -> list[str]:
     portfolio_design = _read(portfolio_repo / "src/sections/portfolio-design.html")
     builder = _read(portfolio_repo / "scripts/build-page.mjs")
     site_config = _read(portfolio_repo / "scripts/site-config.mjs")
+    site_script = _read(portfolio_repo / "src/scripts/10-core.js")
     renderer = _read(portfolio_repo / "scripts/render-case-markdown.mjs")
     homepage_template = _read(portfolio_repo / "src/page.template.html")
     all_template = _read(portfolio_repo / "src/all.template.html")
@@ -326,6 +371,9 @@ def _portfolio_errors(portfolio_repo: Path) -> list[str]:
     sidebar_links = _read(portfolio_repo / "src/partials/sidebar-links.html")
     homepage_sidebar = _read(portfolio_repo / "src/partials/sidebar.html")
     filen_template = _read(portfolio_repo / "src/filen.template.html")
+    ben_davis_template = _read(portfolio_repo / "src/ben-davis.template.html")
+    curves_template = _read(portfolio_repo / "src/curves.template.html")
+    t3_template = _read(portfolio_repo / "src/t3.template.html")
     heph_template = _read(portfolio_repo / "src/heph.template.html")
     site_template = _read(portfolio_repo / "src/site.template.html")
     ml7_template = _read(portfolio_repo / "src/ml7.template.html")
@@ -346,18 +394,24 @@ def _portfolio_errors(portfolio_repo: Path) -> list[str]:
     if 'from "./render-case-markdown.mjs"' not in builder:
         errors.append("portfolio builder must render case studies from Markdown")
     case_templates = {
+        "ben-davis": ben_davis_template,
+        "curves": curves_template,
         "filen": filen_template,
         "heph": heph_template,
         "ml7": ml7_template,
         "n0thing": n0thing_template,
         "site": site_template,
+        "t3": t3_template,
     }
     route_titles = {
+        "ben-davis": "Ben Davis",
+        "curves": "CURVES",
         "filen": "Filen",
         "heph": "Heph",
         "ml7": "mL7",
         "n0thing": "n0thing",
         "site": "gildrb.com",
+        "t3": "T3",
     }
     if "<title>Gil Rodrigues</title>" not in homepage_template:
         errors.append("homepage browser title must be only Gil Rodrigues")
@@ -366,14 +420,22 @@ def _portfolio_errors(portfolio_repo: Path) -> list[str]:
         or '<!-- @all-cases -->' not in all_template
         or 'class="all-cases"' not in all_template
         or 'const allSortKey = allSortParams.get("sort");' not in all_sort_script
-        or 'if (left.dataset.slug === "site") return 1;' not in all_sort_script
-        or 'if (right.dataset.slug === "site") return -1;' not in all_sort_script
+        or 'data-slug="${slug}"' not in builder
     ):
-        errors.append("continuous all-projects route must use the current title, generated articles, scope sorting, and a final site case")
+        errors.append("continuous all-projects route must use the current title, generated articles, scope sorting, and addressable slugs")
+    if not re.search(
+        r'if \(left\.slug === "site"\) return 1;\s*if \(right\.slug === "site"\) return -1;',
+        builder,
+    ):
+        errors.append("generated all-projects default order must pin the site case last")
+    if 'dataset.slug === "site"' in all_sort_script:
+        errors.append("an explicit all-projects sort must order every article, including the site case")
     for slug, template in case_templates.items():
         markdown = _read(portfolio_repo / f"content/{slug}.md")
         if f"<!-- @case-markdown:{slug} -->" not in template:
             errors.append(f"{slug} template must use its Markdown insertion token")
+        if template.count("<!-- @case-next -->") != 1:
+            errors.append(f"{slug} template must contain exactly one case-next token after its article")
         if 'class="case-title"' in template or 'class="case-copy"' in template:
             errors.append(f"{slug} template must not duplicate author-owned Markdown prose")
         if f"<title>{route_titles[slug]}</title>" not in template:
@@ -391,6 +453,56 @@ def _portfolio_errors(portfolio_repo: Path) -> list[str]:
             errors.append(f"content/{slug}.md must use compact ### headings only")
         if metadata_count == 0 and not authored_body and not markdown.rstrip().endswith("## MORE SOON"):
             errors.append(f"content/{slug}.md must contain authored prose or end with ## MORE SOON")
+    if "<!-- @case-next -->" in all_template:
+        errors.append("all template must not contain the case-next token")
+    generated_all = portfolio_repo / "all/index.html"
+    if generated_all.is_file():
+        generated_all_text = _read(generated_all)
+        if 'class="case-next"' in generated_all_text or "case-next.js" in generated_all_text:
+            errors.append("generated /all must not contain case-next markup or script")
+    if "25-case-next.js" in site_config:
+        errors.append("case-page configuration must not register the retired case-next script")
+    if (
+        'if (isMobile) {' not in site_script
+        or 'root.classList.add("homepage-scroll-locked");' not in site_script
+        or 'homepageLockState = "locked";' not in site_script
+    ):
+        errors.append("mobile homepage must stay locked to the dynamic viewport")
+
+    case_next_css_contracts = (
+        (r"\.case-next\s*\{[^}]*width:\s*min\(100%,\s*760px\)[^}]*margin:\s*48px auto 0", "case-next block must use the case column and 48px heading rhythm"),
+        (r"\.case-next-list\s*\{[^}]*display:\s*grid[^}]*grid-template-columns:\s*max-content max-content minmax\(0,\s*1fr\) auto[^}]*column-gap:\s*16px", "case-next rows must mirror the homepage grid"),
+        (r"\.case-next-row\s*\{[^}]*display:\s*grid[^}]*grid-template-columns:\s*subgrid[^}]*padding:\s*8px 0", "case-next rows must use the homepage row padding"),
+        (r"\.case-next-row \+ \.case-next-row[\s\S]*?border-top:", "case-next rows must use homepage-style separators"),
+        (r"@media\s*\(min-width:\s*769px\)[\s\S]*?\.case-next-row:last-child\s*\{[^}]*padding-bottom:\s*calc\([^}]*var\(--footer-title-center-offset\)[^}]*var\(--theme-toggle-size\)", "desktop case-next final row must use the footer/theme-toggle endpoint calculation"),
+        (r"\.case-article article:has\(\+ \.case-next\) > :last-child\s*\{[^}]*padding-bottom:\s*0", "case-next must disable article endpoint padding when it follows"),
+        (r"\.case-next-link:hover[\s\S]*?\.case-next-link:focus-visible", "case-next must define hover and focus states"),
+        (r"@media \(max-width:\s*768px\)[\s\S]*?\.case-next-view\s*\{[^}]*display:\s*none", "case-next must hide View on mobile"),
+    )
+    for pattern, message in case_next_css_contracts:
+        if not re.search(pattern, case_css, re.DOTALL):
+            errors.append(message)
+    builder_contracts = (
+        '"<!-- @case-next -->"',
+        "renderCaseSuggestions(slug)",
+        "portfolioCases.flatMap",
+        'href="/${suggestionSlug}"',
+        'case-next-heading">View next',
+    )
+    for contract in builder_contracts:
+        if contract not in builder:
+            errors.append(f"builder missing case-next contract: {contract}")
+    verifier_contracts = (
+        'const suggestionBlockPattern =',
+        "suggestions.length === portfolioCases.length",
+        'expectedTarget?.slug === targetSlug',
+        "configuredCaseSlugs.has(targetSlug)",
+        '(allPage.match(/class="case-next"/g) || []).length === 0',
+    )
+    verifier_source = _read(portfolio_repo / "scripts/verify-page.mjs")
+    for contract in verifier_contracts:
+        if contract not in verifier_source:
+            errors.append(f"page verifier missing case-next assertion: {contract}")
 
     expected_tokens = {
         "--bg": "#000000",
@@ -519,9 +631,11 @@ def _portfolio_errors(portfolio_repo: Path) -> list[str]:
         errors.append("homepage scope values must use tertiary 16px/24px text in column three")
     scope_markup = portfolio_engineering + portfolio_design
     expected_scopes = {
-        "Design engineering": 1,
-        "Product design and engineering": 1,
-        "Brand identity": 1,
+        "Design Engineering": 1,
+        "Product/Design Engineering": 1,
+        "Logomark": 2,
+        "Brand Identity": 1,
+        "Typeface": 1,
         "Wordmark": 2,
     }
     for scope, count in expected_scopes.items():
@@ -576,15 +690,20 @@ def _portfolio_errors(portfolio_repo: Path) -> list[str]:
         errors.append("homepage must place Engineering rows before Design rows in its authored default order")
     default_project_ids = (
         "portfolio-site-title",
+        "portfolio-t3-title",
+        "portfolio-ben-davis-title",
         "portfolio-heph-title",
         "portfolio-filen-title",
         "portfolio-n0thing-title",
+        "portfolio-curves-title",
         "portfolio-ml7-title",
     )
     portfolio_markup = portfolio_engineering + portfolio_design
     default_positions = [portfolio_markup.find(f'id="{project_id}"') for project_id in default_project_ids]
     if any(position < 0 for position in default_positions) or default_positions != sorted(default_positions):
-        errors.append("homepage projects must default newest-first: gildrb.com, Heph, Filen, n0thing, mL7")
+        errors.append(
+            "homepage projects must default newest-first: gildrb.com, T3, Ben Davis, Heph, Filen, n0thing, CURVES, mL7",
+        )
     if not re.search(r"--text-media-gap:\s*32px", base_css):
         errors.append("homepage must define the 32px optical text-to-media gap")
     if not re.search(r"\.profile-summary\s*\{[^}]*margin-bottom:\s*var\(--text-media-gap\)", preview_css, re.DOTALL):
@@ -595,7 +714,10 @@ def _portfolio_errors(portfolio_repo: Path) -> list[str]:
         errors.append("homepage biography must use --text-primary")
     if '<footer class="site-footer">' not in homepage_references:
         errors.append("homepage Metadata links must share one semantic footer")
-    if not all(value in homepage_references for value in ("humans.txt", "llms.txt", "profile.json")):
+    if not all(
+        value in homepage_references
+        for value in ("humans.txt", "llms.txt", ">source<", "https://github.com/gildrb/web")
+    ):
         errors.append("homepage Metadata footer must expose the current public references")
     if "copyright-year" in homepage_references or "copyrightYear" in core_script:
         errors.append("homepage must not retain stale copyright behavior")
@@ -611,6 +733,52 @@ def _portfolio_errors(portfolio_repo: Path) -> list[str]:
         errors.append("Metadata must not use a negative desktop offset")
     if re.search(r"\.references-links\s*\{[^}]*margin-top:\s*-", responsive_css, re.DOTALL):
         errors.append("Metadata must not use a negative mobile offset")
+    for slug, (stylesheet, mark_class) in THEME_INVERTING_MARKS.items():
+        mark_css = _read(portfolio_repo / f"src/styles/{stylesheet}")
+        required_mark_rules = (
+            rf"@media \(prefers-color-scheme: light\)\s*\{{\s*:root:not\(\[data-theme\]\) \.{mark_class}\s*\{{[^}}]*filter:\s*brightness\(0\)",
+            rf':root\[data-theme="light"\] \.{mark_class}\s*\{{[^}}]*filter:\s*brightness\(0\)',
+            rf':root\[data-theme="dark"\] \.{mark_class}\s*\{{[^}}]*filter:\s*none',
+        )
+        for pattern in required_mark_rules:
+            if not re.search(pattern, mark_css, re.DOTALL):
+                errors.append(f"{mark_class} must invert with the theme in every theme state")
+        owning_bundle = re.search(rf'slug: "{slug}",[\s\S]*?scripts:', site_config)
+        if not owning_bundle or f'"{stylesheet}"' not in owning_bundle.group(0):
+            errors.append(f"{stylesheet} must be registered in the {slug} case-study style bundle")
+        foreign_bundles = [
+            other_slug
+            for other_slug in case_templates
+            if other_slug != slug
+            and (match := re.search(rf'slug: "{other_slug}",[\s\S]*?scripts:', site_config))
+            and f'"{stylesheet}"' in match.group(0)
+        ]
+        if foreign_bundles:
+            errors.append(f"{stylesheet} must stay scoped to the {slug} route")
+        for other_slug, other_template in case_templates.items():
+            if other_slug != slug and mark_class in other_template:
+                errors.append(f"{mark_class} must not appear on /{other_slug}")
+    homepage_entry_css = _read(portfolio_repo / "src/styles/15-homepage-entry.css")
+    homepage_entry_script = _read(portfolio_repo / "src/scripts/12-homepage-entry.js")
+    if not re.search(
+        r"html\.homepage-first-paint-pending body:not\(\.case-page\)\s*\{[^}]*visibility:\s*hidden",
+        homepage_entry_css,
+        re.DOTALL,
+    ):
+        errors.append("homepage must stay hidden until first paint is ready")
+    if not re.search(
+        r"animation-delay:\s*calc\(var\(--row-delay[^)]*\)\s*\+\s*var\(--column-delay[^)]*\)\)",
+        homepage_entry_css,
+    ):
+        errors.append("homepage entry must stagger rows and columns into one diagonal reveal")
+    if "@media (prefers-reduced-motion: reduce)" not in homepage_entry_css:
+        errors.append("homepage entry must respect reduced motion")
+    if "homepageFirstPaintReady" not in core_script or "homepageFirstPaintReady" not in homepage_entry_script:
+        errors.append("homepage entry must wait on the shared first-paint readiness promise")
+    if "homepage-first-paint-pending" not in homepage_entry_script:
+        errors.append("homepage entry must clear the first-paint pending class")
+    if "2800" not in homepage_entry_script:
+        errors.append("homepage entry must keep its completion timeout fallback")
     heph_demo = _read(portfolio_repo / "src/partials/heph-demo.html")
     heph_css = _read(portfolio_repo / "src/styles/30-heph-demo.css")
     if not re.search(r"\.heph-demo\s*\{[^}]*overflow:\s*visible", heph_css, re.DOTALL):
@@ -692,7 +860,7 @@ def _portfolio_errors(portfolio_repo: Path) -> list[str]:
         re.DOTALL,
     ):
         errors.append("prose after case media must use the same shared optical transition")
-    for banned in ("object-fit: cover", "border-top:", "border-bottom:"):
+    for banned in ("object-fit: cover", "border-bottom:"):
         if banned in case_css:
             errors.append(f"case CSS contains banned rule: {banned}")
 
@@ -749,11 +917,14 @@ def _portfolio_errors(portfolio_repo: Path) -> list[str]:
     if "<!-- @include:partials/theme-toggle.html -->" not in homepage_sidebar:
         errors.append("homepage does not include the shared theme control")
     for template_name, template in (
+        ("Ben Davis", ben_davis_template),
+        ("CURVES", curves_template),
         ("Filen", filen_template),
         ("Heph", heph_template),
         ("mL7", ml7_template),
         ("n0thing", n0thing_template),
         ("gildrb.com", site_template),
+        ("T3", t3_template),
     ):
         if "<!-- @include:partials/sidebar-links.html -->" not in template:
             errors.append(f"{template_name} does not include the shared sidebar links")
@@ -792,8 +963,20 @@ def _portfolio_errors(portfolio_repo: Path) -> list[str]:
     for stylesheet, pattern, message in responsive_visibility_rules:
         if not re.search(pattern, stylesheet, re.DOTALL):
             errors.append(message)
+    mobile_homepage_contracts = (
+        (r"html\.homepage-scroll-locked body \.layout\s*\{[^}]*height:\s*100dvh[^}]*grid-template-rows:\s*auto auto minmax\(0, 1fr\) auto", "mobile homepage must use a locked dynamic-viewport grid"),
+        (r"html\.homepage-scroll-locked body \.portfolio-section\s*\{[^}]*align-content:\s*start[^}]*overflow-y:\s*auto", "mobile homepage table must own the flexible inner scroll"),
+        (r"html\.homepage-scroll-locked body \.links\s*\{[^}]*padding-bottom:\s*24px", "mobile homepage footer must preserve the 24px bottom edge offset"),
+        (r"html\.homepage-scroll-locked body \.portfolio-table-header[\s\S]*?position:\s*sticky[\s\S]*?background:\s*var\(--bg\)", "mobile homepage table header must remain pinned with an opaque backdrop"),
+        (r"\.portfolio-scroll-frame::before[\s\S]*?height:\s*56px", "mobile homepage fades must match the case-page 56px treatment"),
+        (r"\.portfolio-scroll-frame::after[\s\S]*?bottom:\s*0[^}]*z-index:\s*2", "mobile homepage bottom fade must stay anchored to the wrapper clipping edge above rows"),
+        (r"\.portfolio-scroll-frame::before[\s\S]*?\.portfolio-scroll-frame::after[\s\S]*?opacity:\s*0", "mobile homepage table must own conditional scroll fades"),
+    )
+    for pattern, message in mobile_homepage_contracts:
+        if not re.search(pattern, responsive_css, re.DOTALL):
+            errors.append(message)
     if not re.search(r"const sharedCaseScripts = Object\.freeze\(\[\s*\"10-core\.js\",\s*\"20-theme\.js\",\s*\"30-email\.js\",?\s*\]\)", site_config):
-        errors.append("case-page script bundle does not include shared email behavior")
+        errors.append("case-page script bundle does not preserve shared email behavior")
     if 'querySelectorAll(".email")' not in email_script:
         errors.append("shared email behavior does not bind every responsive email control")
     redirect_pairs = {

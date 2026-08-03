@@ -11,6 +11,10 @@
 - Check no external project link when explicitly prohibited.
 - Check legacy redirects.
 - Validate JSON and XML.
+- Run `node scripts/verify-crawlability.mjs` against a local server that emits the Vercel headers from `vercel.json`; a plain static server omits `Content-Signal` and `Link` and fails for the wrong reason.
+- Extend the project counts, chronological id order, scope counts, route markers, and media assertions in both verifiers whenever a case study is added.
+- In `scripts/verify-page.mjs`, assert exactly one `View next` block and every configured project row on every case route; reject missing self-route hrefs, unknown routes, stale target metadata, and incorrect homepage order. Assert that `/all` contains zero `case-next` markup.
+- Check each theme-inverting mark under the system preference and both explicit themes, and that its class is scoped to one route.
 - Render mobile and desktop.
 - Click every project row.
 - Click `Gil Rodrigues` and confirm `/`.
