@@ -73,7 +73,7 @@ REQUIRED_OPERATIONAL_CONTRACTS = {
         "The homepage row stays in document flow; case-study rows remain sticky.",
     ),
     "skills/gildrb-interaction/SKILL.md": (
-        "A touch drag on the mobile homepage moves the name, theme control, and content as one page",
+        "A touch drag on the mobile homepage scrolls the normal document beneath the shared sticky name and theme-control header",
         "Pull-to-refresh remains available",
         "The mobile homepage table remains in normal document flow with native scrolling",
         "The homepage stays hidden behind `homepage-first-paint-pending`",
@@ -991,15 +991,10 @@ def _portfolio_errors(portfolio_repo: Path) -> list[str]:
     if "portfolio-scroll-frame::before" in responsive_css or "portfolio-scroll-frame::after" in responsive_css:
         errors.append("mobile homepage must not define scroll fades")
     if not re.search(
-        r"@media\s*\(max-width:\s*767px\)[\s\S]*?body:not\(\.case-page\) \.name\s*\{[^}]*position:\s*relative[^}]*background:\s*var\(--bg\)",
+        r"@media\s*\(max-width:\s*767px\)[\s\S]*?\.name\s*\{[^}]*position:\s*sticky[^}]*top:\s*0[^}]*background:\s*linear-gradient",
         responsive_css,
     ):
-        errors.append("mobile homepage must keep the main-branch name header in document flow")
-    if not re.search(
-        r"@media\s*\(max-width:\s*767px\)[\s\S]*?body\.case-page \.name\s*\{[^}]*position:\s*sticky[^}]*top:\s*0[^}]*background:\s*linear-gradient",
-        responsive_css,
-    ):
-        errors.append("mobile case routes must preserve the main-branch sticky location treatment")
+        errors.append("mobile routes must share the sticky main-branch location treatment")
     if not re.search(
         r"@media\s*\(max-width:\s*767px\)[\s\S]*?\.theme-toggle\s*\{[^}]*position:\s*sticky[^}]*top:\s*0",
         responsive_css,
