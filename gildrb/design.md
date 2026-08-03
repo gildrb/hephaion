@@ -273,14 +273,14 @@ Every generated case-study route ends with a build-generated `Read next` block i
 
 - Use existing tokens only: `--text-primary`, `--text-tertiary`, 16px/24px type, and the existing case-section rhythm.
 - Keep 48px between the article's final block and `Read next`, matching the existing compact-heading (`###`) top margin. On desktop, remove the article's final-line boundary padding when this block follows; the suggestions block owns the endpoint alignment.
-- Use `var(--theme-toggle-optical-offset)` for the vertical row padding so the heading's optical center aligns with the desktop theme-toggle center at max scroll while preserving the content column's 48px bottom padding. This alignment does not apply on mobile.
-- Render every other project as a real anchor at build time. Keep only three anchors visible by default with the remaining anchors carrying the native `hidden` attribute.
-- The case script may reveal a different three-anchor set per visit. Hidden anchors must remain excluded from keyboard and assistive-technology navigation, and the visible set must always contain exactly three rows.
-- Store visited case slugs in one guarded `localStorage` key. Record the current route on load; if storage fails, use random selection without throwing. Prefer unvisited candidates, shuffle within each group, and isolate the preference switch to one line.
+- Use the homepage row padding and faint primary separators. Render every other project as a real anchor and the current project as plain `aria-current="page"` text; never link to the current route.
+- Keep every row visible in homepage default order. Do not add sort buttons, an `All` column, randomization, visited state, or client JavaScript for this table.
+- Do not force the desktop theme-toggle endpoint under the eight-row table. Keep the 48px content-column bottom padding. On mobile, the homepage itself is a locked dynamic-viewport column with the project table as the only possible inner scroll region.
+- On the mobile homepage, pin the name and theme toggle at the top and Links/Contact at the bottom with the same edge offset. Use `100dvh`; keep keyboard and screen-reader access inside the table's native scroll region when rows exceed the available space.
 - Keep the block text-only. Do not add cards, borders, gradients, new colors, or arbitrary sizes.
 - Reveal `View` on hover and keyboard focus using the homepage interaction convention; keep focus visible.
 - At mobile widths, preserve the date, project, scope, and arrow columns and hide only the `View` label, as on the homepage.
-- The anchors and metadata are build-time HTML. A small vanilla case script may change which three are visible; it must not fetch or construct rows.
+- The rows and metadata are build-time HTML. The table must not load client JavaScript.
 - `/all` starts immediately with the generated case studies. It adds no introduction, duplicates no authored case content, and orders its `.all-case` articles from the `sort` and `direction` URL parameters. Its generated default order always places the homepage-derived `site` entry last; an explicit sort request orders every article, `site` included.
 - Keep the homepage Metadata footer only on `/` and only on desktop. It lists `humans.txt`, `llms.txt`, and a `source` link to the site's public repository as a vertical `--section-content-gap` stack; it contains no copyright line.
 - Hide the complete Metadata footer at `767px` and below, and do not add it to case-study or `/all` routes.

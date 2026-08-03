@@ -26,6 +26,6 @@
 ## Case-Study Suggestions
 
 - Include exactly one `<!-- @case-next -->` token after the article and inside the case template's content column.
-- Let `scripts/build-page.mjs` replace the token with every other project in deterministic tier/date order; the first three are the no-JavaScript default. `/all` must not receive the token or block.
-- Register the shared `25-case-next.js` script through `sharedCaseScripts`. It may reveal three existing build-generated anchors per visit using guarded localStorage and must never fetch or construct suggestion rows.
+- Let `scripts/build-page.mjs` replace the token with every configured homepage project in homepage default order. Render the current project as plain `aria-current="page"` text and every other project as an anchor. `/all` must not receive the token or block.
+- Do not register client JavaScript for the case table. It is complete build-time HTML.
 - Keep the suggestion targets and their date/title/scope fields derived from homepage rows rather than hand-written route metadata.

@@ -323,7 +323,6 @@ def _portfolio_errors(portfolio_repo: Path) -> list[str]:
         "src/scripts/30-email.js",
         "src/scripts/15-portfolio-sort.js",
         "src/scripts/60-all-sort.js",
-        "src/scripts/25-case-next.js",
         "scripts/build-page.mjs",
         "scripts/site-config.mjs",
         "scripts/render-case-markdown.mjs",
@@ -363,6 +362,7 @@ def _portfolio_errors(portfolio_repo: Path) -> list[str]:
     portfolio_design = _read(portfolio_repo / "src/sections/portfolio-design.html")
     builder = _read(portfolio_repo / "scripts/build-page.mjs")
     site_config = _read(portfolio_repo / "scripts/site-config.mjs")
+    site_script = _read(portfolio_repo / "src/scripts/10-core.js")
     renderer = _read(portfolio_repo / "scripts/render-case-markdown.mjs")
     homepage_template = _read(portfolio_repo / "src/page.template.html")
     all_template = _read(portfolio_repo / "src/all.template.html")
@@ -456,13 +456,24 @@ def _portfolio_errors(portfolio_repo: Path) -> list[str]:
     if "<!-- @case-next -->" in all_template:
         errors.append("all template must not contain the case-next token")
     generated_all = portfolio_repo / "all/index.html"
-    if generated_all.is_file() and 'class="case-next"' in _read(generated_all):
-        errors.append("generated /all must not contain case-next markup")
+    if generated_all.is_file():
+        generated_all_text = _read(generated_all)
+        if 'class="case-next"' in generated_all_text or "case-next.js" in generated_all_text:
+            errors.append("generated /all must not contain case-next markup or script")
+    if "25-case-next.js" in site_config:
+        errors.append("case-page configuration must not register the retired case-next script")
+    if (
+        'if (isMobile) {' not in site_script
+        or 'root.classList.add("homepage-scroll-locked");' not in site_script
+        or 'homepageLockState = "locked";' not in site_script
+    ):
+        errors.append("mobile homepage must stay locked to the dynamic viewport")
 
     case_next_css_contracts = (
         (r"\.case-next\s*\{[^}]*width:\s*min\(100%,\s*760px\)[^}]*margin:\s*48px auto 0", "case-next block must use the case column and 48px heading rhythm"),
         (r"\.case-next-list\s*\{[^}]*display:\s*grid[^}]*grid-template-columns:\s*max-content max-content minmax\(0,\s*1fr\) auto[^}]*column-gap:\s*16px", "case-next rows must mirror the homepage grid"),
-        (r"\.case-next-link\s*\{[^}]*display:\s*grid[^}]*grid-template-columns:\s*subgrid[^}]*padding:\s*var\(--theme-toggle-optical-offset\) 0", "case-next links must use the optical-offset row padding"),
+        (r"\.case-next-row\s*\{[^}]*display:\s*grid[^}]*grid-template-columns:\s*subgrid[^}]*padding:\s*8px 0", "case-next rows must use the homepage row padding"),
+        (r"\.case-next-row \+ \.case-next-row[\s\S]*?border-top:", "case-next rows must use homepage-style separators"),
         (r"\.case-article article:has\(\+ \.case-next\) > :last-child\s*\{[^}]*padding-bottom:\s*0", "case-next must disable article endpoint padding when it follows"),
         (r"\.case-next-link:hover[\s\S]*?\.case-next-link:focus-visible", "case-next must define hover and focus states"),
         (r"@media \(max-width:\s*768px\)[\s\S]*?\.case-next-view\s*\{[^}]*display:\s*none", "case-next must hide View on mobile"),
@@ -471,41 +482,26 @@ def _portfolio_errors(portfolio_repo: Path) -> list[str]:
         if not re.search(pattern, case_css, re.DOTALL):
             errors.append(message)
     builder_contracts = (
-        "function getCaseCandidates(slug)",
-        'if (portfolioCase.scope === current.scope) return 1;',
-        'getPortfolioFamily(portfolioCase.scope) === currentFamily',
-        "return 3;",
-        'data-case-slug="${slug}"',
-        'index >= 3 ? " hidden" : ""',
         '"<!-- @case-next -->"',
         "renderCaseSuggestions(slug)",
+        "portfolioCases.flatMap",
+        "case-next-current",
     )
     for contract in builder_contracts:
         if contract not in builder:
             errors.append(f"builder missing case-next contract: {contract}")
     verifier_contracts = (
         'const suggestionBlockPattern =',
-        "suggestions.length === portfolioCases.length - 1",
-        'suggestions.filter(({ hidden }) => !hidden).length === 3',
-        "targetSlug !== slug",
+        "suggestions.length === portfolioCases.length",
+        'expectedTarget?.slug === targetSlug',
         "configuredCaseSlugs.has(targetSlug)",
-        "expectedTarget?.slug === targetSlug",
+        'targetSlug === slug ? tag === "div" : tag === "a"',
         '(allPage.match(/class="case-next"/g) || []).length === 0',
     )
     verifier_source = _read(portfolio_repo / "scripts/verify-page.mjs")
     for contract in verifier_contracts:
         if contract not in verifier_source:
             errors.append(f"page verifier missing case-next assertion: {contract}")
-    case_next_script = _read(portfolio_repo / "src/scripts/25-case-next.js")
-    for contract in (
-        'const visitedKey = "gildrb:visited-cases";',
-        "localStorage",
-        "const prioritizeUnvisited = true;",
-        "Math.random()",
-        "link.hidden = !visible.has(link);",
-    ):
-        if contract not in case_next_script:
-            errors.append(f"case-next script missing visited-selection contract: {contract}")
 
     expected_tokens = {
         "--bg": "#000000",
@@ -862,7 +858,7 @@ def _portfolio_errors(portfolio_repo: Path) -> list[str]:
         re.DOTALL,
     ):
         errors.append("prose after case media must use the same shared optical transition")
-    for banned in ("object-fit: cover", "border-top:", "border-bottom:"):
+    for banned in ("object-fit: cover", "border-bottom:"):
         if banned in case_css:
             errors.append(f"case CSS contains banned rule: {banned}")
 
@@ -965,8 +961,8 @@ def _portfolio_errors(portfolio_repo: Path) -> list[str]:
     for stylesheet, pattern, message in responsive_visibility_rules:
         if not re.search(pattern, stylesheet, re.DOTALL):
             errors.append(message)
-    if not re.search(r"const sharedCaseScripts = Object\.freeze\(\[\s*\"10-core\.js\",\s*\"20-theme\.js\",\s*\"25-case-next\.js\",\s*\"30-email\.js\",?\s*\]\)", site_config):
-        errors.append("case-page script bundle does not include case-next and shared email behavior")
+    if not re.search(r"const sharedCaseScripts = Object\.freeze\(\[\s*\"10-core\.js\",\s*\"20-theme\.js\",\s*\"30-email\.js\",?\s*\]\)", site_config):
+        errors.append("case-page script bundle does not preserve shared email behavior")
     if 'querySelectorAll(".email")' not in email_script:
         errors.append("shared email behavior does not bind every responsive email control")
     redirect_pairs = {

@@ -218,12 +218,6 @@ A case study is complete when its route, homepage entry, persistent location, na
 
 ## Read Next
 
-Every generated case-study route ends with a build-generated `Read next` block containing every other project as a real crawlable anchor. The static builder orders them in deterministic tiers:
+Every generated case-study route ends with a build-generated `Read next` table containing every configured project exactly once, in the homepage's default newest-first order. The current project remains in the table as a plain `aria-current="page"` row, never as a self-link. Date, title, and scope metadata come from the parsed homepage rows; do not hand-write a second project registry. The `/all` continuous reading route deliberately has no `Read next` block.
 
-1. Same homepage-row scope.
-2. Same family: `Typeface`, `Wordmark`, and `Logomark` share the type/marks family; `Product/Design Engineering` and `Brand Identity` share the product family.
-3. Every remaining project.
-
-Within each tier, projects sort newest first. The current route is never a candidate. Suggestion date, title, and scope metadata come from the parsed homepage rows; do not hand-write a second suggestion registry. The no-JavaScript default exposes the first three. The case script then selects three per visit, shuffling unvisited projects first and topping up from visited projects; the weighting is isolated so it can be reversed in one line. The `/all` continuous reading route deliberately has no `Read next` block.
-
-The block begins 48px after the article, matching the existing `###` heading rhythm. On desktop, the article's final-line boundary padding is disabled when `Read next` follows; the block uses the existing theme-toggle optical offset for compact rows and owns the maximum-scroll alignment. Mobile keeps the 48px flow gap without toggle alignment.
+The block begins 48px after the article, matching the existing `###` heading rhythm. Its rows use the homepage table's four-column treatment and separators, without sort controls or the `All` column. The desktop toggle endpoint is not used to stretch the long eight-row table; the content column keeps its 48px bottom padding. Mobile keeps the 48px flow gap and allows the table to scroll internally only when the locked viewport cannot fit it.
