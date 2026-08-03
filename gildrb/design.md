@@ -272,7 +272,7 @@ Rules:
 Every generated case-study route ends with a build-generated `View next` block in the same content column as the article. It mirrors the homepage row conventions: date, project, scope, and `View →`, without the homepage header or `All` column.
 
 - Use existing tokens only: `--text-primary`, `--text-tertiary`, 16px/24px type, and the existing case-section rhythm.
-- Keep 48px between the article's final block and `View next`, matching the existing compact-heading (`###`) top margin. On desktop, remove the article's final-line boundary padding when this block follows; the heading uses a sticky best-effort alignment with the theme-toggle center and otherwise stays in normal flow.
+- Keep 48px between the article's final block and `View next`, matching the existing compact-heading (`###`) top margin. On desktop, remove the article's final-line boundary padding when this block follows; the heading remains in normal document flow.
 - On the locked mobile homepage, keep the table header sticky while its rows scroll. Reuse the case-page gradient overlay treatment for top and bottom scroll fades, enabling each fade only when that direction has overflow. Suppress the native overlay scrollbar so it cannot cover the arrow column.
 - Use the homepage row padding and faint primary separators. Render every project as a real anchor, including the current project with its own href and `aria-current="page"`.
 - Keep every row visible in homepage default order. Do not add sort buttons, an `All` column, randomization, visited state, or client JavaScript for this table.
