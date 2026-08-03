@@ -30,7 +30,7 @@ Use only the current location name for the browser-tab title: `Gil Rodrigues` on
 
 - Keep all projects in one global table with Date, Project, Scope, and All columns.
 - Make the complete row the case-study link and give it a precise accessible name.
-- Use the specific scopes from the current source: `Product/Design Engineering` for gildrb.com and Heph, `Logomark` for T3 and Ben Davis, `Brand Identity` for Filen, `Typeface` for CURVES, and `Wordmark` for n0thing and mL7.
+- Use the specific scopes from the current source: `Design Engineering` for gildrb.com and `Product/Design Engineering` for Heph, `Logomark` for T3 and Ben Davis, `Brand Identity` for Filen, `Typeface` for CURVES, and `Wordmark` for n0thing and mL7.
 - Order rows by date, newest first, across the whole table. `src/sections/portfolio-engineering.html` and `src/sections/portfolio-design.html` are two ordered segments of that single list, not discipline categories; place a new row wherever its date belongs, even when that means the other file.
 - Keep `Date`, `Project`, and `Scope` sortable across the complete list while preserving DOM, visual, and keyboard order. The All link carries the active sort to `/all`.
 
@@ -218,6 +218,6 @@ A case study is complete when its route, homepage entry, persistent location, na
 
 ## Read Next
 
-Every generated case-study route ends with a build-generated `Read next` table containing every configured project exactly once, in the homepage's default newest-first order. The current project remains in the table as a plain `aria-current="page"` row, never as a self-link. Date, title, and scope metadata come from the parsed homepage rows; do not hand-write a second project registry. The `/all` continuous reading route deliberately has no `Read next` block.
+Every generated case-study route ends with a build-generated `View next` table containing every configured project exactly once, in the homepage's default newest-first order. Every row is a real route anchor; the current project keeps its own href and carries `aria-current="page"`. Date, title, and scope metadata come from the parsed homepage rows; do not hand-write a second project registry. The `/all` continuous reading route deliberately has no `View next` block.
 
-The block begins 48px after the article, matching the existing `###` heading rhythm. Its rows use the homepage table's four-column treatment and separators, without sort controls or the `All` column. The desktop toggle endpoint is not used to stretch the long eight-row table; the content column keeps its 48px bottom padding. Mobile keeps the 48px flow gap and allows the table to scroll internally only when the locked viewport cannot fit it.
+The block begins 48px after the article, matching the existing `###` heading rhythm. Its rows use the homepage table's four-column treatment and separators, without sort controls or the `All` column. On desktop, the `View next` heading uses a sticky best-effort position aligned to the theme-toggle center when the page can accommodate it; short content remains in normal flow. The content column keeps its 48px bottom padding. Mobile keeps the 48px flow gap and allows the table to scroll internally only when the locked viewport cannot fit it.

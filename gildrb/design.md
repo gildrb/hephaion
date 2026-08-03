@@ -252,7 +252,7 @@ Rules:
 - Keep the homepage free of project images, previews, and the Heph terminal; all project evidence belongs inside case-study routes.
 - Order homepage projects newest to oldest by default: `gildrb.com`, `Heph`, `Filen`, `n0thing`, then `mL7`. DOM, visual, and keyboard order must agree at every viewport.
 - Place one `Date` / `Project` / `Scope` / `All` header row before the single global project list. Render all four labels in explicit Inter `16px/24px` and `--text-secondary` on the same four-column subgrid as the project rows; `All` is a right-aligned link to `/all` that includes the active sort state.
-- Size the desktop Project and Scope tracks to their longest content. Use the existing `16px` column gap between `gildrb.com`, the longest project title, and Scope. Use `Product/Design Engineering`, `Brand Identity`, and `Wordmark` exactly as authored in the current rows. Render scope values at `16px/24px` in `--text-tertiary`.
+- Size the desktop Project and Scope tracks to their longest content. Use the existing `16px` column gap between `gildrb.com`, the longest project title, and Scope. Use `Design Engineering`, `Product/Design Engineering`, `Brand Identity`, and `Wordmark` exactly as authored in the current rows. Render scope values at `16px/24px` in `--text-tertiary`.
 - On mobile, use `max-content max-content minmax(0, 1fr) auto` with `clamp(8px, 3vw, 16px)` column gaps. Keep the table at Inter `16px/24px`, show years instead of full dates, hide `View`, and truncate long Scope values with an ellipsis so the row never creates page overflow.
 - Treat the header and five project rows as one compact table block. The first project row begins immediately below the header rule with no section gap or category-divider space.
 - On desktop, align the header row's text line box exactly with the sidebar `Links` label line box. Do not add top padding that drops `Date`, `Project`, `Scope`, or `All` below it.
@@ -269,11 +269,12 @@ Rules:
 
 ### Case-study Read Next
 
-Every generated case-study route ends with a build-generated `Read next` block in the same content column as the article. It mirrors the homepage row conventions: date, project, scope, and `View →`, without the homepage header or `All` column.
+Every generated case-study route ends with a build-generated `View next` block in the same content column as the article. It mirrors the homepage row conventions: date, project, scope, and `View →`, without the homepage header or `All` column.
 
 - Use existing tokens only: `--text-primary`, `--text-tertiary`, 16px/24px type, and the existing case-section rhythm.
-- Keep 48px between the article's final block and `Read next`, matching the existing compact-heading (`###`) top margin. On desktop, remove the article's final-line boundary padding when this block follows; the suggestions block owns the endpoint alignment.
-- Use the homepage row padding and faint primary separators. Render every other project as a real anchor and the current project as plain `aria-current="page"` text; never link to the current route.
+- Keep 48px between the article's final block and `View next`, matching the existing compact-heading (`###`) top margin. On desktop, remove the article's final-line boundary padding when this block follows; the heading uses a sticky best-effort alignment with the theme-toggle center and otherwise stays in normal flow.
+- On the locked mobile homepage, keep the table header sticky while its rows scroll. Reuse the case-page gradient overlay treatment for top and bottom scroll fades, enabling each fade only when that direction has overflow. Suppress the native overlay scrollbar so it cannot cover the arrow column.
+- Use the homepage row padding and faint primary separators. Render every project as a real anchor, including the current project with its own href and `aria-current="page"`.
 - Keep every row visible in homepage default order. Do not add sort buttons, an `All` column, randomization, visited state, or client JavaScript for this table.
 - Do not force the desktop theme-toggle endpoint under the eight-row table. Keep the 48px content-column bottom padding. On mobile, the homepage itself is a locked dynamic-viewport column with the project table as the only possible inner scroll region.
 - On the mobile homepage, pin the name and theme toggle at the top and Links/Contact at the bottom with the same edge offset. Use `100dvh`; keep keyboard and screen-reader access inside the table's native scroll region when rows exceed the available space.

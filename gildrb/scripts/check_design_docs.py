@@ -474,6 +474,7 @@ def _portfolio_errors(portfolio_repo: Path) -> list[str]:
         (r"\.case-next-list\s*\{[^}]*display:\s*grid[^}]*grid-template-columns:\s*max-content max-content minmax\(0,\s*1fr\) auto[^}]*column-gap:\s*16px", "case-next rows must mirror the homepage grid"),
         (r"\.case-next-row\s*\{[^}]*display:\s*grid[^}]*grid-template-columns:\s*subgrid[^}]*padding:\s*8px 0", "case-next rows must use the homepage row padding"),
         (r"\.case-next-row \+ \.case-next-row[\s\S]*?border-top:", "case-next rows must use homepage-style separators"),
+        (r"\.case-next-heading\s*\{[^}]*position:\s*sticky[^}]*top:\s*calc\([^}]*100vh", "View next heading must use best-effort desktop toggle alignment"),
         (r"\.case-article article:has\(\+ \.case-next\) > :last-child\s*\{[^}]*padding-bottom:\s*0", "case-next must disable article endpoint padding when it follows"),
         (r"\.case-next-link:hover[\s\S]*?\.case-next-link:focus-visible", "case-next must define hover and focus states"),
         (r"@media \(max-width:\s*768px\)[\s\S]*?\.case-next-view\s*\{[^}]*display:\s*none", "case-next must hide View on mobile"),
@@ -485,7 +486,8 @@ def _portfolio_errors(portfolio_repo: Path) -> list[str]:
         '"<!-- @case-next -->"',
         "renderCaseSuggestions(slug)",
         "portfolioCases.flatMap",
-        "case-next-current",
+        'href="/${suggestionSlug}"',
+        'case-next-heading">View next',
     )
     for contract in builder_contracts:
         if contract not in builder:
@@ -495,7 +497,6 @@ def _portfolio_errors(portfolio_repo: Path) -> list[str]:
         "suggestions.length === portfolioCases.length",
         'expectedTarget?.slug === targetSlug',
         "configuredCaseSlugs.has(targetSlug)",
-        'targetSlug === slug ? tag === "div" : tag === "a"',
         '(allPage.match(/class="case-next"/g) || []).length === 0',
     )
     verifier_source = _read(portfolio_repo / "scripts/verify-page.mjs")
@@ -630,7 +631,8 @@ def _portfolio_errors(portfolio_repo: Path) -> list[str]:
         errors.append("homepage scope values must use tertiary 16px/24px text in column three")
     scope_markup = portfolio_engineering + portfolio_design
     expected_scopes = {
-        "Product/Design Engineering": 2,
+        "Design Engineering": 1,
+        "Product/Design Engineering": 1,
         "Logomark": 2,
         "Brand Identity": 1,
         "Typeface": 1,
@@ -965,6 +967,8 @@ def _portfolio_errors(portfolio_repo: Path) -> list[str]:
         (r"html\.homepage-scroll-locked body \.layout\s*\{[^}]*height:\s*100dvh[^}]*grid-template-rows:\s*auto auto minmax\(0, 1fr\) auto", "mobile homepage must use a locked dynamic-viewport grid"),
         (r"html\.homepage-scroll-locked body \.portfolio-section\s*\{[^}]*align-content:\s*start[^}]*overflow-y:\s*auto", "mobile homepage table must own the flexible inner scroll"),
         (r"html\.homepage-scroll-locked body \.links\s*\{[^}]*padding-bottom:\s*24px", "mobile homepage footer must preserve the 24px bottom edge offset"),
+        (r"html\.homepage-scroll-locked body \.portfolio-table-header[\s\S]*?position:\s*sticky[\s\S]*?background:\s*linear-gradient", "mobile homepage table header must remain pinned with the case fade treatment"),
+        (r"\.portfolio-section::before[\s\S]*?\.portfolio-section::after[\s\S]*?opacity:\s*0", "mobile homepage table must own conditional scroll fades"),
     )
     for pattern, message in mobile_homepage_contracts:
         if not re.search(pattern, responsive_css, re.DOTALL):

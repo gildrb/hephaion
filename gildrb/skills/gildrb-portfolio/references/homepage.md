@@ -23,7 +23,7 @@ Keep this sentence synchronized across visible and machine-readable surfaces.
 
 ## Current Projects
 
-- gildrb.com links to `/site` and uses `Product/Design Engineering`.
+- gildrb.com links to `/site` and uses `Design Engineering`.
 - T3 links to `/t3` and uses `Logomark`.
 - Ben Davis links to `/ben-davis` and uses `Logomark`.
 - CURVES links to `/curves` and uses `Typeface`.
