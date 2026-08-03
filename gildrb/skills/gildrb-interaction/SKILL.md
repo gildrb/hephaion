@@ -34,9 +34,9 @@ Make one interaction behave predictably across pointer, touch, navigation, and b
 - Theme applies immediately, persists when storage works, tolerates storage failure, and causes no broad transition.
 - On the mobile homepage and every case route, switching themes keeps the toggle's fixed row-height hit box and shared icon center stationary even though the sun and moon SVGs have different sizes.
 - Back/forward restores per-tab scroll; fresh navigation starts normally.
-- A touch drag on the mobile homepage scrolls the normal document beneath the shared sticky name and theme-control header; it must not create a nested scroll region or move the header.
-- Pull-to-refresh remains available; viewport fitting must not set `overflow: hidden` or `overscroll-behavior: none` on the page root.
-- The mobile homepage table remains in normal document flow with native scrolling. Do not add a locked viewport, nested table scroll, separately sticky filter row, scroll fades, scrollbar suppression, or scroll-chaining workaround.
+- A touch drag on the mobile homepage scrolls the project rows inside the locked table region; the filter row and shared header must not move with row overscroll.
+- The mobile homepage intentionally sets document `overflow: hidden` for the viewport lock; pull-to-refresh is not a requirement for this interaction. Keep the table's `overscroll-behavior: auto`.
+- The mobile homepage table rows remain in an inner scroll region below the non-scrolling filter row. Keep the conditional top and bottom scroll fades, suppress the inner scrollbar, and do not add scroll-chaining workarounds.
 - The Heph demo lives only on `/heph` and uses the canonical shared partial and live scripts.
 - Motion is absent unless necessary, no longer than `200ms`, and respects reduced motion. The homepage first-paint entry is the single documented exception.
 - The homepage stays hidden behind `homepage-first-paint-pending` until theme, `Inter`, dates, and mobile columns are settled, then reveals once as a staggered diagonal and marks itself complete. Every path, including the `2800ms` fallback, must remove the pending class; a silent failure must never leave the page blank.

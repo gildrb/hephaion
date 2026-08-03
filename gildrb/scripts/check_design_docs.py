@@ -73,9 +73,9 @@ REQUIRED_OPERATIONAL_CONTRACTS = {
         "The homepage row stays in document flow; case-study rows remain sticky.",
     ),
     "skills/gildrb-interaction/SKILL.md": (
-        "A touch drag on the mobile homepage scrolls the normal document beneath the shared sticky name and theme-control header",
-        "Pull-to-refresh remains available",
-        "The mobile homepage table remains in normal document flow with native scrolling",
+        "A touch drag on the mobile homepage scrolls the project rows inside the locked table region",
+        "pull-to-refresh is not a requirement for this interaction",
+        "The mobile homepage table rows remain in an inner scroll region below the non-scrolling filter row",
         "The homepage stays hidden behind `homepage-first-paint-pending`",
     ),
     "skills/gildrb-media/SKILL.md": (
@@ -463,8 +463,8 @@ def _portfolio_errors(portfolio_repo: Path) -> list[str]:
             errors.append("generated /all must not contain case-next markup or script")
     if "25-case-next.js" in site_config:
         errors.append("case-page configuration must not register the retired case-next script")
-    if "homepage-scroll-locked" in site_script:
-        errors.append("mobile homepage must not use a locked dynamic viewport")
+    if "homepage-scroll-locked" not in site_script:
+        errors.append("mobile homepage must use a locked dynamic viewport")
 
     case_next_css_contracts = (
         (r"\.case-next\s*\{[^}]*width:\s*min\(100%,\s*760px\)[^}]*margin:\s*48px auto 0", "case-next block must use the case column and 48px heading rhythm"),
@@ -980,16 +980,18 @@ def _portfolio_errors(portfolio_repo: Path) -> list[str]:
     for stylesheet, pattern, message in responsive_visibility_rules:
         if not re.search(pattern, stylesheet, re.DOTALL):
             errors.append(message)
-    if "homepage-scroll-locked" in responsive_css:
-        errors.append("mobile homepage CSS must not define a locked viewport state")
-    if "portfolio-scroll-frame" in responsive_css:
-        errors.append("mobile homepage CSS must not define a scroll-frame wrapper")
-    if "overflow-y: auto" in responsive_css:
-        errors.append("mobile homepage must not create a nested scrolling table")
-    if "scrollbar-width: none" in responsive_css:
-        errors.append("mobile homepage must not suppress the native scrollbar")
-    if "portfolio-scroll-frame::before" in responsive_css or "portfolio-scroll-frame::after" in responsive_css:
-        errors.append("mobile homepage must not define scroll fades")
+    if "homepage-scroll-locked" not in responsive_css:
+        errors.append("mobile homepage must define the locked viewport state")
+    if "portfolio-scroll-frame" not in responsive_css:
+        errors.append("mobile homepage must define the scroll-frame wrapper")
+    if "overflow-y: auto" not in responsive_css:
+        errors.append("mobile homepage must keep rows in a nested scrolling table")
+    if "scrollbar-width: none" not in responsive_css:
+        errors.append("mobile homepage must suppress the inner scrollbar")
+    if "portfolio-scroll-frame::before" not in responsive_css or "portfolio-scroll-frame::after" not in responsive_css:
+        errors.append("mobile homepage must define conditional scroll fades")
+    if "document.overflow" in core_script:
+        errors.append("mobile homepage lock must remain owned by the CSS root state")
     if not re.search(
         r"@media\s*\(max-width:\s*767px\)[\s\S]*?\.name\s*\{[^}]*position:\s*sticky[^}]*top:\s*0[^}]*background:\s*linear-gradient",
         responsive_css,
