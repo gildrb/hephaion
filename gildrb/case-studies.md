@@ -215,3 +215,13 @@ Use these principles only when the user explicitly requests suggestions, draftin
 ## Completion
 
 A case study is complete when its route, homepage entry, persistent location, narrative, evidence, responsive media, metadata mirrors, generated output, verifier, browser rendering, and protected preview agree.
+
+## Read Next
+
+Every generated case-study route ends with exactly three `Read next` suggestions. The static builder selects them in deterministic tiers:
+
+1. Same homepage-row scope.
+2. Same family: `Typeface`, `Wordmark`, `Logomark`, and `Brandmark` share the type/marks family; `Design engineering`, `Product design and engineering`, and `Brand identity` share the product family.
+3. Every remaining project.
+
+Within each tier, projects sort newest first. The current route is never a candidate. Suggestion date, title, and scope metadata come from the parsed homepage rows; do not hand-write a second suggestion registry. The `/all` continuous reading route deliberately has no `Read next` block.

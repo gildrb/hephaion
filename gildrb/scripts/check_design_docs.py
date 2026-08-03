@@ -433,6 +433,8 @@ def _portfolio_errors(portfolio_repo: Path) -> list[str]:
         markdown = _read(portfolio_repo / f"content/{slug}.md")
         if f"<!-- @case-markdown:{slug} -->" not in template:
             errors.append(f"{slug} template must use its Markdown insertion token")
+        if template.count("<!-- @case-next -->") != 1:
+            errors.append(f"{slug} template must contain exactly one case-next token after its article")
         if 'class="case-title"' in template or 'class="case-copy"' in template:
             errors.append(f"{slug} template must not duplicate author-owned Markdown prose")
         if f"<title>{route_titles[slug]}</title>" not in template:
@@ -450,6 +452,46 @@ def _portfolio_errors(portfolio_repo: Path) -> list[str]:
             errors.append(f"content/{slug}.md must use compact ### headings only")
         if metadata_count == 0 and not authored_body and not markdown.rstrip().endswith("## MORE SOON"):
             errors.append(f"content/{slug}.md must contain authored prose or end with ## MORE SOON")
+    if "<!-- @case-next -->" in all_template:
+        errors.append("all template must not contain the case-next token")
+    generated_all = portfolio_repo / "all/index.html"
+    if generated_all.is_file() and 'class="case-next"' in _read(generated_all):
+        errors.append("generated /all must not contain case-next markup")
+
+    case_next_css_contracts = (
+        (r"\.case-next\s*\{[^}]*width:\s*min\(100%,\s*760px\)[^}]*margin:\s*80px auto 0", "case-next block must use the case column and section rhythm"),
+        (r"\.case-next-list\s*\{[^}]*display:\s*grid[^}]*grid-template-columns:\s*max-content max-content minmax\(0,\s*1fr\) auto[^}]*column-gap:\s*16px", "case-next rows must mirror the homepage grid"),
+        (r"\.case-next-link\s*\{[^}]*display:\s*grid[^}]*grid-template-columns:\s*subgrid", "case-next links must use the homepage subgrid convention"),
+        (r"\.case-next-link:hover[\s\S]*?\.case-next-link:focus-visible", "case-next must define hover and focus states"),
+        (r"@media \(max-width:\s*768px\)[\s\S]*?\.case-next-view\s*\{[^}]*display:\s*none", "case-next must hide View on mobile"),
+    )
+    for pattern, message in case_next_css_contracts:
+        if not re.search(pattern, case_css, re.DOTALL):
+            errors.append(message)
+    builder_contracts = (
+        "function getCaseSuggestions(slug)",
+        'if (portfolioCase.scope === current.scope) return 1;',
+        'getPortfolioFamily(portfolioCase.scope) === currentFamily',
+        "return 3;",
+        ".slice(0, 3);",
+        '"<!-- @case-next -->"',
+        "renderCaseSuggestions(slug)",
+    )
+    for contract in builder_contracts:
+        if contract not in builder:
+            errors.append(f"builder missing case-next contract: {contract}")
+    verifier_contracts = (
+        'const suggestionBlockPattern =',
+        'suggestions.length === 3',
+        "targetSlug !== slug",
+        "configuredCaseSlugs.has(targetSlug)",
+        "expectedTarget?.slug === targetSlug",
+        '(allPage.match(/class="case-next"/g) || []).length === 0',
+    )
+    verifier_source = _read(portfolio_repo / "scripts/verify-page.mjs")
+    for contract in verifier_contracts:
+        if contract not in verifier_source:
+            errors.append(f"page verifier missing case-next assertion: {contract}")
 
     expected_tokens = {
         "--bg": "#000000",

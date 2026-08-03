@@ -266,6 +266,16 @@ Rules:
 - Render project dates and scopes at `16px/24px` in `--text-tertiary`; render project titles at `16px/24px` in `--text-primary`.
 - Make every project row a full-width link target. Align date, project, scope, and the Inter `View →` affordance on the shared four-column subgrid.
 - Reveal `View` immediately left of the arrow only while the row is directly hovered or keyboard-focused. Hide `View` at `767px` and below so touch layouts retain all data columns without overflow.
+
+### Case-study Read Next
+
+Every generated case-study route ends with a build-generated `Read next` block in the same content column as the article. It mirrors the homepage row conventions: date, project, scope, and `View →`, without the homepage header or `All` column.
+
+- Use existing tokens only: `--text-primary`, `--text-tertiary`, 16px/24px type, and the existing case-section rhythm.
+- Keep the block text-only. Do not add cards, borders, gradients, new colors, or arbitrary sizes.
+- Reveal `View` on hover and keyboard focus using the homepage interaction convention; keep focus visible.
+- At mobile widths, preserve the date, project, scope, and arrow columns and hide only the `View` label, as on the homepage.
+- The block is build-time HTML and does not load client JavaScript.
 - `/all` starts immediately with the generated case studies. It adds no introduction, duplicates no authored case content, and orders its `.all-case` articles from the `sort` and `direction` URL parameters. Its generated default order always places the homepage-derived `site` entry last; an explicit sort request orders every article, `site` included.
 - Keep the homepage Metadata footer only on `/` and only on desktop. It lists `humans.txt`, `llms.txt`, and a `source` link to the site's public repository as a vertical `--section-content-gap` stack; it contains no copyright line.
 - Hide the complete Metadata footer at `767px` and below, and do not add it to case-study or `/all` routes.

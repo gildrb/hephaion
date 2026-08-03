@@ -22,3 +22,9 @@
 - Keep hyphenated slugs identical across route, template, content file, media directory, row id, and mirrors.
 - Keep one project template per authored case unless evidence proves a safe content abstraction.
 - Do not add a client-side router.
+
+## Case-Study Suggestions
+
+- Include exactly one `<!-- @case-next -->` token after the article and inside the case template's content column.
+- Let `scripts/build-page.mjs` replace the token with the three deterministic suggestions. `/all` must not receive the token or block.
+- Keep the suggestion targets and their date/title/scope fields derived from homepage rows rather than hand-written route metadata.
