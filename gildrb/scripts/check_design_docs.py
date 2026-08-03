@@ -622,8 +622,17 @@ def _portfolio_errors(portfolio_repo: Path) -> list[str]:
         errors.append("homepage Date, Project, and Scope controls must globally reorder all projects and announce the active direction")
     if not re.search(r"\.portfolio-list\s*\{[^}]*display:\s*grid[^}]*grid-template-columns:\s*subgrid[^}]*margin-top:\s*0", portfolio_css, re.DOTALL) or ".portfolio-group" in portfolio_css:
         errors.append("homepage projects must use one sortable subgrid list without category wrappers")
-    if not re.search(r"\.portfolio-section\s*\{[^}]*grid-template-columns:\s*max-content max-content minmax\(0,\s*1fr\) auto[^}]*column-gap:\s*16px", portfolio_css, re.DOTALL):
-        errors.append("homepage Scope track must begin after the Project track using the documented 16px gap")
+    if not (
+        re.search(
+            r"@media \(max-width:\s*767px\)[\s\S]*?\.portfolio-scroll-frame\s*\{[^}]*display:\s*grid[^}]*grid-template-columns:\s*max-content max-content minmax\(0,\s*1fr\) auto[^}]*column-gap:\s*clamp\(8px,\s*3vw,\s*16px\)[^}]*container-type:\s*inline-size",
+            responsive_css,
+        )
+        and re.search(
+            r"@media \(max-width:\s*767px\)[\s\S]*?\.portfolio-section\s*\{[^}]*grid-template-columns:\s*subgrid",
+            portfolio_css,
+        )
+    ):
+        errors.append("mobile homepage table must share the frame-owned four-column subgrid and width query container")
     if not re.search(r"\.portfolio-card-scope\s*\{[^}]*grid-column:\s*3[^}]*color:\s*var\(--text-tertiary\)[^}]*font-size:\s*16px[^}]*line-height:\s*24px", portfolio_css, re.DOTALL):
         errors.append("homepage scope values must use tertiary 16px/24px text in column three")
     scope_markup = portfolio_engineering + portfolio_design
@@ -638,18 +647,12 @@ def _portfolio_errors(portfolio_repo: Path) -> list[str]:
     for scope, count in expected_scopes.items():
         if scope_markup.count(f'class="portfolio-card-scope">{scope}') != count:
             errors.append(f"homepage scope values must preserve {count} {scope} row(s)")
-    if not (
-        re.search(
-            r"@media \(max-width:\s*767px\)[\s\S]*?\.portfolio-section\s*\{[^}]*grid-template-columns:\s*max-content max-content minmax\(0,\s*1fr\) auto[^}]*column-gap:\s*clamp\(8px,\s*3vw,\s*16px",
-            portfolio_css,
-        )
-        and re.search(
-            r"\.portfolio-card-scope\s*\{[^}]*min-width:\s*0[^}]*overflow:\s*hidden[^}]*text-overflow:\s*ellipsis",
-            portfolio_css,
-            re.DOTALL,
-        )
+    if not re.search(
+        r"\.portfolio-card-scope\s*\{[^}]*min-width:\s*0[^}]*overflow:\s*hidden[^}]*text-overflow:\s*ellipsis",
+        portfolio_css,
+        re.DOTALL,
     ):
-        errors.append("homepage project table must keep 16px type and truncate long scopes inside the flexible mobile track")
+        errors.append("homepage project table must truncate long scopes inside the flexible mobile track")
     if not re.search(
         r"@media \(max-width:\s*767px\)[\s\S]*?\.portfolio-card-view\s*\{[^}]*display:\s*none",
         portfolio_css,
