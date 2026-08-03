@@ -459,9 +459,10 @@ def _portfolio_errors(portfolio_repo: Path) -> list[str]:
         errors.append("generated /all must not contain case-next markup")
 
     case_next_css_contracts = (
-        (r"\.case-next\s*\{[^}]*width:\s*min\(100%,\s*760px\)[^}]*margin:\s*80px auto 0", "case-next block must use the case column and section rhythm"),
+        (r"\.case-next\s*\{[^}]*width:\s*min\(100%,\s*760px\)[^}]*margin:\s*48px auto 0", "case-next block must use the case column and 48px heading rhythm"),
         (r"\.case-next-list\s*\{[^}]*display:\s*grid[^}]*grid-template-columns:\s*max-content max-content minmax\(0,\s*1fr\) auto[^}]*column-gap:\s*16px", "case-next rows must mirror the homepage grid"),
-        (r"\.case-next-link\s*\{[^}]*display:\s*grid[^}]*grid-template-columns:\s*subgrid", "case-next links must use the homepage subgrid convention"),
+        (r"\.case-next-link\s*\{[^}]*display:\s*grid[^}]*grid-template-columns:\s*subgrid[^}]*padding:\s*var\(--theme-toggle-optical-offset\) 0", "case-next links must use the optical-offset row padding"),
+        (r"\.case-article article:has\(\+ \.case-next\) > :last-child\s*\{[^}]*padding-bottom:\s*0", "case-next must disable article endpoint padding when it follows"),
         (r"\.case-next-link:hover[\s\S]*?\.case-next-link:focus-visible", "case-next must define hover and focus states"),
         (r"@media \(max-width:\s*768px\)[\s\S]*?\.case-next-view\s*\{[^}]*display:\s*none", "case-next must hide View on mobile"),
     )
@@ -620,11 +621,9 @@ def _portfolio_errors(portfolio_repo: Path) -> list[str]:
         errors.append("homepage scope values must use tertiary 16px/24px text in column three")
     scope_markup = portfolio_engineering + portfolio_design
     expected_scopes = {
-        "Design engineering": 1,
-        "Logomark": 1,
-        "Brandmark": 1,
-        "Product design and engineering": 1,
-        "Brand identity": 1,
+        "Product/Design Engineering": 2,
+        "Logomark": 2,
+        "Brand Identity": 1,
         "Typeface": 1,
         "Wordmark": 2,
     }

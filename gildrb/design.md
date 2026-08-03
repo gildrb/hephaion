@@ -252,7 +252,7 @@ Rules:
 - Keep the homepage free of project images, previews, and the Heph terminal; all project evidence belongs inside case-study routes.
 - Order homepage projects newest to oldest by default: `gildrb.com`, `Heph`, `Filen`, `n0thing`, then `mL7`. DOM, visual, and keyboard order must agree at every viewport.
 - Place one `Date` / `Project` / `Scope` / `All` header row before the single global project list. Render all four labels in explicit Inter `16px/24px` and `--text-secondary` on the same four-column subgrid as the project rows; `All` is a right-aligned link to `/all` that includes the active sort state.
-- Size the desktop Project and Scope tracks to their longest content. Use the existing `16px` column gap between `gildrb.com`, the longest project title, and Scope. Use `Design engineering`, `Product design and engineering`, `Brand identity`, and `Wordmark` exactly as authored in the current rows. Render scope values at `16px/24px` in `--text-tertiary`.
+- Size the desktop Project and Scope tracks to their longest content. Use the existing `16px` column gap between `gildrb.com`, the longest project title, and Scope. Use `Product/Design Engineering`, `Brand Identity`, and `Wordmark` exactly as authored in the current rows. Render scope values at `16px/24px` in `--text-tertiary`.
 - On mobile, use `max-content max-content minmax(0, 1fr) auto` with `clamp(8px, 3vw, 16px)` column gaps. Keep the table at Inter `16px/24px`, show years instead of full dates, hide `View`, and truncate long Scope values with an ellipsis so the row never creates page overflow.
 - Treat the header and five project rows as one compact table block. The first project row begins immediately below the header rule with no section gap or category-divider space.
 - On desktop, align the header row's text line box exactly with the sidebar `Links` label line box. Do not add top padding that drops `Date`, `Project`, `Scope`, or `All` below it.
@@ -272,6 +272,10 @@ Rules:
 Every generated case-study route ends with a build-generated `Read next` block in the same content column as the article. It mirrors the homepage row conventions: date, project, scope, and `View →`, without the homepage header or `All` column.
 
 - Use existing tokens only: `--text-primary`, `--text-tertiary`, 16px/24px type, and the existing case-section rhythm.
+- Keep 48px between the article's final block and `Read next`, matching the existing compact-heading (`###`) top margin. On desktop, remove the article's final-line boundary padding when this block follows; the suggestions block owns the endpoint alignment.
+- Use `var(--theme-toggle-optical-offset)` for the vertical row padding so the heading's optical center aligns with the desktop theme-toggle center at max scroll while preserving the content column's 48px bottom padding. This alignment does not apply on mobile.
+- Keep 48px between the article's final block and `Read next`, matching the existing compact-heading (`###`) top margin. On desktop, remove the article's final-line boundary padding when this block follows; the suggestions block owns the endpoint alignment.
+- Use `var(--theme-toggle-optical-offset)` for the vertical row padding so the heading's optical center aligns with the desktop theme-toggle center at max scroll while preserving the content column's 48px bottom padding. This alignment does not apply on mobile.
 - Keep the block text-only. Do not add cards, borders, gradients, new colors, or arbitrary sizes.
 - Reveal `View` on hover and keyboard focus using the homepage interaction convention; keep focus visible.
 - At mobile widths, preserve the date, project, scope, and arrow columns and hide only the `View` label, as on the homepage.

@@ -23,12 +23,12 @@ Keep this sentence synchronized across visible and machine-readable surfaces.
 
 ## Current Projects
 
-- gildrb.com links to `/site` and uses `Design engineering`.
+- gildrb.com links to `/site` and uses `Product/Design Engineering`.
 - T3 links to `/t3` and uses `Logomark`.
-- Ben Davis links to `/ben-davis` and uses `Brandmark`.
+- Ben Davis links to `/ben-davis` and uses `Logomark`.
 - CURVES links to `/curves` and uses `Typeface`.
-- Heph links to `/heph` and uses `Product design and engineering`; the repository link appears inside that article.
-- Filen links to `/filen` and uses `Brand identity`.
+- Heph links to `/heph` and uses `Product/Design Engineering`; the repository link appears inside that article.
+- Filen links to `/filen` and uses `Brand Identity`.
 - n0thing links to `/n0thing` and uses `Wordmark`.
 - mL7 links to `/ml7` and uses `Wordmark`.
 - Do not use `/index/<project>` for canonical navigation.

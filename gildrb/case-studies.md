@@ -30,7 +30,7 @@ Use only the current location name for the browser-tab title: `Gil Rodrigues` on
 
 - Keep all projects in one global table with Date, Project, Scope, and All columns.
 - Make the complete row the case-study link and give it a precise accessible name.
-- Use the specific scopes from the current source: `Design engineering` for gildrb.com, `Logomark` for T3, `Brandmark` for Ben Davis, `Product design and engineering` for Heph, `Brand identity` for Filen, `Typeface` for CURVES, and `Wordmark` for n0thing and mL7.
+- Use the specific scopes from the current source: `Product/Design Engineering` for gildrb.com and Heph, `Logomark` for T3 and Ben Davis, `Brand Identity` for Filen, `Typeface` for CURVES, and `Wordmark` for n0thing and mL7.
 - Order rows by date, newest first, across the whole table. `src/sections/portfolio-engineering.html` and `src/sections/portfolio-design.html` are two ordered segments of that single list, not discipline categories; place a new row wherever its date belongs, even when that means the other file.
 - Keep `Date`, `Project`, and `Scope` sortable across the complete list while preserving DOM, visual, and keyboard order. The All link carries the active sort to `/all`.
 
@@ -157,7 +157,7 @@ Use these principles only when the user explicitly requests suggestions, draftin
 
 - Project label: `Ben Davis`.
 - Route: `/ben-davis`.
-- Homepage entry: dated `Ben Davis` row tagged `Brandmark`.
+- Homepage entry: dated `Ben Davis` row tagged `Logomark`.
 - Unsolicited redesign. Do not describe it as a commission.
 - Show the previous `davis7.sh` mark alongside the redesign; both ship as theme-inverting SVGs sharing one route-scoped class.
 - Location uses two lines: `Gil Rodrigues` then `→ Ben Davis`.
@@ -175,7 +175,7 @@ Use these principles only when the user explicitly requests suggestions, draftin
 
 - Project label: `Filen`.
 - Route: `/filen`.
-- Homepage entry: dated `Filen` row tagged `Brand identity`.
+- Homepage entry: dated `Filen` row tagged `Brand Identity`.
 - Required process evidence: complete exploration board.
 - The board must never be cropped.
 - Do not link to `filen.io` from the case page.
@@ -185,7 +185,7 @@ Use these principles only when the user explicitly requests suggestions, draftin
 
 - Project label: `Heph`.
 - Route: `/heph`.
-- Homepage entry: dated `Heph` row tagged `Product design and engineering`.
+- Homepage entry: dated `Heph` row tagged `Product/Design Engineering`.
 - Link the complete row to `/heph`; do not link the homepage directly to the source repository.
 - Keep the interactive terminal only inside the Heph case study.
 - Link `https://github.com/gildrb/heph` from inside the case-study article.
@@ -207,7 +207,7 @@ Use these principles only when the user explicitly requests suggestions, draftin
 
 - Project label: `gildrb.com`.
 - Route: `/site`.
-- Homepage entry: current local date row tagged `Design engineering`.
+- Homepage entry: current local date row tagged `Product/Design Engineering`.
 - Keep the authored build narrative in `content/site.md` and the route chrome in `src/site.template.html`.
 - Synchronize `llms.txt`, `.well-known/llms.txt`, `humans.txt`, `sitemap.xml`, `feed.xml`, and `src/data/profile.json` whenever the public portfolio route set changes.
 - Location uses two lines: `Gil Rodrigues` then `→ gildrb.com`.
@@ -221,7 +221,9 @@ A case study is complete when its route, homepage entry, persistent location, na
 Every generated case-study route ends with exactly three `Read next` suggestions. The static builder selects them in deterministic tiers:
 
 1. Same homepage-row scope.
-2. Same family: `Typeface`, `Wordmark`, `Logomark`, and `Brandmark` share the type/marks family; `Design engineering`, `Product design and engineering`, and `Brand identity` share the product family.
+2. Same family: `Typeface`, `Wordmark`, and `Logomark` share the type/marks family; `Product/Design Engineering` and `Brand Identity` share the product family.
 3. Every remaining project.
 
 Within each tier, projects sort newest first. The current route is never a candidate. Suggestion date, title, and scope metadata come from the parsed homepage rows; do not hand-write a second suggestion registry. The `/all` continuous reading route deliberately has no `Read next` block.
+
+The block begins 48px after the article, matching the existing `###` heading rhythm. On desktop, the article's final-line boundary padding is disabled when `Read next` follows; the block uses the existing theme-toggle optical offset for compact rows and owns the maximum-scroll alignment. Mobile keeps the 48px flow gap without toggle alignment.
