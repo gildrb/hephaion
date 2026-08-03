@@ -17,6 +17,8 @@
 ## Generation
 
 - Extend the existing static builder.
-- Reuse shared CSS and JavaScript.
+- Register the case study in `scripts/site-config.mjs`; the builder generates a route for every registered slug.
+- Reuse shared CSS and JavaScript. Add a route-scoped `30-<project>.css` only for rules that belong to one route, and register it in that case study's `styles` array alone.
+- Keep hyphenated slugs identical across route, template, content file, media directory, row id, and mirrors.
 - Keep one project template per authored case unless evidence proves a safe content abstraction.
 - Do not add a client-side router.

@@ -1,5 +1,5 @@
 ---
-version: "1.2.0"
+version: "1.3.0"
 name: "gildrb"
 description: "Visual and interaction contract for the gildrb portfolio and project case studies."
 default_theme: "dark"
@@ -266,8 +266,8 @@ Rules:
 - Render project dates and scopes at `16px/24px` in `--text-tertiary`; render project titles at `16px/24px` in `--text-primary`.
 - Make every project row a full-width link target. Align date, project, scope, and the Inter `View →` affordance on the shared four-column subgrid.
 - Reveal `View` immediately left of the arrow only while the row is directly hovered or keyboard-focused. Hide `View` at `767px` and below so touch layouts retain all data columns without overflow.
-- `/all` starts immediately with the generated case studies. It adds no introduction, duplicates no authored case content, orders its `.all-case` articles from the `sort` and `direction` URL parameters, and always places the homepage-derived `site` entry last.
-- Keep the homepage Metadata footer only on `/` and only on desktop. It lists `humans.txt`, `llms.txt`, and `profile.json` as a vertical `--section-content-gap` stack; it contains no copyright line.
+- `/all` starts immediately with the generated case studies. It adds no introduction, duplicates no authored case content, and orders its `.all-case` articles from the `sort` and `direction` URL parameters. Its generated default order always places the homepage-derived `site` entry last; an explicit sort request orders every article, `site` included.
+- Keep the homepage Metadata footer only on `/` and only on desktop. It lists `humans.txt`, `llms.txt`, and a `source` link to the site's public repository as a vertical `--section-content-gap` stack; it contains no copyright line.
 - Hide the complete Metadata footer at `767px` and below, and do not add it to case-study or `/all` routes.
 - Do not append summaries, roles, marketing copy, or detached personal-image preview sections.
 
@@ -293,6 +293,15 @@ Rules:
 - Do not use `object-position` to hide content.
 - Do not create cropped derivatives.
 - Preserve the source aspect ratio within normal browser rounding.
+
+### Vector marks
+
+- Ship a monochrome brand mark as an SVG file referenced from a normal `<img>`, not as a raster derivative. Vector marks are the one exception to WebP conversion.
+- Author the file with white fills, then invert it for light contexts with `filter: brightness(0)`; dark contexts keep `filter: none`.
+- Cover all three theme states: `@media (prefers-color-scheme: light)` scoped to `:root:not([data-theme])` for the system default, plus explicit `:root[data-theme="light"]` and `:root[data-theme="dark"]` rules.
+- Keep those rules in a route-scoped `src/styles/30-<project>.css` registered only in that case study's `styles` array. A mark class belongs to one route: `.heph-lockup` to `/heph`, `.ben-davis-brandmark` to `/ben-davis`.
+- Give marks `border-radius: 0` and no contour. The `--media-radius` contour belongs to raster evidence.
+- Keep the intrinsic `width` and `height` attributes from the SVG viewBox so the mark reserves its box like every other image.
 
 ### Optimization
 
@@ -369,6 +378,18 @@ Rules:
 - Respect `prefers-reduced-motion`.
 - Do not add looping decorative animation.
 
+### Homepage entry
+
+The homepage runs exactly one entry animation, on first paint. It is the documented exception to the `200ms` interaction limit. Case routes never animate on entry.
+
+- Hide the homepage body while `html.homepage-first-paint-pending` is present so no unstyled, unmeasured, or wrong-theme frame is ever shown. Keep `.name` and `.profile-summary` visible throughout.
+- `10-core.js` resolves `window.homepageFirstPaintReady` after the theme, `Inter`, homepage dates, and the mobile column layout are settled; `12-homepage-entry.js` then sets `data-homepage-first-paint-ready` and removes the pending class.
+- Reveal with `homepage-enter` from `opacity: 0` and a `-4px` vertical offset: `700ms` for the sidebar sequence, `1s` for the project table.
+- Stagger the table as a diagonal wave. One row down or one column right adds `80ms`, expressed as `--row-delay` and `--column-delay`.
+- End the sequence on the last contact link's `animationend`, with a `2800ms` timeout fallback, then set `data-homepage-entry-complete` and stop owning opacity.
+- Under `prefers-reduced-motion: reduce`, skip every entry animation and reveal the finished page immediately.
+- Never gate first paint on work that can fail silently. The pending class must be removed on every path, including the fallback.
+
 ## Accessibility
 
 - Use one semantic page heading.
@@ -396,7 +417,7 @@ Rules:
 
 ## Metadata
 
-- Canonical project routes are top-level: `/site`, `/heph`, `/filen`, `/n0thing`, `/ml7`, `/all`, and future `/<project>` paths.
+- Canonical project routes are top-level: `/site`, `/t3`, `/ben-davis`, `/heph`, `/filen`, `/n0thing`, `/curves`, `/ml7`, `/all`, and future `/<project>` paths. Slugs may be hyphenated and are used verbatim everywhere.
 - The homepage Heph row links to `/heph`. Its GitHub repository link belongs inside the Heph article, not on the homepage.
 - Use static directory indexes: `<project>/index.html` and `all/index.html`.
 - Synchronize canonical, Open Graph, Twitter, JSON-LD, sitemap, feed, Markdown mirrors, LLM mirrors, humans file, and structured profile graph.
@@ -427,5 +448,7 @@ For every design change:
 18. Confirm case studies do not repeat an email footer and that shared Links and Contact follow the article on mobile.
 19. Measure homepage table alignment and overflow at desktop, `390px`, and `320px`; the header and rows remain one contiguous block.
 20. Confirm the Heph demo appears only on `/heph` and remains exposed to assistive technology.
+21. Confirm each theme-inverting SVG mark renders light-on-dark and dark-on-light under the system preference and under both explicit themes, and that its class appears on no other route.
+22. Confirm the homepage reveals once, in staggered order, with no unstyled or wrong-theme frame, and that reduced motion skips the sequence.
 
 Reject a change that introduces crop, arbitrary type sizes, negative letter spacing outside the case-title role, a second navigation system, editorial divider rules, stale generated output, broken metadata, or an unprotected unfinished preview.

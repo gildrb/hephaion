@@ -13,26 +13,35 @@ This document defines the path from a homepage project row to an authored projec
 Current routes:
 
 - `/site`
+- `/t3`
+- `/ben-davis`
 - `/heph`
 - `/filen`
 - `/n0thing`
+- `/curves`
 - `/ml7`
 - `/all`
 
-Use only the current location name for the browser-tab title: `Gil Rodrigues` on `/`, `All` on `/all`, then `gildrb.com`, `Heph`, `Filen`, `n0thing`, or `mL7` on each case route. Keep longer descriptive wording in social metadata rather than the `<title>` element.
+A slug may contain a hyphen. Use the hyphenated slug unchanged in the route, the template name, the content file, the media directory, the homepage row id, and every metadata mirror.
+
+Use only the current location name for the browser-tab title: `Gil Rodrigues` on `/`, `All` on `/all`, then `gildrb.com`, `T3`, `Ben Davis`, `Heph`, `Filen`, `n0thing`, `CURVES`, or `mL7` on each case route. Keep longer descriptive wording in social metadata rather than the `<title>` element.
 
 ## Homepage Entry
 
 - Keep all projects in one global table with Date, Project, Scope, and All columns.
 - Make the complete row the case-study link and give it a precise accessible name.
-- Use the specific scopes from the current source: `Design engineering` for gildrb.com, `Product design and engineering` for Heph, `Brand identity` for Filen, and `Wordmark` for n0thing and mL7.
+- Use the specific scopes from the current source: `Design engineering` for gildrb.com, `Logomark` for T3, `Brandmark` for Ben Davis, `Product design and engineering` for Heph, `Brand identity` for Filen, `Typeface` for CURVES, and `Wordmark` for n0thing and mL7.
+- Order rows by date, newest first, across the whole table. `src/sections/portfolio-engineering.html` and `src/sections/portfolio-design.html` are two ordered segments of that single list, not discipline categories; place a new row wherever its date belongs, even when that means the other file.
 - Keep `Date`, `Project`, and `Scope` sortable across the complete list while preserving DOM, visual, and keyboard order. The All link carries the active sort to `/all`.
 
 ## Continuous Projects
 
 - Generate `/all/index.html` from the existing homepage project rows and case-study Markdown renderer; do not duplicate project metadata or case copy.
 - Start with the first case study. Do not add an introductory heading or summary.
-- Sort `.all-case` articles from `sort` and `direction` query parameters, then place the homepage-derived `site` entry last. This route always presents project work before the portfolio's own case study.
+- Build the default order in `scripts/build-page.mjs`: newest first, with the homepage-derived `site` entry pinned last so the route presents project work before the portfolio's own case study.
+- Sort `.all-case` articles in `60-all-sort.js` from `sort` and `direction` query parameters. An explicit sort orders every article, including `site`; the pin applies to the generated default order only.
+- Invert the direction factor for `title` and `scope` so a descending request reads A→Z, and break `scope` ties on title. `date` keeps its literal direction.
+- Carry `data-slug` on every `.all-case` article so ordering rules can address a single project.
 - Separate adjacent `.all-case` articles with `var(--all-case-gap)`, exactly `24px × 1.618` (`38.832px`) from the case-title-to-text boundary.
 - Reveal `View →` on direct row hover and keyboard focus without changing weight or shifting layout.
 - Do not add project summaries, marketing copy, images, or category-divider wrappers to the homepage list.
@@ -77,6 +86,7 @@ Do not force a section when evidence does not exist. Add an explicit author plac
 - Author each case study in `content/<project>.md`; this is the only source for its visible title, deck, metadata rows, section headings, paragraphs, captions, links, lists, and code examples.
 - Keep `src/<project>.template.html` structural. It contains the shell and one `<!-- @case-markdown:<project> -->` insertion token, not authored article prose.
 - Keep responsive image markup in `src/case-media/<project>/<media-id>.html` so writing never requires editing `srcset`, dimensions, loading behavior, or layout HTML.
+- Register a case study in `scripts/site-config.mjs` with its slug, title, and bundles. Reuse `sharedCaseStyles` and `sharedCaseScripts`; a route that needs its own rules inserts one `30-<project>.css` entry into its own styles array and changes nothing shared.
 - Reference those assets from Markdown with `![Caption](media:<media-id>)`. Every image needs a visible caption of one to five words. Consecutive media references form the existing two-column grid.
 - Begin every file with one `#` title. Finished studies may add exactly three `- **Label:** Value` metadata rows; unfinished image-led drafts omit the entire metadata group rather than showing placeholder contribution, scope, or context values. A `>` deck may appear after the title, but authors may omit it rather than inventing introductory copy.
 - Structure unfinished drafts as title, available media with one-to-five-word captions, then `## MORE SOON` as the final block. Preserve an explicitly required project link, such as Heph's repository link, between the title and final marker.
@@ -133,6 +143,33 @@ Use these principles only when the user explicitly requests suggestions, draftin
 - Avoid `passionate`, `meaningful experiences`, `innovative`, and similar marketing language.
 - Do not claim measurable outcomes without evidence.
 - End with tradeoffs and what should improve next.
+
+## T3
+
+- Project label: `T3`.
+- Route: `/t3`.
+- Homepage entry: dated `T3` row tagged `Logomark`.
+- Self-initiated and unadopted. Do not describe the exploration as commissioned or shipped work.
+- Required process evidence: the exploration canvas, rejected drawings, color passes, the before/after refinement, and the product applications.
+- Location uses two lines: `Gil Rodrigues` then `→ T3`.
+
+## Ben Davis
+
+- Project label: `Ben Davis`.
+- Route: `/ben-davis`.
+- Homepage entry: dated `Ben Davis` row tagged `Brandmark`.
+- Unsolicited redesign. Do not describe it as a commission.
+- Show the previous `davis7.sh` mark alongside the redesign; both ship as theme-inverting SVGs sharing one route-scoped class.
+- Location uses two lines: `Gil Rodrigues` then `→ Ben Davis`.
+
+## CURVES
+
+- Project label: `CURVES`.
+- Route: `/curves`.
+- Homepage entry: dated `CURVES` row tagged `Typeface`.
+- The specimen is one tall source image sliced into full panels. Slice on empty background only; never crop a panel's content.
+- Link the public download and the original publication from inside the article.
+- Location uses two lines: `Gil Rodrigues` then `→ CURVES`.
 
 ## Filen
 

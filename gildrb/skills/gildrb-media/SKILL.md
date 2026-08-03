@@ -26,6 +26,7 @@ Publish complete, uncropped, optimized evidence with deterministic responsive de
 - Keep real `<img>` elements with `display:block`, `width:100%`, `height:auto`.
 - Never use `object-fit:cover`, content-hiding `object-position`, crop derivatives, or upscaling.
 - Convert new raster evidence to WebP unless animation or transparency requires another format.
+- Ship a monochrome brand mark as an SVG, referenced from an `<img>` with the viewBox dimensions as intrinsic `width`/`height`. Theme inversion uses `filter: brightness(0)` for light and `filter: none` for dark, in a route-scoped `src/styles/30-<project>.css`, covering `prefers-color-scheme` and both explicit `data-theme` values.
 - Generate only widths supported by the original, normally `480`, `720`, `960`, `1280`, `1600`.
 - Strip unnecessary metadata and retain intrinsic `width`/`height` attributes.
 - Use `loading="lazy"` and `decoding="async"` below the first viewport.
@@ -34,6 +35,7 @@ Publish complete, uncropped, optimized evidence with deterministic responsive de
 - Two-column sources use the documented `370px` cap and `calc(50vw - 178px)` intermediate width.
 - Markdown references use `media:<slug>` and resolve through `src/case-media/<project>/`.
 - Keep captions between one and five words only when the user supplied or explicitly authorized them.
+- A tall single-image specimen may be sliced into sequential full-width panels on empty background. Slicing is not cropping; no panel may lose content at any edge.
 
 ## Procedure
 

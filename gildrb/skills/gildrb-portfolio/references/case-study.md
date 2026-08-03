@@ -39,5 +39,6 @@ Follow `../../../case-studies.md`. Do not copy project-specific claims between c
 
 - Write in `content/<project>.md`, not in the HTML template or generated route.
 - Keep the template limited to its `<!-- @case-markdown:<project> -->` token and structural shell.
-- Use `![Caption](media:<media-id>)` for existing responsive media; the matching HTML partial owns technical image attributes.
+- Use `![Caption](media:<media-id>)` for existing responsive media; the matching HTML partial owns technical image attributes. Adjacent references form the two-column grid, so a blank line between them is meaningful.
+- Adding a case study means: `content/<project>.md`, `src/<project>.template.html`, `src/case-media/<project>/`, a `scripts/site-config.mjs` entry, a homepage row in date order, every metadata mirror, extended verifiers, and rebuilt generated output.
 - Run the build and verifier after every Markdown edit.
