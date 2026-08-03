@@ -32,6 +32,7 @@ Change or audit spatial distance without changing any other design dimension.
 - Project table header and rows form one contiguous block with no category or section gap.
 - Project header and row block padding: `8px` vertically.
 - Homepage table column gap: `16px` on desktop and `clamp(8px, 3vw, 16px)` on mobile.
+- Mobile table-to-Links/Contact boundary: `var(--section-gap)`, currently `24px`, on the homepage and every case route. The case article-to-`View next` boundary remains `48px`.
 - On the homepage and every case route, mobile theme-toggle padding uses the `2px` optical offset to move the shared icon center down while preserving a fixed `56px` row height: `26px` above and `6px` below.
 - Desktop `.content` padding: `48px 0`, declared once in shared `src/styles/10-base.css` so homepage and case titles align with the sidebar name. Mobile resets it to `0` in `90-responsive.css`.
 - Case section gap: `80px`.
