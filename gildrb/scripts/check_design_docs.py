@@ -73,9 +73,9 @@ REQUIRED_OPERATIONAL_CONTRACTS = {
         "The homepage row stays in document flow; case-study rows remain sticky.",
     ),
     "skills/gildrb-interaction/SKILL.md": (
-        "A touch drag on the mobile homepage moves the name, theme control, table, and footer as one normal page",
+        "A touch drag on the mobile homepage scrolls the normal document beneath the shared sticky name and theme-control header",
         "Pull-to-refresh remains available",
-        "The mobile homepage table remains in normal document flow with native scrolling",
+        "The mobile homepage table remains in normal document flow below the shared sticky header",
         "The homepage stays hidden behind `homepage-first-paint-pending`",
     ),
     "skills/gildrb-media/SKILL.md": (
@@ -990,6 +990,16 @@ def _portfolio_errors(portfolio_repo: Path) -> list[str]:
         errors.append("mobile homepage must not suppress the native scrollbar")
     if "portfolio-scroll-frame::before" in responsive_css or "portfolio-scroll-frame::after" in responsive_css:
         errors.append("mobile homepage must not define scroll fades")
+    if not re.search(
+        r"@media\s*\(max-width:\s*767px\)[\s\S]*?\.name\s*\{[^}]*position:\s*sticky[^}]*top:\s*0[^}]*background:\s*linear-gradient",
+        responsive_css,
+    ):
+        errors.append("mobile homepage and shared routes must keep the name header sticky with the shared gradient backdrop")
+    if not re.search(
+        r"@media\s*\(max-width:\s*767px\)[\s\S]*?\.theme-toggle\s*\{[^}]*position:\s*sticky[^}]*top:\s*0",
+        responsive_css,
+    ):
+        errors.append("mobile homepage and shared routes must keep the theme toggle sticky at the shared top offset")
     if not re.search(r"const sharedCaseScripts = Object\.freeze\(\[\s*\"10-core\.js\",\s*\"20-theme\.js\",\s*\"30-email\.js\",?\s*\]\)", site_config):
         errors.append("case-page script bundle does not preserve shared email behavior")
     if 'querySelectorAll(".email")' not in email_script:
