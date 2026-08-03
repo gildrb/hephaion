@@ -978,6 +978,12 @@ def _portfolio_errors(portfolio_repo: Path) -> list[str]:
     for pattern, message in mobile_homepage_contracts:
         if not re.search(pattern, responsive_css, re.DOTALL):
             errors.append(message)
+    if re.search(
+        r"html\.homepage-scroll-locked,\s*html\.homepage-scroll-locked body\s*\{[^}]*overflow:\s*hidden",
+        responsive_css,
+        re.DOTALL,
+    ):
+        errors.append("locked mobile homepage must preserve document elastic overscroll")
     if not re.search(r"const sharedCaseScripts = Object\.freeze\(\[\s*\"10-core\.js\",\s*\"20-theme\.js\",\s*\"30-email\.js\",?\s*\]\)", site_config):
         errors.append("case-page script bundle does not preserve shared email behavior")
     if 'querySelectorAll(".email")' not in email_script:
