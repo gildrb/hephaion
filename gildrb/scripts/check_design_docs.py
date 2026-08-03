@@ -491,7 +491,7 @@ def _portfolio_errors(portfolio_repo: Path) -> list[str]:
             errors.append(f"builder missing case-next contract: {contract}")
     verifier_contracts = (
         'const suggestionBlockPattern =',
-        "suggestions.length === portfolioCases.length",
+        "suggestions.length === portfolioCases.length - 1",
         'expectedTarget?.slug === targetSlug',
         "configuredCaseSlugs.has(targetSlug)",
         '(allPage.match(/class="case-next"/g) || []).length === 0',
