@@ -213,6 +213,7 @@ Use these principles only when the user explicitly requests suggestions, draftin
 - Keep the authored build narrative in `content/site.md` and the route chrome in `src/site.template.html`.
 - `scripts/site-config.mjs` currently registers eight case routes: `/filen`, `/heph`, `/ben-davis`, `/t3`, `/ml7`, `/n0thing`, `/curves`, and `/site`; `/all` is generated separately from the homepage rows.
 - `node scripts/build-page.mjs` renders the Markdown, assembles the route bundles, and writes the homepage, `/all`, all eight case pages, `profile.json`, and `llms-full.txt`.
+- `node scripts/prepare-vercel-output.mjs` assembles `public/` and asserts the homepage theme, font, layout, and first-paint entry markers while rejecting superseded entry behavior.
 - `node scripts/verify-page.mjs` rebuilds every page in memory and checks generated-output equality, route order, metadata, links, assets, images, design tokens, and shared behavior.
 - `node scripts/check-public.mjs` checks sensitive paths, privacy-pattern matches, and gitleaks coverage across the working tree and reachable history.
 - `node scripts/verify-crawlability.mjs` checks 27 public routes with five crawler user agents, including status, canonical URLs, content types, indexability, Content-Signal headers, discovery links, robots policy, and sitemap coverage.
