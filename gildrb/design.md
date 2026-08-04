@@ -117,9 +117,9 @@ Text selection uses `--highlight-text` over `--highlight-bg`; do not restore the
 
 - Use self-hosted Inter Variable for headings, prose, labels, navigation, and controls.
 - Keep the existing system fallbacks: `-apple-system`, `BlinkMacSystemFont`, `Segoe UI`, `sans-serif`.
-- Use Geist Mono only for code examples already using the case-study code treatment.
+- Use Ioskeley Mono only for code examples already using the case-study code treatment.
 - Case-study headings use the compact `###` treatment and its `19px/28px` step. Do not use `##` section wrappers in case studies.
-- Keep case-code `pre` in pure `"Geist Mono", monospace`; wrap arrow glyphs in an explicit `.case-code-arrow` span using `"Inter", sans-serif` so they match the breadcrumb and card arrows.
+- Keep case-code `pre` in pure `"Ioskeley Mono", monospace`; wrap arrow glyphs in an explicit `.case-code-arrow` span using `"Inter", sans-serif` so they match the breadcrumb and card arrows.
 - Do not change the global font family for one case study.
 
 ### Rendering
