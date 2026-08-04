@@ -1,6 +1,6 @@
 ---
 name: gildrb-typography
-description: Enforce gildrb typography only. Use for Inter or Geist Mono usage, font size, weight, line height, letter spacing, heading hierarchy, caption type, or title alignment caused by text metrics. Do not use for spacing, colors, page geometry, media, interactions, accessibility semantics, or copy.
+description: Enforce gildrb typography only. Use for Inter or Ioskeley Mono usage, font size, weight, line height, letter spacing, heading hierarchy, caption type, or title alignment caused by text metrics. Do not use for spacing, colors, page geometry, media, interactions, accessibility semantics, or copy.
 ---
 
 # Gildrb Typography
@@ -24,7 +24,7 @@ Change or audit text metrics while preserving layout spacing, color, behavior, a
 
 - Family: self-hosted Inter Variable with existing system fallbacks.
 - Case-study Markdown uses compact `###` headings at `19px/28px`; do not introduce `##` section wrappers.
-- Case-code `pre` uses pure `"Geist Mono", monospace`. Arrow glyphs use an explicit `.case-code-arrow` span with `"Inter", sans-serif` so they match navigation arrows.
+- Case-code `pre` uses pure `"Ioskeley Mono", monospace`. Arrow glyphs use an explicit `.case-code-arrow` span with `"Inter", sans-serif` so they match navigation arrows.
 - Shell location: `19px`, weight `400`.
 - Default interface and prose: `16px/24px`, weight `400`.
 - Homepage table remains Inter `16px/24px`, weight `400`, on mobile; long Scope values truncate inside the flexible track rather than shrinking the type.

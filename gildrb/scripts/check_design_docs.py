@@ -562,8 +562,8 @@ def _portfolio_errors(portfolio_repo: Path) -> list[str]:
     for pattern, message in case_color_rules:
         if not re.search(pattern, case_css, re.DOTALL):
             errors.append(f"portfolio semantic color drift: {message}")
-    if 'font: 14px/20px "Geist Mono", monospace;' not in case_css:
-        errors.append("case code pre must use the pure Geist Mono monospace stack")
+    if 'font: 14px/20px "Ioskeley Mono", monospace;' not in case_css:
+        errors.append("case code pre must use the pure Ioskeley Mono monospace stack")
     if "case-code-arrow" not in renderer:
         errors.append("case code renderer must wrap arrows in the explicit arrow span")
     if not re.search(

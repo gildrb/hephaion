@@ -151,6 +151,7 @@ Use these principles only when the user explicitly requests suggestions, draftin
 - Homepage entry: dated `T3` row tagged `Logomark`.
 - Self-initiated and unadopted. Do not describe the exploration as commissioned or shipped work.
 - Required process evidence: the exploration canvas, rejected drawings, color passes, the before/after refinement, and the product applications.
+- In the opening paragraph, render the product names as lowercase regular-prose links: `t3.chat` and `t3.code`; do not use inline code styling for them, and keep the `@r_marked` and `@theo` links in the same regular Inter treatment.
 - Location uses two lines: `Gil Rodrigues` then `→ T3`.
 
 ## Ben Davis
@@ -207,9 +208,17 @@ Use these principles only when the user explicitly requests suggestions, draftin
 
 - Project label: `gildrb.com`.
 - Route: `/site`.
-- Homepage entry: current local date row tagged `Product/Design Engineering`.
+- Homepage entry: dated `2026-07-15` row tagged `Design Engineering`.
+- The case study documents a static HTML, CSS, and vanilla JavaScript portfolio built and verified from source.
 - Keep the authored build narrative in `content/site.md` and the route chrome in `src/site.template.html`.
-- Synchronize `llms.txt`, `.well-known/llms.txt`, `humans.txt`, `sitemap.xml`, `feed.xml`, and `src/data/profile.json` whenever the public portfolio route set changes.
+- `scripts/site-config.mjs` currently registers eight case routes: `/filen`, `/heph`, `/ben-davis`, `/t3`, `/ml7`, `/n0thing`, `/curves`, and `/site`; `/all` is generated separately from the homepage rows.
+- `node scripts/build-page.mjs` renders the Markdown, assembles the route bundles, and writes the homepage, `/all`, all eight case pages, `profile.json`, and `llms-full.txt`.
+- `node scripts/verify-page.mjs` rebuilds every page in memory and checks generated-output equality, route order, metadata, links, assets, images, design tokens, and shared behavior.
+- `node scripts/check-public.mjs` checks sensitive paths, privacy-pattern matches, and gitleaks coverage across the working tree and reachable history.
+- `node scripts/verify-crawlability.mjs` checks 27 public routes with five crawler user agents, including status, canonical URLs, content types, indexability, Content-Signal headers, discovery links, robots policy, and sitemap coverage.
+- The crawler-checked public surface is 27 routes: 11 discovery routes (the homepage `/` plus `/llms.txt`, `/llms-full.txt`, `/.well-known/llms.txt`, `/index.html.md`, `/profile.json`, `/feed.xml`, `/humans.txt`, `/.well-known/webfinger`, `/robots.txt`, and `/sitemap.xml`), eight case routes, and eight `/content/<project>.md` sources.
+- Additional published identity endpoints include `/.well-known/host-meta` and `/.well-known/host-meta.json`.
+- Synchronize the machine-readable mirrors and route metadata whenever the public route set changes.
 - Location uses two lines: `Gil Rodrigues` then `→ gildrb.com`.
 
 ## Completion
