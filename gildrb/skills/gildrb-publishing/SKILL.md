@@ -1,31 +1,64 @@
 ---
 name: gildrb-publishing
-description: Use for gildrb private preview branches, protected Vercel deployments, draft pull requests, release validation, merge decisions, production promotion, or rollback safety.
+description: Release gildrb through Git-backed Cloudflare Pages. Use for previews, production promotion, commit-to-deployment traceability, edge propagation, rollback, or exceptional Direct Upload. Do not use for interface implementation, protocol design, DNS key handling, or private material that cannot be published safely.
 ---
 
-# Publishing
+# Gildrb Publishing
 
-Keep unfinished portfolio work private and production unchanged.
+## Mission
 
-## Workflow
+Release one verified Git commit to Cloudflare Pages without letting production and Git diverge.
 
-1. Inspect branch, worktree, remote, and current deployment state.
-2. Build and verify locally.
-3. Keep work on a non-production branch.
-4. Commit only the intended portfolio scope.
-5. Push the branch and use a draft PR.
-6. Wait for the Vercel preview.
-7. Confirm deployment protection with an unauthenticated request.
-8. Share the protected preview URL.
-9. Merge or promote only after explicit user approval.
+## Owns
+
+- Preview/production choice, exact commit, push, Pages source mapping, propagation, smoke tests, and rollback evidence.
+- Exceptional Direct Upload safety and reconciliation.
+- Preventing production from moving ahead of `origin/main`.
+
+## Excludes
+
+- Do not implement visual, content, API, MCP, or DNS behavior.
+- Do not commit credentials, account IDs, private endpoints, DNS keys, deployment IDs, or registrar values.
+- Do not upload unfinished private evidence without independently verified Access protection.
+
+## Fixed Contract
+
+- Normal production is Git-backed: GitHub repository `gildrb/web`, branch `main`, Pages project `web`.
+- Build output is `public/`; Functions remain in repository-root `functions/`.
+- Production requires explicit approval, a clean exact commit, and a Pages deployment whose `Source` matches that commit.
+- Local `HEAD`, `origin/main`, GitHub `main`, and active production source must agree.
+- Cloudflare can briefly serve mixed route versions after activation. Poll changed routes before declaring a defect or success.
+- Direct Upload is exceptional. It does not update Git and may never leave production ahead of `origin/main`.
+
+## Procedure
+
+1. Inspect branch, status, upstream, current active deployment, and changed routes.
+2. Run build, verification, public-safety, browser, and machine-contract checks.
+3. Commit only approved scope and push exact `main`.
+4. Record `git rev-parse HEAD` and `git ls-remote origin refs/heads/main`; require equality.
+5. Poll `npx wrangler pages deployment list --project-name web` until Production `Source` matches the commit prefix.
+6. Poll every changed route for a commit-specific fragment until edge copies converge.
+7. Verify deployment URL and custom domain: HTML, Markdown, Functions, headers, redirects, 404, and changed browser behavior.
+8. Keep the prior successful Pages deployment identifiable for rollback.
 
 ## References
 
-- `references/preview.md`: protected preview contract.
-- `references/release.md`: merge, production, and rollback gates.
+- `references/preview.md`: Git preview and exceptional Direct Upload privacy contract.
+- `references/release.md`: production push, source matching, propagation, smoke tests, rollback.
+
+## Reject
+
+- Deploying or pushing a dirty, unverified, or unapproved state.
+- Treating `git push` completion as proof that Pages is active.
+- Treating a Pages deployment as valid when its Source does not match GitHub `main`.
+- Direct Upload that creates production code absent from GitHub.
+- Publishing private material to a public preview.
+- Declaring production from the hash URL without custom-domain verification.
+
+## Verify
+
+Run `../../platform.md` checks. Record exact commit, GitHub equality, Pages source, changed-route propagation, custom-domain browser/HTTP matrix, console status, and rollback target.
 
 ## Done
 
-- Preview is ready and protected.
-- Draft PR contains the intended diff.
-- Main and production remain unchanged without approval.
+The approved commit is pushed, active production reports that source, every changed route has converged, the custom domain passes, the worktree is clean, and rollback remains available.

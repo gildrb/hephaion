@@ -21,8 +21,8 @@ Produce measured, reproducible acceptance evidence without changing implementati
 
 ## Required Matrix
 
-- Homepage plus every changed case route.
-- Desktop `1440px` wide and mobile `390px` wide; include `320px` for homepage-table changes and add the reported viewport when different.
+- Homepage plus every changed case route. For shared table or case-footer rules, test all canonical cases: `/site`, `/t3`, `/ben-davis`, `/heph`, `/filen`, `/n0thing`, `/curves`, `/ml7`.
+- Desktop `1440×900` and mobile `390px`; include `320px` for homepage-table changes, `1440×2000` for short-footer behavior, and the reported viewport when different.
 - Dark and light themes for color or focus changes.
 - Mouse and keyboard for interactive changes; touch emulation when hover behavior is involved.
 - Fresh navigation and back/forward for navigation-state changes.
@@ -30,14 +30,14 @@ Produce measured, reproducible acceptance evidence without changing implementati
 ## Procedure
 
 1. Record repository status and the exact commit/worktree under test.
-2. Run `node scripts/build-page.mjs`, `node scripts/verify-page.mjs`, and `git diff --check`.
+2. Run `npm run build`, `npm run verify`, and `git diff --check`.
 3. Start the static site locally from the built repository.
 4. Open each matrix route and verify no console/page errors.
-5. Measure the exact reported boundary or computed property; record selector, viewport, theme, and value.
-6. Check horizontal overflow, image natural/displayed ratio, selected responsive source, heading structure, focus order, and interaction result when relevant.
-7. Compare against the atomic skill's fixed contract, not visual intuition.
-8. Report each failure under exactly one owner: spacing, typography, color audit, shell layout, media, interaction, or accessibility.
-
+5. Measure the exact reported boundary or computed property; record selector, viewport, theme, browser, and value.
+6. Use WebKit for reported Safari/subgrid/layout defects. Add Chromium when proportional font metrics or cross-engine intrinsic sizing can change tracks.
+7. Check horizontal overflow, selected responsive source, heading/focus order, interaction result, motion frames, and console status as relevant.
+8. Compare against the atomic skill's fixed contract, not intuition.
+9. Route each failure to exactly one owner: spacing, typography, color audit, shell layout, media, interaction, motion, or accessibility.
 ## Reject
 
 - “Looks right” without a measurement for measurable claims.
@@ -52,14 +52,17 @@ Perform every applicable spot check below and record the measured result.
 ### Mandatory Spot Checks
 
 - Name and case-title top alignment on desktop: both top edges resolve to `48px`, from the shared `.content` padding in `10-base.css`; mobile `.content` padding resolves to `0px`.
-- Homepage header/row column alignment, contiguous row rhythm, and no overflow at `320px` and `390px`.
-- Short case natural flow and long case ending at or above the desktop theme control.
+- Homepage and every case table: computed Date/Project tracks derive from visible `max-content`; Scope stays flexible; mobile visible gutters match after the widest values; Contact start equals Scope start.
+- Sorting: press/release is `+1px/0px`; Project and Scope coordinates remain stable after Date/Project/Scope sorts; row DOM slots are not reparented.
+- Case footer: on every desktop case at `1440×900` and `1440×2000`, final row and visible theme icon centers differ by no more than `1.5px`. Include `/ml7` with `scrollY === 0`; scroll long pages to their document bottom.
+- Screenshot disputes: capture one full viewport, crop the final project text and visible SVG by measured rectangles, compute luminance-weighted Y centroids, and report the pixel delta.
 - Full-frame media, no overflow, correct responsive source.
 - Shared profile/contact content on all routes.
 - Heph demo is absent from the homepage, appears once on `/heph`, accepts a question, and returns a cited answer.
+- Motion inventory matches source; changed motion has early/middle/final frames, reduced-motion evidence, and baseline metric comparison.
 - Keyboard focus is complete, ordered, visible, and unclipped.
 - Selection, rest, hover, and focus colors are correct in both themes.
 
 ## Done
 
-Return the tested commit, matrix, exact measurements, interaction results, console status, and a clear pass/fail. A failure names one owning skill and includes enough evidence for that skill to reproduce it.
+Return the tested commit, route matrix, exact measurements, browser/runtime, screenshot or temporary-script paths, interaction results, console status, and pass/fail. A failure names one owning skill and includes enough commands and selectors to reproduce it.

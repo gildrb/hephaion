@@ -1,4 +1,4 @@
 interface:
   display_name: "Gildrb Visual Verification"
-  short_description: "Verify rendered gildrb behavior precisely"
-  default_prompt: "Use $gildrb-visual-verification to measure and verify a gildrb visual change on desktop and mobile without editing the implementation."
+  short_description: "Produce reproducible browser evidence"
+  default_prompt: "Use $gildrb-visual-verification to measure every affected route in WebKit, add Chromium where required, and report exact geometry, pixel centroids, interaction, and console evidence."

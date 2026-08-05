@@ -1,0 +1,4 @@
+interface:
+  display_name: "Gildrb Motion"
+  short_description: "Maintain exact breakpoint-aware motion"
+  default_prompt: "Use $gildrb-motion to preserve desktop timing, mobile visual-row choreography, sort replay guards, reduced motion, inventory, and performance evidence."

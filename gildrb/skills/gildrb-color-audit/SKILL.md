@@ -1,6 +1,6 @@
 ---
 name: gildrb-color-audit
-description: Audit and enforce gildrb semantic color usage only. Use for dark or light theme colors, text hierarchy, selection colors, hover-state color assignments, image highlight color, borders, or Heph terminal surface and text tokens. Do not use for spacing, typography, layout, media encoding, event behavior, semantics, or copy.
+description: Audit and enforce gildrb semantic color usage only. Use for dark or light theme colors, theme-adaptive artwork contrast, text hierarchy, selection colors, hover-state color assignments, image highlight color, borders, or Heph terminal surface and text tokens. Do not use for spacing, typography, layout, media encoding, event behavior, semantics, or copy.
 ---
 
 # Gildrb Color Audit
@@ -35,7 +35,8 @@ Prove that every visible color comes from the approved semantic system and corre
 - Heph case terminal: terminal `96% bg / 4% primary`, prompt/composer `94% / 6%`, mobile frame `92% / 8%`.
 - Terminal human content: primary; values: secondary; labels, tools, and complete materials source line: tertiary.
 - Only private terminal flat colors allowed: `#f96664`, `#face2e`, `#3bc55d` for macOS lights.
-
+- Theme-adaptive monochrome artwork uses the reusable `.theme-adaptive-monochrome-artwork` hook. Explicit-theme and system-theme inversion belongs in shared `src/styles/40-preview-content.css`; project CSS may own sizing/placement only.
+- Verify every artwork instance on every standalone and aggregate route that renders it. Light mode is black on white; dark mode is white on black. Ben Davis on `/ben-davis` and `/all` is the current `21:1` regression fixture, not a project-specific rule.
 ## Procedure
 
 1. Inventory hex, rgb, hsl, named colors, `color-mix`, and color-bearing CSS properties with `rg`.
@@ -54,7 +55,7 @@ Prove that every visible color comes from the approved semantic system and corre
 
 ## Verify
 
-Run the build, repository verifier, Hephaion checker, and `git diff --check`. Audit both themes in the browser, including selection, project rows, links, theme icon, terminal labels/values/surfaces, and case-image contours. Confirm no unauthorized flat colors remain.
+Run the build, repository verifier, Hephaion checker, and `git diff --check`. Audit both themes in the browser, including selection, project rows, links, theme icon, terminal labels/values/surfaces, case-image contours, and every `.theme-adaptive-monochrome-artwork` instance on each standalone and aggregate route. Test explicit and system theme selection and record computed foreground/background contrast. Use Ben Davis on `/ben-davis` plus `/all` as the current cross-route fixture. Confirm no unauthorized flat colors remain.
 
 ## Done
 

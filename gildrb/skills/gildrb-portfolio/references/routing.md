@@ -1,31 +1,68 @@
 # Routing
 
-## Canonical
+## Canonical source
 
-- Use `/<project>`.
-- Generate `<project>/index.html`.
-- Use one canonical URL.
-- Update homepage link, canonical metadata, Open Graph, Twitter, JSON-LD, sitemap, feed, Markdown, LLM mirrors, humans file, analytics route, and structured profile graph.
+```text
+scripts/site-config.mjs
+  siteConfig.caseStudies[]
+      -> scripts/build-page.mjs
+      -> content/<slug>.md
+      -> src/<slug>.template.html
+      -> <slug>/index.html
+      -> sitemap.xml
+      -> feed.xml
+      -> src/data/profile.json graph
+      -> Markdown + LLM mirrors
+```
 
-## Migration
+- Use `/<project>` as the public URL and `<project>/index.html` as static output. Preserve a hyphenated slug unchanged across registry, route, template, content file, media directory, row ID, and mirrors.
+- Keep one canonical URL.
+- Update homepage row, metadata, sitemap, feed, mirrors, profile graph, and verifier together.
+- `/all/index.html` comes from `src/all.template.html`, generated cases, and `src/scripts/60-all-sort.js`.
+- Do not add a client-side router.
 
-- Add a permanent redirect for a previously exposed route.
-- Remove the old generated canonical page.
-- Verify both slash forms when the deployment platform distinguishes them.
-- Keep redirects out of visible navigation.
+## Functions
+
+```text
+_routes.json include
+  -> canonical HTML/API/MCP routes invoke Pages Functions
+  -> static assets bypass Functions
+
+functions/[[path]].js
+  -> HTML by default
+  -> authored Markdown when Accept includes text/markdown
+  -> Vary: Accept
+```
+
+## Redirects
+
+Source: `_redirects`.
+
+```text
+https://www.gildrb.com/* https://gildrb.com/:splat 301
+/index/filen /filen 301
+/index/filen/ /filen 301
+```
+
+The source also maps legacy Gil/work aliases to `/`. Keep complete `www` canonicalization in the Cloudflare zone redirect, preserve the deployed compatibility line, remove old canonical output, and never expose redirect aliases in navigation.
+
+Verify:
+
+```sh
+sed -n '1,200p' "$PORTFOLIO_REPO/_redirects"
+cat "$PORTFOLIO_REPO/_routes.json"
+curl -I https://www.gildrb.com/ml7
+curl -I https://gildrb.com/index/filen
+curl -I https://gildrb.com/index/filen/
+```
 
 ## Generation
 
-- Extend the existing static builder.
-- Register the case study in `scripts/site-config.mjs`; the builder generates a route for every registered slug.
-- Reuse shared CSS and JavaScript. Add a route-scoped `30-<project>.css` only for rules that belong to one route, and register it in that case study's `styles` array alone.
-- Keep hyphenated slugs identical across route, template, content file, media directory, row id, and mirrors.
-- Keep one project template per authored case unless evidence proves a safe content abstraction.
-- Do not add a client-side router.
+- Extend the existing static builder and register each case in `scripts/site-config.mjs`.
+- Reuse shared CSS and JavaScript bundles. Add `30-<project>.css` only for route-owned sizing or presentation and list it only in that case's `styles` array.
+- Keep one project template per authored case unless source proves a safe abstraction.
+- Build and verify after registry, route, redirect, or mirror changes.
 
-## Case-Study Suggestions
+## Case suggestions
 
-- Include exactly one `<!-- @case-next -->` token after the article and inside the case template's content column.
-- Let `scripts/build-page.mjs` replace the token with every configured homepage project in homepage default order. Render every project as an anchor, including the current project with `aria-current="page"` and its own route href. `/all` must not receive the token or block.
-- Do not register client JavaScript for the case table. It is complete build-time HTML.
-- Keep the suggestion targets and their date/title/scope fields derived from homepage rows rather than hand-written route metadata.
+Each case template contains one `<!-- @case-next -->` token after the article and inside the content column. `scripts/build-page.mjs` replaces it with every other configured homepage project in default order, using date/title/scope values parsed from homepage rows. Exclude the current slug; never hand-write a second registry or add client JavaScript. `/all` contains no token or case-next block.

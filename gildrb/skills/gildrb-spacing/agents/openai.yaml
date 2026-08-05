@@ -1,4 +1,4 @@
 interface:
   display_name: "Gildrb Spacing"
-  short_description: "Enforce exact gildrb spatial rhythm"
-  default_prompt: "Use $gildrb-spacing to adjust and verify spacing without changing typography, color, copy, or layout structure."
+  short_description: "Enforce measured gildrb spatial rhythm"
+  default_prompt: "Use $gildrb-spacing to reproduce table gutters and case-footer alignment with browser measurements without changing typography, color, or copy."

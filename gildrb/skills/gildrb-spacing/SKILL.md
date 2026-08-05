@@ -25,38 +25,39 @@ Change or audit spatial distance without changing any other design dimension.
 
 ## Fixed Contract
 
-- Allowed scale: `4`, `8`, `12`, `16`, `20`, `24`, `32`, `48`, `64`, `80`, `120` pixels. Exceptions are the documented `2px` `--theme-toggle-optical-offset` and `--all-case-gap`, which is exactly `var(--case-title-text-gap) * 1.618`.
+- Allowed scale: `4`, `8`, `12`, `16`, `20`, `24`, `32`, `48`, `64`, `80`, `120` pixels. Approved exceptions are the `2px` mobile theme offset, the measured `10px` mobile table cell-end reserve, and `--all-case-gap` (`var(--case-title-text-gap) * 1.618`).
 - Image-grid gap: `20px`.
 - Sidebar text-to-text group gap: `24px`.
 - Homepage biography to project table: `32px`.
 - Project table header and rows form one contiguous block with no category or section gap.
 - Project header and row block padding: `8px` vertically.
-- Homepage table column gap: `16px` on desktop and `clamp(8px, 3vw, 16px)` on mobile.
-- Mobile table-to-Links/Contact boundary: `var(--section-gap)`, currently `24px`, on the homepage and every case route. The case article-to-`View next` boundary remains `48px`.
+- Table `column-gap`: `16px` desktop; `clamp(8px, 3vw, 16px)` mobile. Mobile Date and Project cells each add `10px` inline-end spacing so visible gutters match after their widest rendered values.
+- Mobile table-to-Links/Contact boundary: `var(--section-gap)`, currently `24px`, on homepage and case routes. The case article-to-`.case-next` boundary remains `48px`.
 - On the homepage and every case route, mobile theme-toggle padding uses the `2px` optical offset to move the shared icon center down while preserving a fixed `56px` row height: `26px` above and `6px` below.
 - Desktop `.content` padding: `48px 0`, declared once in shared `src/styles/10-base.css` so homepage and case titles align with the sidebar name. Mobile resets it to `0` in `90-responsive.css`.
 - Case section gap: `80px`.
 - Adjacent `/all` case studies: `var(--all-case-gap)`, exactly `var(--case-title-text-gap) * 1.618` (`38.832px`); apply it only to `.all-case + .all-case`.
 - Prose-to-media and media-to-following-copy: `var(--text-media-gap)`, exactly `32px`, applied once per boundary.
-- Case articles remain in natural block flow. Desktop bottom padding is a maximum endpoint for long posts, not a target baseline. Never use article `min-height`, flex distribution, `margin-top: auto`, or last-child top padding.
-
+- Authored case articles remain in natural flow. Do not stretch the article itself.
+- Every desktop `.case-next` uses `margin-top: auto`, `padding-top: 48px`, and footer-derived bottom padding. This consumes spare height before the table while preserving the normal article gap.
+- The final `24px` row line box centers directly with the visible theme icon. Do not subtract `--footer-title-optical-offset`; the retired `4px` correction placed the row too low. Mobile restores `margin-top: 48px` and does not target the top-mounted toggle.
 ## Procedure
 
 1. Read the rendered failing boundary and its two adjacent elements.
 2. Read `src/styles/10-base.css`, the owning stylesheet, and the matching markup.
 3. Identify every CSS contribution to the measured distance: margin collapse, parent gap, padding, line box, caption margin, and media wrapper.
 4. Measure the current boundary in the browser. Do not infer it from one declaration.
-5. Reuse an existing token. Add no value outside the fixed scale or its single documented optical exception.
+5. Reuse an existing token. Add no value outside the fixed scale or explicitly documented exceptions.
 6. Apply the distance once at the owning boundary; remove double-counted adjacent spacing.
 7. Measure desktop and mobile after rebuilding.
 
 ## Reject
 
-- Any arbitrary pixel value other than the documented theme-toggle optical offset.
+- Any arbitrary value outside the fixed scale and its named exceptions.
 - Any fix based only on visual guessing.
 - Any equal numeric gap claimed as optically equal without rendered comparison.
 - Any negative margin used to pull unrelated sections together.
-- Any short post stretched toward the theme control.
+- Any article stretch. Spare-height distribution is allowed only on desktop `.case-next`, never on authored article children.
 - Any copy, typography, color, width, order, or behavior change in the diff.
 
 ## Verify
@@ -69,7 +70,7 @@ node scripts/verify-page.mjs
 git diff --check
 ```
 
-Measure the changed boundary at desktop, `390px`, and `320px` when the homepage table is involved. Verify no overlap, no horizontal overflow, no double-applied `--text-media-gap`, and no new value outside the scale. For a short case, confirm natural flow. For a long case, confirm the final line does not finish below the desktop theme toggle.
+Measure the changed boundary at desktop, `390px`, and `320px` when the table is involved. Verify no overlap, no horizontal overflow, no double-applied `--text-media-gap`, and no undocumented value. For case footers, test every case at `1440×900`, add a `1440×2000` short-page viewport, scroll long pages to their document bottom, and require the final row/theme-icon centers within `1.5px`; use rendered-pixel centroids for screenshot disputes.
 For desktop shell alignment, confirm `.content` has `48px` top padding and the case title and `Gil Rodrigues` have the same top coordinate. At mobile width, confirm `.content` resolves to `0px` padding.
 
 ## Done

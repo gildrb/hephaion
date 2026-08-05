@@ -25,7 +25,7 @@ Use sources in this order:
 1. Explicit user instruction.
 2. Rendered approved portfolio behavior.
 3. Portfolio templates, CSS, scripts, and verifier.
-4. This document and `case-studies.md`.
+4. This document, `case-studies.md`, and `platform.md`.
 5. Product skills.
 6. General design heuristics.
 
@@ -42,7 +42,8 @@ Design work is routed by failure class. No broad design skill exists.
 | Semantic tokens and theme color correctness | `gildrb-color-audit` |
 | Shell columns, widths, ordering, and responsive geometry | `gildrb-shell-layout` |
 | Asset conversion, responsive sources, and full-frame delivery | `gildrb-media` |
-| Pointer, click, lifecycle, theme, demo, and navigation behavior | `gildrb-interaction` |
+| Pointer, click, lifecycle, theme, demo, and navigation state | `gildrb-interaction` |
+| Keyframes, transitions, timing, easing, and animated evidence | `gildrb-motion` |
 | Semantics, keyboard, focus, accessible names, and announcements | `gildrb-accessibility` |
 | Read-only rendered measurement and acceptance evidence | `gildrb-visual-verification` |
 
@@ -69,7 +70,7 @@ framework = "none"
 component_library = "none"
 router = "static directory index"
 bundler = "none"
-deployment = "static files on Vercel"
+deployment = "Cloudflare Pages with bounded Pages Functions"
 ```
 
 Do not add React, Next.js, Vue, Svelte, Astro, Tailwind, Sass, TypeScript, a component library, a router, or a content framework without an explicit architecture change.
@@ -94,10 +95,21 @@ The live portfolio token names remain authoritative.
   --link-line-height: 24px;
   --theme-toggle-size: 32px;
   --theme-toggle-optical-offset: 2px;
+  --footer-stack-bottom-gap: 4px;
+  --footer-title-optical-offset: 4px;
+  --footer-title-center-offset: calc(var(--footer-stack-bottom-gap) + var(--link-line-height) + var(--section-content-gap) + var(--link-line-height) + var(--section-content-gap) + var(--link-line-height) + var(--section-content-gap) + (var(--link-line-height) / 2) - (var(--theme-toggle-size) / 2) - var(--footer-title-optical-offset));
   --sidebar-column: 240px;
   --content-column: 760px;
   --layout-gap: 48px;
   --media-radius: 22px;
+  --portfolio-arrow-column: 19px;
+  --portfolio-table-gap: 16px;
+  --portfolio-mobile-table-gap: clamp(8px, 3vw, 16px);
+  --portfolio-mobile-cell-end-space: 10px;
+  --portfolio-table-columns:
+    max-content max-content minmax(0, 1fr)
+    minmax(var(--portfolio-arrow-column), max-content);
+  --portfolio-mobile-table-columns: var(--portfolio-table-columns);
 }
 
 :root[data-theme="light"] {
@@ -111,15 +123,17 @@ The live portfolio token names remain authoritative.
 Use `--bg`, `--text-primary`, `--text-secondary`, and `--text-tertiary` for resting portfolio colors. Primary is authored content, secondary is labels and supporting metadata, and tertiary is inactive or actionable navigation. `--highlight-bg` reuses the approved bright gray for temporary image and text-selection highlighting; `--highlight-text` keeps selected text white in every theme. Do not create project color palettes, gradients, translucent panels, glow effects, or decorative fills.
 Text selection uses `--highlight-text` over `--highlight-bg`; do not restore the outdated tertiary-gray selection background.
 
+Theme-adaptive monochrome artwork is a shared media capability, never a project-specific color rule. Mark eligible SVG/image elements with `.theme-adaptive-monochrome-artwork`; keep its explicit-theme and system-theme selectors in `src/styles/40-preview-content.css` so the treatment survives standalone and aggregate routes. Light mode renders black artwork on white and dark mode renders white artwork on black. Project styles may size or place an instance, but must not own its inversion. Verify every rendered instance in every route that includes it. The Ben Davis artwork is the current cross-route fixture (`/ben-davis` and `/all`) and must measure `21:1`; it is evidence for the shared rule, not the abstraction's name or boundary.
+
 ## Typography
 
 ### Family
 
 - Use self-hosted Inter Variable for headings, prose, labels, navigation, and controls.
 - Keep the existing system fallbacks: `-apple-system`, `BlinkMacSystemFont`, `Segoe UI`, `sans-serif`.
-- Use Geist Mono only for code examples already using the case-study code treatment.
+- Use Ioskeley Mono only for code examples already using the case-study code treatment.
 - Case-study headings use the compact `###` treatment and its `19px/28px` step. Do not use `##` section wrappers in case studies.
-- Keep case-code `pre` in pure `"Geist Mono", monospace`; wrap arrow glyphs in an explicit `.case-code-arrow` span using `"Inter", sans-serif` so they match the breadcrumb and card arrows.
+- Keep case-code `pre` in pure `"Ioskeley Mono", monospace`; wrap arrow glyphs in an explicit `.case-code-arrow` span using `"Inter", sans-serif` so they match breadcrumb and card arrows.
 - Do not change the global font family for one case study.
 
 ### Rendering
@@ -136,6 +150,7 @@ Text selection uses `--highlight-text` over `--highlight-bg`; do not restore the
 - Name and persistent project location: `19px`, weight `400`.
 - Navigation, biography, labels, project titles, links, and default controls: `16px`, weight `400`.
 - Link line height: `24px`.
+- Portfolio and case-table dates keep Inter's proportional figures. Never add `font-variant-numeric: tabular-nums`; the different numeral widths are part of the approved typography.
 - Preserve the homepage shell values. Do not restyle them in project CSS.
 
 ### Case-study steps
@@ -149,7 +164,7 @@ Case titles use `-0.02em` letter spacing. Other case-study text uses `0`; do not
 - Prose and deck: `16px`, weight `400`, line height `24px`.
 - Metadata label and caption: `14px`, weight `400`, line height `20px`.
 - Stack case metadata as three rows in a two-column definition grid: a shared `104px` label column and one flexible value column with a `24px` gap. On mobile use `88px` and `16px`. Labels and values share a top baseline so copy length cannot unbalance the group.
-- Keep every visible case-media caption between one and five words.
+- Keep visible case-media captions concise and evidence-specific. Captions are user-owned; do not enforce a hard word limit on approved copy.
 - Code: `14px`, weight `400`, line height `20px`.
 
 On desktop, the top edge of the page title must align with the top edge of `Gil Rodrigues` in the persistent location. Use zero top margin on the title; do not compensate by moving the article or sidebar independently.
@@ -168,7 +183,8 @@ Use the existing 4px-derived rhythm and homepage constants.
 - Major internal gap: `48px` or `64px`.
 - Homepage biography-to-table gap: `32px`.
 - Homepage table header and row vertical padding: `8px`; adjacent rows remain contiguous.
-- Homepage table column gap: `16px` on desktop and `clamp(8px, 3vw, 16px)` on mobile.
+- Table `column-gap`: `16px` on desktop and `clamp(8px, 3vw, 16px)` on mobile.
+- Mobile Date and Project cells each add the same measured `10px` inline-end reserve. This makes visible Date → Project and Project → Scope whitespace equal while each table still derives width from its own visible content. `10px` is an approved optical exception, not a general spacing step.
 - Case-study section gap: `80px` at every viewport.
 - Case-title-to-text gap: `var(--case-title-text-gap)`, exactly `24px`.
 - Continuous `/all` case gap: `var(--all-case-gap)`, exactly `24px × 1.618` (`38.832px`). It derives from the established case-title-to-text boundary; apply it once between adjacent `.all-case` articles.
@@ -200,7 +216,7 @@ Do not add arbitrary values when an existing step expresses the relationship. Wi
 
 - At `767px` and below, the layout becomes a two-column grid: content plus `32px` theme-control column.
 - Wrapper uses `12px` inline padding.
-- The mobile layout container has no vertical padding. The name supplies `24px` top and `8px` bottom padding. On the homepage, every case-study route, and `/all`, the shared name and theme control use the same sticky `56px` row at `top: 0` in both themes and center both icon sizes inside their content areas so switching cannot move or resize the button. The name uses the existing case-page `linear-gradient(to bottom, var(--bg) 60%, transparent)` treatment; do not add a separate homepage backdrop. It shifts that shared icon center `2px` lower with `--theme-toggle-optical-offset`, using `26px` top and `6px` bottom padding for optical alignment with the first `Gil Rodrigues` line. `.content` uses `display: contents` with `0` padding.
+- The mobile layout container has no vertical padding. The name supplies `24px` top and `8px` bottom padding. On every route, the shared theme control keeps a fixed `56px` row height, centers both icon sizes, and shifts that center `2px` lower through `--theme-toggle-optical-offset` (`26px` top, `6px` bottom). `.content` uses `display: contents` with `0` padding. Case-study rows remain sticky. On the homepage, the dynamic viewport is locked while the shared name/theme row, biography, filter row, table region, and Links/Contact occupy fixed grid rows; project rows scroll inside the table region.
 - Sidebar and content use `display: contents` so the same elements enter the shared mobile grid.
 - On case-study routes, keep the desktop Links and Contact group in the sidebar. On mobile, render the article immediately after the location row and place the mobile instance of that same shared partial after the article so DOM, focus, and visual order agree.
 - The mobile grid still requires article order `5` and shared navigation order `6`: `display: contents` exposes both sets of descendants to the wrapper grid, so these values preserve the same order already established in the DOM rather than contradicting it.
@@ -241,8 +257,25 @@ Rules:
 - Do not add separate `Index`, `Back`, or `Return to index` navigation.
 - Keep the theme toggle in its existing location.
 - Preserve each route's per-tab scroll position for browser back and forward navigation. Store on `pagehide` and when the document becomes hidden, restore only for back/forward or bfcache traversal, and tolerate unavailable `sessionStorage`. Fresh visits must retain their normal initial position.
-- On desktop case-study routes, keep authored content in its natural document flow. Reserve bottom padding derived from the shared footer and theme-toggle tokens so a long post's final authored line, whether prose or `MORE SOON`, cannot end below the theme toggle when the reader reaches the bottom. Never stretch a short post or push its final content downward to manufacture that alignment. Keep the mobile toggle in its top-mounted position.
-- Treat that desktop boundary as a maximum endpoint, not a target baseline. Article `min-height`, flex distribution, `margin-top: auto`, and last-child top padding are forbidden ending mechanisms.
+- Keep authored article content in natural document flow. Do not add article `min-height` or distribute article children. When an article is followed by `.case-next`, reset its last-child bottom padding to `0`; spare-height and final-suggestion placement belong to `.case-next`, not authored content. The generic final-article token formula remains only for layouts without that table.
+- Every desktop case route with `.case-next` uses spare main-column height before the table, preserves a `48px` article-to-table boundary, and centers the final row directly with the visible theme icon. The same rule applies to short and long pages.
+
+```css
+@media (min-width: 769px) {
+  .case-next {
+    margin-top: auto;
+    padding-top: 48px;
+    padding-bottom: calc(
+      var(--footer-title-center-offset) +
+      (var(--theme-toggle-size) / 2) -
+      (24px / 2)
+    );
+  }
+}
+```
+
+- Do not subtract `--footer-title-optical-offset` from the case-next formula. Browser pixel analysis approved direct centering; the previous additional `4px` placed the row visibly too low.
+- At `768px` and below, restore the normal `48px` top margin and do not target the top-mounted mobile theme control.
 - Own the live Heph terminal once in `src/partials/heph-demo.html` and include it only on `/heph`. The Heph case order is authored prose, the live demo, then the GitHub repository link.
 - Separate authored thoughts with ordinary Markdown paragraph breaks. Use the shared `--text-media-gap` (`32px`) in both directions around case media: from preceding prose to the image, and from the caption to following prose. This mirrors the homepage's optical LinkedIn-to-Contact transition without introducing a heading or divider.
 
@@ -250,43 +283,41 @@ Rules:
 
 - Keep biography first and concise.
 - Keep the homepage free of project images, previews, and the Heph terminal; all project evidence belongs inside case-study routes.
-- Order homepage projects newest to oldest by default: `gildrb.com`, `Heph`, `Filen`, `n0thing`, then `mL7`. DOM, visual, and keyboard order must agree at every viewport.
+- Order homepage projects newest to oldest by default: `gildrb.com`, `T3`, `Ben Davis`, `Heph`, `Filen`, `n0thing`, `CURVES`, then `mL7`. DOM, visual, and keyboard order must agree at every viewport.
 - Place one `Date` / `Project` / `Scope` / `All` header row before the single global project list. Render all four labels in explicit Inter `16px/24px` and `--text-secondary` on the same four-column subgrid as the project rows; `All` is a right-aligned link to `/all` that includes the active sort state.
-- Size the desktop Project and Scope tracks to their longest content. Use the existing `16px` column gap between `gildrb.com`, the longest project title, and Scope. Use `Design Engineering`, `Product/Design Engineering`, `Brand Identity`, and `Wordmark` exactly as authored in the current rows. Render scope values at `16px/24px` in `--text-tertiary`.
-- On mobile, `.portfolio-scroll-frame` owns the `max-content max-content minmax(0, 1fr) auto` tracks with `clamp(8px, 3vw, 16px)` column gaps. The header row and `.portfolio-section` both subgrid into that frame so their Date, Project, Scope, and arrow columns share one geometry. Keep the width query container on the frame, where it swaps full dates for years at the documented threshold. Keep the table at Inter `16px/24px`, hide `View`, and truncate long Scope values with an ellipsis so the row never creates page overflow.
-- Treat the header and five project rows as one compact table block. The first project row begins immediately below the header rule with no section gap or category-divider space.
+- Use one shared four-column contract from `src/styles/10-base.css`:
+
+```css
+--portfolio-table-columns:
+  max-content max-content minmax(0, 1fr)
+  minmax(var(--portfolio-arrow-column), max-content);
+```
+
+- Date and Project tracks derive from the longest value visible in that rendered table. The homepage and every case suggestion table therefore size independently: `/site` omits `gildrb.com`, so `Ben Davis` owns its Project width; tables that include `gildrb.com` use that wider value.
+- Keep proportional Inter numerals. Do not add tabular-number features to dates or years.
+- Desktop uses `var(--portfolio-table-gap)`, exactly `16px`. Mobile uses `var(--portfolio-mobile-table-gap)`, `clamp(8px, 3vw, 16px)`, plus the same `10px` inline-end reserve on Date and Project cells. The visible whitespace after the widest year and widest project must match.
+- Scope remains the flexible `minmax(0, 1fr)` track and truncates with an ellipsis. The affordance track keeps a `19px` minimum.
+- Treat the header and eight project rows as one compact table block. The first project row begins immediately below the header rule with no section gap or category-divider space.
 - On desktop, align the header row's text line box exactly with the sidebar `Links` label line box. Do not add top padding that drops `Date`, `Project`, `Scope`, or `All` below it.
-- Keep `Date`, `Project`, and `Scope` as native buttons. The first inactive Date sort is newest-first; Project and Scope begin A–Z. Repeated activation toggles direction. Apply the chosen ordering across the complete homepage project list, update DOM order as well as visual order, announce the result, expose the active direction accessibly, preserve focus after keyboard activation, and keep this behavior off case-study routes. Do not retain category wrappers that prevent a true global order.
+- Header labels preserve literal non-breaking space before the indicator. Keep measured indicator offsets: Project `translateX(2.3px)`, Scope `translateX(1.3px)`.
+- Keep `Date`, `Project`, and `Scope` as native buttons. All interactive controls, including these sort buttons, use the shared `position: relative; top: 1px` pressed state.
+- The first inactive Date sort is newest-first; Project and Scope begin A–Z. Repeated activation toggles direction. Announce the result and expose the active direction accessibly.
+- Sorting must keep the existing DOM grid-row elements in place: sort project data, then copy href/date/title/scope values into stable row slots. Do not append/reparent sorted row nodes; WebKit can detach reordered rows from nested `subgrid` and shift Project/Scope columns.
+- On the first sort interaction, set `document.documentElement.dataset.homepageEntryComplete = "true"` before changing values so stagger selectors cannot replay or move sorted rows.
+- On mobile, `.portfolio-scroll-frame` owns the shared tracks and inline-size container; the header and `.portfolio-section` subgrid into it.
+- The mobile homepage adds `homepage-scroll-locked` and locks root/body overflow to `100dvh`. Project rows are the only scrolling region; keep the filter row stationary, `overscroll-behavior: auto`, hidden inner scrollbar, and conditional `160ms` top/bottom edge fades. Preserve `var(--section-gap)` between the table and Links/Contact. Document pull-to-refresh is intentionally unavailable in this state.
+- On mobile, `.links.mobile-links-grid` derives `--mobile-contact-start` from the rendered `.portfolio-card-scope` or `.case-next-scope` coordinate. Contact must begin at that page's computed Scope start, including `/site`'s narrower table.
 - Do not underline `Date`, `Project`, or `Scope` on hover. They follow the site's existing restrained control language and may not introduce a bespoke text-decoration hover exception.
 - Keep the homepage content and project table inside the same centered `760px` content boundary used by case studies.
 - Approved biography: `Brand designer based in Germany, building identity systems for software.`
 - Render the approved biography in `--text-primary`; it is authored content, not a label.
 - Do not show a `Portfolio` heading on the homepage; keep `Portfolio` only as the accessible name of the project section.
-- Use `32px` from the biography to the project table. Keep the header rule and all five rows contiguous with `8px` vertical padding and faint `12%` primary separators.
+- Use `32px` from the biography to the project table. Keep the header rule and all eight rows contiguous with `8px` vertical padding and faint `12%` primary separators.
 - Render project dates and scopes at `16px/24px` in `--text-tertiary`; render project titles at `16px/24px` in `--text-primary`.
 - Make every project row a full-width link target. Align date, project, scope, and the Inter `View →` affordance on the shared four-column subgrid.
-- On mobile, measure the Links/Contact grid's second-column start from the first body-row Scope cell, falling back to the first case-page `View next` Scope cell and then the header Scope cell. Store that offset in `--mobile-contact-start`; routes without a column table, such as `/all`, retain the `3fr 4fr` ratio fallback.
 - Reveal `View` immediately left of the arrow only while the row is directly hovered or keyboard-focused. Hide `View` at `767px` and below so touch layouts retain all data columns without overflow.
-
-### Case-study Read Next
-
-Every generated case-study route ends with a build-generated `View next` block in the same content column as the article. It mirrors the homepage row conventions: date, project, scope, and `View →`, without the homepage header or `All` column.
-
-- Use existing tokens only: `--text-primary`, `--text-tertiary`, 16px/24px type, and the existing case-section rhythm.
-- Keep 48px between the article's final block and `View next`, matching the existing compact-heading (`###`) top margin. On desktop, remove the article's final-line boundary padding when this block follows; the heading remains in normal document flow.
-- On mobile, keep `var(--section-gap)` between the table container and the Links/Contact block on both the homepage and case routes. The 48px article-to-`View next` gap is a separate boundary.
-- On desktop, apply the existing footer/theme-toggle endpoint calculation to the case table container's bottom padding and keep the final row unpadded. At maximum scroll, the final row bottom aligns with the theme-toggle bottom while preserving the content column's 48px bottom padding. This is a maximum endpoint only; short pages remain natural flow.
-- On the mobile homepage, lock the viewport to the dynamic viewport and keep the project rows in the only scrolling region. The filter row stays outside that region and does not move during row overscroll. Show the existing conditional top and bottom edge fades only when rows remain above or below the current scroll position, and suppress the inner scrollbar so it does not overlap the arrow column. The Links and Contact block remains reachable below the locked table; document pull-to-refresh is intentionally unavailable for this interaction.
-- Use the homepage row padding and faint primary separators. Render every project as a real anchor, including the current project with its own href and `aria-current="page"`.
-- Keep every row visible in homepage default order. Do not add sort buttons, an `All` column, randomization, visited state, or client JavaScript for this table.
-- Do not force the desktop theme-toggle endpoint under the eight-row table. Keep the 48px content-column bottom padding. On mobile, let the homepage grow naturally with every project row and the footer in one document flow.
-- On the mobile homepage, keep the shared sticky name and theme toggle at the same top offset as case routes and `/all` while Links/Contact follows the locked table. Keyboard and screen-reader access must still traverse every project row even though touch scrolling belongs to the table region.
-- Keep the block text-only. Do not add cards, borders, gradients, new colors, or arbitrary sizes.
-- Reveal `View` on hover and keyboard focus using the homepage interaction convention; keep focus visible.
-- At mobile widths, preserve the date, project, scope, and arrow columns and hide only the `View` label, as on the homepage.
-- The rows and metadata are build-time HTML. The table must not load client JavaScript.
-- `/all` starts immediately with the generated case studies. It adds no introduction, duplicates no authored case content, and orders its `.all-case` articles from the `sort` and `direction` URL parameters. Its generated default order always places the homepage-derived `site` entry last; an explicit sort request orders every article, `site` included.
-- Keep the homepage Metadata footer only on `/` and only on desktop. It lists `humans.txt`, `llms.txt`, and a `source` link to the site's public repository as a vertical `--section-content-gap` stack; it contains no copyright line.
+- `/all` starts immediately with generated case studies. It adds no introduction, duplicates no authored copy, defaults to the homepage ordering with `site` last, and reorders the complete sequence when valid `sort` and `direction` URL parameters are present.
+- Keep the homepage Metadata footer only on `/` and only on desktop. It lists `humans.txt`, `llms.txt`, and the public source repository as a vertical `--section-content-gap` stack; it contains no copyright line.
 - Hide the complete Metadata footer at `767px` and below, and do not add it to case-study or `/all` routes.
 - Do not append summaries, roles, marketing copy, or detached personal-image preview sections.
 
@@ -312,15 +343,6 @@ Every generated case-study route ends with a build-generated `View next` block i
 - Do not use `object-position` to hide content.
 - Do not create cropped derivatives.
 - Preserve the source aspect ratio within normal browser rounding.
-
-### Vector marks
-
-- Ship a monochrome brand mark as an SVG file referenced from a normal `<img>`, not as a raster derivative. Vector marks are the one exception to WebP conversion.
-- Author the file with white fills, then invert it for light contexts with `filter: brightness(0)`; dark contexts keep `filter: none`.
-- Cover all three theme states: `@media (prefers-color-scheme: light)` scoped to `:root:not([data-theme])` for the system default, plus explicit `:root[data-theme="light"]` and `:root[data-theme="dark"]` rules.
-- Keep those rules in a route-scoped `src/styles/30-<project>.css` registered only in that case study's `styles` array. A mark class belongs to one route: `.heph-lockup` to `/heph`, `.ben-davis-brandmark` to `/ben-davis`.
-- Give marks `border-radius: 0` and no contour. The `--media-radius` contour belongs to raster evidence.
-- Keep the intrinsic `width` and `height` attributes from the SVG viewBox so the mark reserves its box like every other image.
 
 ### Optimization
 
@@ -392,23 +414,15 @@ Every generated case-study route ends with a build-generated `View next` block i
 
 ## Motion
 
-- Prefer no motion for navigation, sorting, theme changes, email copy, and project-row links.
-- Keep interaction motion at `200ms` or below when motion materially improves orientation.
-- Respect `prefers-reduced-motion`.
-- Do not add looping decorative animation.
-
-### Homepage entry
-
-The homepage runs exactly one entry animation, on first paint. It is the documented exception to the `200ms` interaction limit. Case routes never animate on entry.
-
-- Hide the homepage body while `html.homepage-first-paint-pending` is present so no unstyled, unmeasured, or wrong-theme frame is ever shown. Keep `.name` and `.profile-summary` visible throughout.
-- `10-core.js` resolves `window.homepageFirstPaintReady` after the theme, `Inter`, homepage dates, and the mobile column layout are settled; `12-homepage-entry.js` then sets `data-homepage-first-paint-ready` and removes the pending class.
-- Reveal with `homepage-enter` from `opacity: 0` and a `-4px` vertical offset: `700ms` for the sidebar sequence, `1s` for the project table.
-- Stagger the table as a diagonal wave. One row down or one column right adds `80ms`, expressed as `--row-delay` and `--column-delay`.
-- End the sequence on the last contact link's `animationend`, with a `2800ms` timeout fallback, then set `data-homepage-entry-complete` and stop owning opacity.
-- Under `prefers-reduced-motion: reduce`, skip every entry animation and reveal the finished page immediately.
-- Never gate first paint on work that can fail silently. The pending class must be removed on every path, including the fallback.
-
+- `gildrb-motion` owns every keyframe, transition, timing curve, animated evidence surface, and reduced-motion rule.
+- Preserve the exact approved homepage fade/blur/rise choreography in `skills/gildrb-motion/references/gildrb-entry.md`.
+- Keep `Gil Rodrigues` and the About biography visible immediately. Desktop completes by `1470ms`; mobile pairs side-by-side Links/Contact siblings by visual row and completes by `1650ms`.
+- Guard every entry target with `html:not([data-homepage-entry-complete])`. The first sort sets that terminal marker before stable-slot value updates; sorting must not replay or relocate entry motion.
+- Keep ordinary interaction feedback at `200ms` or below. The approved mobile scroll-edge fade is `160ms ease-out`.
+- Keep the Heph cursor loop functional and selector-bounded; do not add decorative loops.
+- Keep animated case evidence documented in the motion inventory and encoded under `gildrb-media`.
+- Do not add undocumented motion, full-page visibility gates, font/load waits, or persistent `will-change`.
+- Respect `prefers-reduced-motion`; the homepage entry must be absent rather than merely shortened.
 ## Accessibility
 
 - Use one semantic page heading.
@@ -436,7 +450,7 @@ The homepage runs exactly one entry animation, on first paint. It is the documen
 
 ## Metadata
 
-- Canonical project routes are top-level: `/site`, `/t3`, `/ben-davis`, `/heph`, `/filen`, `/n0thing`, `/curves`, `/ml7`, `/all`, and future `/<project>` paths. Slugs may be hyphenated and are used verbatim everywhere.
+- Canonical project routes are top-level: `/site`, `/t3`, `/ben-davis`, `/heph`, `/filen`, `/n0thing`, `/curves`, `/ml7`, `/all`, and future `/<project>` paths.
 - The homepage Heph row links to `/heph`. Its GitHub repository link belongs inside the Heph article, not on the homepage.
 - Use static directory indexes: `<project>/index.html` and `all/index.html`.
 - Synchronize canonical, Open Graph, Twitter, JSON-LD, sitemap, feed, Markdown mirrors, LLM mirrors, humans file, and structured profile graph.
@@ -467,7 +481,5 @@ For every design change:
 18. Confirm case studies do not repeat an email footer and that shared Links and Contact follow the article on mobile.
 19. Measure homepage table alignment and overflow at desktop, `390px`, and `320px`; the header and rows remain one contiguous block.
 20. Confirm the Heph demo appears only on `/heph` and remains exposed to assistive technology.
-21. Confirm each theme-inverting SVG mark renders light-on-dark and dark-on-light under the system preference and under both explicit themes, and that its class appears on no other route.
-22. Confirm the homepage reveals once, in staggered order, with no unstyled or wrong-theme frame, and that reduced motion skips the sequence.
-
+21. For motion changes, reconcile the full motion inventory, capture early/middle/final frames, emulate reduced motion, and compare Lighthouse and payload metrics with the same static baseline.
 Reject a change that introduces crop, arbitrary type sizes, negative letter spacing outside the case-title role, a second navigation system, editorial divider rules, stale generated output, broken metadata, or an unprotected unfinished preview.

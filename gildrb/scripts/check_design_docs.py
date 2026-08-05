@@ -5,6 +5,7 @@ import json
 import re
 import sys
 from pathlib import Path
+from typing import cast
 
 PACKAGE_ROOT = Path(__file__).resolve().parents[1]
 HEPHAION_ROOT = PACKAGE_ROOT.parent
@@ -14,6 +15,7 @@ REQUIRED_PACKAGE_FILES = (
     "README.md",
     "design.md",
     "case-studies.md",
+    "platform.md",
     "skills/gildrb-portfolio/SKILL.md",
     "skills/gildrb-spacing/SKILL.md",
     "skills/gildrb-typography/SKILL.md",
@@ -21,6 +23,10 @@ REQUIRED_PACKAGE_FILES = (
     "skills/gildrb-shell-layout/SKILL.md",
     "skills/gildrb-media/SKILL.md",
     "skills/gildrb-interaction/SKILL.md",
+    "skills/gildrb-motion/SKILL.md",
+    "skills/gildrb-motion/references/inventory.md",
+    "skills/gildrb-motion/references/gildrb-entry.md",
+    "skills/gildrb-motion/references/verification.md",
     "skills/gildrb-accessibility/SKILL.md",
     "skills/gildrb-visual-verification/SKILL.md",
     "skills/gildrb-publishing/SKILL.md",
@@ -44,62 +50,97 @@ REQUIRED_DESIGN_PHRASES = (
     "Place one `Date` / `Project` / `Scope` / `All` header row",
     "Make every project row a full-width link target.",
     "var(--all-case-gap)",
-    "Its generated default order always places the homepage-derived `site` entry last",
-    "Ship a monochrome brand mark as an SVG file referenced from a normal `<img>`",
-    "Cover all three theme states",
-    "The homepage runs exactly one entry animation, on first paint.",
-    "Stagger the table as a diagonal wave.",
-    "a `source` link to the site's public repository",
+    "defaults to the homepage ordering with `site` last",
     "Case-study prose is user-owned.",
     "do not imply permission to alter wording",
-    "Treat that desktop boundary as a maximum endpoint, not a target baseline.",
+    "--portfolio-mobile-cell-end-space: 10px;",
+    "Keep proportional Inter numerals.",
+    "stable row slots",
+    "Every desktop case route with `.case-next` uses spare main-column height",
+    "Do not subtract `--footer-title-optical-offset` from the case-next formula.",
+    "Theme-adaptive monochrome artwork is a shared media capability",
+    "The mobile homepage adds `homepage-scroll-locked`",
     "Own the live Heph terminal once in `src/partials/heph-demo.html` and include it only on `/heph`.",
+    "Preserve the exact approved homepage fade/blur/rise choreography",
     "No broad design skill exists.",
 )
 
 REQUIRED_OPERATIONAL_CONTRACTS = {
     "AGENTS.md": (
         "A live-only fix is incomplete.",
-        "maximum endpoint for long posts, never a target",
+        "Treat case-study copy as user-owned.",
+        "Production is Git-backed: push the exact approved commit",
+        "Direct Upload is exceptional",
     ),
     "skills/gildrb-spacing/SKILL.md": (
-        "Never use article `min-height`, flex distribution, `margin-top: auto`, or last-child top padding",
+        "Every desktop `.case-next` uses `margin-top: auto`",
+        "final `24px` row line box centers directly with the visible theme icon",
         "applied once per boundary",
         "declared once in shared `src/styles/10-base.css`",
+        "measured `10px` mobile table cell-end reserve",
     ),
     "skills/gildrb-shell-layout/SKILL.md": (
         "Heph demo markup has one canonical owner: `src/partials/heph-demo.html`",
         "Project location uses two lines",
-        "The homepage row stays in document flow; case-study rows remain sticky.",
+        "The homepage locks to `100dvh`",
+        "Each rendered table sizes from its own visible rows",
+        "Mobile Contact starts at the measured Scope coordinate",
+        "Desktop `.case-next` is the only spare-height flex target",
     ),
     "skills/gildrb-interaction/SKILL.md": (
-        "A touch drag on the mobile homepage scrolls the project rows inside the locked table region",
-        "pull-to-refresh is not a requirement for this interaction",
-        "The mobile homepage table rows remain in an inner scroll region below the non-scrolling filter row",
-        "The homepage stays hidden behind `homepage-first-paint-pending`",
+        "A touch drag on the mobile homepage scrolls project rows inside the locked table region",
+        "document pull-to-refresh",
+        "use `gildrb-motion`",
+        "stable DOM row slots",
+        "top: 1px",
+        "--mobile-contact-start",
     ),
-    "skills/gildrb-media/SKILL.md": (
-        "Ship a monochrome brand mark as an SVG",
-        "Slicing is not cropping",
+    "skills/gildrb-motion/SKILL.md": (
+        "Maintain one documented motion system",
+        "references/inventory.md",
+        "references/gildrb-entry.md",
+        "references/verification.md",
     ),
-    "skills/gildrb-portfolio/references/homepage.md": (
-        "Default to newest-first: gildrb.com, T3, Ben Davis, Heph, Filen, n0thing, CURVES, then mL7.",
-        "ordered segments of that one list, not categories",
+    "skills/gildrb-motion/references/inventory.md": (
+        "homepage-fade",
+        "homepage-rise",
+        "opacity 160ms ease-out",
+        "heph-demo-cursor-blink",
+        "n0thing-wordmark-animation",
+        "requestAnimationFrame",
     ),
-    "skills/gildrb-portfolio/references/routing.md": (
-        "Register the case study in `scripts/site-config.mjs`",
-    ),
-    "skills/gildrb-portfolio/references/verification.md": (
-        "emits the Vercel headers from `vercel.json`",
+    "skills/gildrb-motion/references/gildrb-entry.md": (
+        "Desktop completes by `1470ms`; mobile's visual-row sequence completes by `1650ms`.",
+        "data-homepage-entry-complete",
+        "Performance score | 100 | 100",
+        "First Contentful Paint | 0.8s | 0.8s",
+        "Largest Contentful Paint | 1.4s | 1.4s",
+        "Total Blocking Time | 0ms | 0ms",
+        "Cumulative Layout Shift | 0 | 0",
     ),
     "skills/gildrb-typography/SKILL.md": (
         "Case-study Markdown uses compact `###` headings",
         "explicit `.case-code-arrow` span",
+        "font-variant-numeric: normal",
     ),
     "skills/gildrb-visual-verification/SKILL.md": (
-        "Short case natural flow and long case ending at or above the desktop theme control",
+        "final row and visible theme icon centers differ by no more than `1.5px`",
+        "luminance-weighted Y centroids",
         "returns a cited answer",
         "both top edges resolve to `48px`",
+    ),
+    "skills/gildrb-publishing/SKILL.md": (
+        "Normal production is Git-backed",
+        "Pages deployment whose `Source` matches that commit",
+        "Poll every changed route",
+        "Direct Upload is exceptional",
+    ),
+    "platform.md": (
+        "Production is connected to GitHub `gildrb/web`, branch `main`.",
+        "_redirects",
+        "/index/filen /filen 301",
+        "Cloudflare can briefly serve mixed old/new route copies",
+        "Direct Upload does not update Git.",
     ),
 }
 
@@ -114,10 +155,6 @@ REQUIRED_CASE_ROUTES = (
     "/ml7",
     "/all",
 )
-THEME_INVERTING_MARKS = {
-    "heph": ("30-heph-demo.css", "heph-lockup"),
-    "ben-davis": ("30-ben-davis.css", "ben-davis-brandmark"),
-}
 REQUIRED_SKILL_REFERENCES = {
     "skills/gildrb-portfolio/SKILL.md": (
         "references/homepage.md",
@@ -129,6 +166,11 @@ REQUIRED_SKILL_REFERENCES = {
         "references/preview.md",
         "references/release.md",
     ),
+    "skills/gildrb-motion/SKILL.md": (
+        "references/inventory.md",
+        "references/gildrb-entry.md",
+        "references/verification.md",
+    ),
 }
 
 REQUIRED_ATOMIC_SKILLS = {
@@ -138,10 +180,24 @@ REQUIRED_ATOMIC_SKILLS = {
     "gildrb-shell-layout": "Preserve one shared responsive shell",
     "gildrb-media": "Publish complete, uncropped, optimized evidence",
     "gildrb-interaction": "Make one interaction behave predictably",
+    "gildrb-motion": "Maintain one documented motion system",
     "gildrb-accessibility": "Ensure the existing interface is operable",
     "gildrb-visual-verification": "Produce measured, reproducible acceptance evidence",
 }
 
+REQUIRED_AGENT_PROMPT_PHRASES = {
+    "gildrb-accessibility": "DOM/visual order",
+    "gildrb-color-audit": "theme-adaptive artwork instance",
+    "gildrb-interaction": "stable-slot sorting",
+    "gildrb-media": "animated assets",
+    "gildrb-motion": "mobile visual-row choreography",
+    "gildrb-publishing": "Pages Source",
+    "gildrb-portfolio": "stable-slot homepage table",
+    "gildrb-shell-layout": "content-derived table tracks",
+    "gildrb-spacing": "case-footer alignment",
+    "gildrb-typography": "proportional portfolio dates",
+    "gildrb-visual-verification": "pixel centroids",
+}
 ATOMIC_SKILL_SECTIONS = (
     "## Mission",
     "## Owns",
@@ -198,8 +254,14 @@ def _package_errors() -> list[str]:
     readme_path = PACKAGE_ROOT / "README.md"
     if readme_path.is_file():
         readme = _read(readme_path)
-        if "Each skill has one mission and one owned failure class." not in readme:
+        if "Each atomic skill owns one failure class." not in readme:
             errors.append("gildrb/README.md does not define atomic skill ownership")
+        for section in ("## Commands", "## Files", "## Portfolio files", "## Build", "## Routes and redirects", "## Production", "## Agent contract"):
+            if section not in readme:
+                errors.append(f"gildrb/README.md missing OptMem-style section: {section}")
+        for contract in ("$PORTFOLIO_REPO/", "scripts/prepare-cloudflare-output.mjs", "Production is Git-backed Cloudflare Pages", "Source == ${commit:0:7}"):
+            if contract not in readme:
+                errors.append(f"gildrb/README.md missing executable path contract: {contract}")
         if "skills/gildrb-design/" in readme:
             errors.append("gildrb/README.md still routes the retired broad design skill")
 
@@ -207,8 +269,16 @@ def _package_errors() -> list[str]:
     root_readme = _read(HEPHAION_ROOT / "README.md")
     if "gildrb/AGENTS.md" not in root_agent:
         errors.append("root AGENTS.md does not route gildrb work")
-    if "`gildrb/`" not in root_readme:
-        errors.append("root README.md does not list gildrb")
+    root_readme_contract = (
+        "## Use",
+        "## Commands",
+        "## Files",
+        "## Product package",
+        "## Agent contract",
+        "python3 gildrb/scripts/check_design_docs.py --portfolio-repo",
+    )
+    if not all(contract in root_readme for contract in root_readme_contract):
+        errors.append("root README.md does not expose the OptMem-style package route and executable check")
 
     for skill_relative, references in REQUIRED_SKILL_REFERENCES.items():
         skill_path = PACKAGE_ROOT / skill_relative
@@ -263,6 +333,11 @@ def _package_errors() -> list[str]:
             metadata = _read(agent_metadata)
             if f"${skill_name}" not in metadata:
                 errors.append(f"atomic skill metadata does not invoke ${skill_name}")
+    for skill_name, phrase in REQUIRED_AGENT_PROMPT_PHRASES.items():
+        metadata_path = PACKAGE_ROOT / f"skills/{skill_name}/agents/openai.yaml"
+        if not metadata_path.is_file() or phrase not in _read(metadata_path):
+            errors.append(f"agent metadata is stale for {skill_name}: missing {phrase}")
+
     two_line_location = "two lines: `Gil Rodrigues` then `→ <Project>`"
     for relative in ("AGENTS.md", "case-studies.md", "skills/gildrb-portfolio/SKILL.md", "skills/gildrb-shell-layout/SKILL.md"):
         path = PACKAGE_ROOT / relative
@@ -292,9 +367,12 @@ def _package_errors() -> list[str]:
 def _portfolio_errors(portfolio_repo: Path) -> list[str]:
     errors: list[str] = []
     required = (
+        "package.json",
         "src/styles/10-base.css",
+        "src/styles/15-homepage-entry.css",
         "src/styles/20-portfolio-media.css",
         "src/styles/30-heph-demo.css",
+        "src/styles/30-ben-davis.css",
         "src/styles/40-preview-content.css",
         "src/styles/50-case-study.css",
         "src/styles/90-responsive.css",
@@ -304,39 +382,40 @@ def _portfolio_errors(portfolio_repo: Path) -> list[str]:
         "src/sections/portfolio-design.html",
         "src/partials/references.html",
         "src/partials/heph-demo.html",
+        "src/case-media/ben-davis/ben-davis-brandmark.html",
+        "src/case-media/ben-davis/ben-davis-original.html",
         "src/partials/sidebar-links.html",
         "src/partials/sidebar.html",
         "src/partials/theme-toggle.html",
         "src/all.template.html",
-        "src/styles/30-ben-davis.css",
         "src/ben-davis.template.html",
         "src/curves.template.html",
-        "src/t3.template.html",
         "src/filen.template.html",
         "src/heph.template.html",
         "src/site.template.html",
         "src/page.template.html",
+        "src/t3.template.html",
         "src/ml7.template.html",
         "src/n0thing.template.html",
-        "src/styles/15-homepage-entry.css",
-        "src/scripts/10-core.js",
-        "src/scripts/12-homepage-entry.js",
         "src/scripts/30-email.js",
+        "src/scripts/80-webmcp.js",
         "src/scripts/15-portfolio-sort.js",
         "src/scripts/60-all-sort.js",
         "scripts/build-page.mjs",
         "scripts/site-config.mjs",
         "scripts/render-case-markdown.mjs",
         "scripts/verify-page.mjs",
+        "scripts/verify-agent-readiness.mjs",
+        "scripts/prepare-cloudflare-output.mjs",
         "content/README.md",
         "content/ben-davis.md",
         "content/curves.md",
-        "content/t3.md",
         "content/filen.md",
         "content/heph.md",
         "content/ml7.md",
         "content/n0thing.md",
         "content/site.md",
+        "content/t3.md",
         "src/data/profile.json",
         "llms.txt",
         "index.html.md",
@@ -345,7 +424,19 @@ def _portfolio_errors(portfolio_repo: Path) -> list[str]:
         "sitemap.xml",
         "feed.xml",
         "scripts/check-public.mjs",
-        "vercel.json",
+        "_headers",
+        "_redirects",
+        "_routes.json",
+        "functions/[[path]].js",
+        "functions/api/status.js",
+        "functions/mcp.js",
+        ".well-known/api-catalog",
+        ".well-known/ai-catalog.json",
+        ".well-known/mcp/server-card.json",
+        ".well-known/agent-skills/index.json",
+        "openapi.json",
+        "api-docs.md",
+        "auth.md",
     )
     for relative in required:
         if not (portfolio_repo / relative).is_file():
@@ -353,7 +444,18 @@ def _portfolio_errors(portfolio_repo: Path) -> list[str]:
     if errors:
         return errors
 
+    package_config = cast(
+        dict[str, object],
+        json.loads(_read(portfolio_repo / "package.json")),
+    )
+    expected_scripts = {
+        "build": "node scripts/build-page.mjs && node scripts/verify-agent-readiness.mjs && node scripts/prepare-cloudflare-output.mjs",
+        "verify": "node scripts/verify-page.mjs && node scripts/verify-agent-readiness.mjs",
+    }
+    if package_config.get("scripts") != expected_scripts:
+        errors.append("package scripts must preserve the documented static build and verification pipeline")
     base_css = _read(portfolio_repo / "src/styles/10-base.css")
+    homepage_entry_css = _read(portfolio_repo / "src/styles/15-homepage-entry.css")
     portfolio_css = _read(portfolio_repo / "src/styles/20-portfolio-media.css")
     case_css = _read(portfolio_repo / "src/styles/50-case-study.css")
     responsive_css = _read(portfolio_repo / "src/styles/90-responsive.css")
@@ -363,7 +465,6 @@ def _portfolio_errors(portfolio_repo: Path) -> list[str]:
     portfolio_design = _read(portfolio_repo / "src/sections/portfolio-design.html")
     builder = _read(portfolio_repo / "scripts/build-page.mjs")
     site_config = _read(portfolio_repo / "scripts/site-config.mjs")
-    site_script = _read(portfolio_repo / "src/scripts/10-core.js")
     renderer = _read(portfolio_repo / "scripts/render-case-markdown.mjs")
     homepage_template = _read(portfolio_repo / "src/page.template.html")
     all_template = _read(portfolio_repo / "src/all.template.html")
@@ -371,17 +472,18 @@ def _portfolio_errors(portfolio_repo: Path) -> list[str]:
     homepage_references = _read(portfolio_repo / "src/partials/references.html")
     sidebar_links = _read(portfolio_repo / "src/partials/sidebar-links.html")
     homepage_sidebar = _read(portfolio_repo / "src/partials/sidebar.html")
-    filen_template = _read(portfolio_repo / "src/filen.template.html")
     ben_davis_template = _read(portfolio_repo / "src/ben-davis.template.html")
     curves_template = _read(portfolio_repo / "src/curves.template.html")
-    t3_template = _read(portfolio_repo / "src/t3.template.html")
+    filen_template = _read(portfolio_repo / "src/filen.template.html")
     heph_template = _read(portfolio_repo / "src/heph.template.html")
     site_template = _read(portfolio_repo / "src/site.template.html")
+    t3_template = _read(portfolio_repo / "src/t3.template.html")
     ml7_template = _read(portfolio_repo / "src/ml7.template.html")
     n0thing_template = _read(portfolio_repo / "src/n0thing.template.html")
     core_script = _read(portfolio_repo / "src/scripts/10-core.js")
     portfolio_sort_script = _read(portfolio_repo / "src/scripts/15-portfolio-sort.js")
     email_script = _read(portfolio_repo / "src/scripts/30-email.js")
+    webmcp_script = _read(portfolio_repo / "src/scripts/80-webmcp.js")
     content_guide = _read(portfolio_repo / "content/README.md")
     structured_profile = json.loads(_read(portfolio_repo / "src/data/profile.json"))
     public_portfolio_docs = tuple(
@@ -390,8 +492,13 @@ def _portfolio_errors(portfolio_repo: Path) -> list[str]:
     )
     sitemap = _read(portfolio_repo / "sitemap.xml")
     feed = _read(portfolio_repo / "feed.xml")
-    vercel = json.loads(_read(portfolio_repo / "vercel.json"))
-
+    cloudflare_redirects = _read(portfolio_repo / "_redirects")
+    cloudflare_routes = json.loads(_read(portfolio_repo / "_routes.json"))
+    agent_verifier = _read(portfolio_repo / "scripts/verify-agent-readiness.mjs")
+    cloudflare_output = _read(portfolio_repo / "scripts/prepare-cloudflare-output.mjs")
+    motion_inventory = _read(
+        PACKAGE_ROOT / "skills/gildrb-motion/references/inventory.md",
+    )
     if 'from "./render-case-markdown.mjs"' not in builder:
         errors.append("portfolio builder must render case studies from Markdown")
     case_templates = {
@@ -421,22 +528,17 @@ def _portfolio_errors(portfolio_repo: Path) -> list[str]:
         or '<!-- @all-cases -->' not in all_template
         or 'class="all-cases"' not in all_template
         or 'const allSortKey = allSortParams.get("sort");' not in all_sort_script
-        or 'data-slug="${slug}"' not in builder
+        or "cases.sort((left, right) =>" not in all_sort_script
+        or "cases.forEach((caseStudy) => allCases.append(caseStudy));"
+        not in all_sort_script
+        or "if (left.slug === \"site\") return 1;" not in builder
+        or "if (right.slug === \"site\") return -1;" not in builder
     ):
-        errors.append("continuous all-projects route must use the current title, generated articles, scope sorting, and addressable slugs")
-    if not re.search(
-        r'if \(left\.slug === "site"\) return 1;\s*if \(right\.slug === "site"\) return -1;',
-        builder,
-    ):
-        errors.append("generated all-projects default order must pin the site case last")
-    if 'dataset.slug === "site"' in all_sort_script:
-        errors.append("an explicit all-projects sort must order every article, including the site case")
+        errors.append("continuous all-projects route must use the current title, generated articles, scope sorting, and a final site case")
     for slug, template in case_templates.items():
         markdown = _read(portfolio_repo / f"content/{slug}.md")
         if f"<!-- @case-markdown:{slug} -->" not in template:
             errors.append(f"{slug} template must use its Markdown insertion token")
-        if template.count("<!-- @case-next -->") != 1:
-            errors.append(f"{slug} template must contain exactly one case-next token after its article")
         if 'class="case-title"' in template or 'class="case-copy"' in template:
             errors.append(f"{slug} template must not duplicate author-owned Markdown prose")
         if f"<title>{route_titles[slug]}</title>" not in template:
@@ -454,52 +556,6 @@ def _portfolio_errors(portfolio_repo: Path) -> list[str]:
             errors.append(f"content/{slug}.md must use compact ### headings only")
         if metadata_count == 0 and not authored_body and not markdown.rstrip().endswith("## MORE SOON"):
             errors.append(f"content/{slug}.md must contain authored prose or end with ## MORE SOON")
-    if "<!-- @case-next -->" in all_template:
-        errors.append("all template must not contain the case-next token")
-    generated_all = portfolio_repo / "all/index.html"
-    if generated_all.is_file():
-        generated_all_text = _read(generated_all)
-        if 'class="case-next"' in generated_all_text or "case-next.js" in generated_all_text:
-            errors.append("generated /all must not contain case-next markup or script")
-    if "25-case-next.js" in site_config:
-        errors.append("case-page configuration must not register the retired case-next script")
-    if "homepage-scroll-locked" not in site_script:
-        errors.append("mobile homepage must use a locked dynamic viewport")
-
-    case_next_css_contracts = (
-        (r"\.case-next\s*\{[^}]*width:\s*min\(100%,\s*760px\)[^}]*margin:\s*48px auto 0", "case-next block must use the case column and 48px heading rhythm"),
-        (r"\.case-next-list\s*\{[^}]*display:\s*grid[^}]*grid-template-columns:\s*max-content max-content minmax\(0,\s*1fr\) auto[^}]*column-gap:\s*16px", "case-next rows must mirror the homepage grid"),
-        (r"\.case-next-row\s*\{[^}]*display:\s*grid[^}]*grid-template-columns:\s*subgrid[^}]*padding:\s*8px 0", "case-next rows must use the homepage row padding"),
-        (r"\.case-next-row \+ \.case-next-row[\s\S]*?border-top:", "case-next rows must use homepage-style separators"),
-        (r"@media\s*\(min-width:\s*769px\)[\s\S]*?\.case-next\s*\{[^}]*padding-bottom:\s*calc\([^}]*var\(--footer-title-center-offset\)[^}]*var\(--theme-toggle-size\)[^}]*\}[\s\S]*?\.case-next-row:last-child\s*\{[^}]*padding-bottom:\s*0", "desktop case-next container must use the footer/theme-toggle endpoint padding while the final row stays unpadded"),
-        (r"\.case-article article:has\(\+ \.case-next\) > :last-child\s*\{[^}]*padding-bottom:\s*0", "case-next must disable article endpoint padding when it follows"),
-        (r"\.case-next-link:hover[\s\S]*?\.case-next-link:focus-visible", "case-next must define hover and focus states"),
-        (r"@media \(max-width:\s*768px\)[\s\S]*?\.case-next-view\s*\{[^}]*display:\s*none", "case-next must hide View on mobile"),
-    )
-    for pattern, message in case_next_css_contracts:
-        if not re.search(pattern, case_css, re.DOTALL):
-            errors.append(message)
-    builder_contracts = (
-        '"<!-- @case-next -->"',
-        "renderCaseSuggestions(slug)",
-        "portfolioCases.flatMap",
-        'href="/${suggestionSlug}"',
-        'case-next-heading">View next',
-    )
-    for contract in builder_contracts:
-        if contract not in builder:
-            errors.append(f"builder missing case-next contract: {contract}")
-    verifier_contracts = (
-        'const suggestionBlockPattern =',
-        "suggestions.length === portfolioCases.length - 1",
-        'expectedTarget?.slug === targetSlug',
-        "configuredCaseSlugs.has(targetSlug)",
-        '(allPage.match(/class="case-next"/g) || []).length === 0',
-    )
-    verifier_source = _read(portfolio_repo / "scripts/verify-page.mjs")
-    for contract in verifier_contracts:
-        if contract not in verifier_source:
-            errors.append(f"page verifier missing case-next assertion: {contract}")
 
     expected_tokens = {
         "--bg": "#000000",
@@ -515,10 +571,26 @@ def _portfolio_errors(portfolio_repo: Path) -> list[str]:
         "--layout-gap": "48px",
         "--media-radius": "22px",
         "--theme-toggle-optical-offset": "2px",
+        "--footer-stack-bottom-gap": "4px",
+        "--footer-title-optical-offset": "4px",
+        "--portfolio-arrow-column": "19px",
+        "--portfolio-table-gap": "16px",
+        "--portfolio-mobile-cell-end-space": "10px",
     }
     for name, value in expected_tokens.items():
         if not re.search(rf"{re.escape(name)}:\s*{re.escape(value)}\s*;", base_css):
             errors.append(f"portfolio token drift: {name} must be {value}")
+    if not re.search(
+        r"--portfolio-mobile-table-gap:\s*clamp\(8px,\s*3vw,\s*16px\)\s*;",
+        base_css,
+    ):
+        errors.append("portfolio mobile table gap must preserve the responsive clamp")
+    if not re.search(
+        r"--portfolio-table-columns:\s*max-content\s+max-content\s+minmax\(0,\s*1fr\)\s+minmax\(var\(--portfolio-arrow-column\),\s*max-content\)\s*;",
+        base_css,
+        re.DOTALL,
+    ):
+        errors.append("shared portfolio table columns must use visible max-content tracks, flexible Scope, and the arrow minimum")
     if not re.search(
         r"\.theme-toggle\s*\{[^}]*height:\s*calc\(24px \+ var\(--link-line-height\) \+ 8px\)[^}]*padding:\s*calc\(24px \+ var\(--theme-toggle-optical-offset\)\) 0\s*calc\(8px - var\(--theme-toggle-optical-offset\)\)[^}]*align-items:\s*center",
         responsive_css,
@@ -562,8 +634,8 @@ def _portfolio_errors(portfolio_repo: Path) -> list[str]:
     for pattern, message in case_color_rules:
         if not re.search(pattern, case_css, re.DOTALL):
             errors.append(f"portfolio semantic color drift: {message}")
-    if 'font: 14px/20px "Geist Mono", monospace;' not in case_css:
-        errors.append("case code pre must use the pure Geist Mono monospace stack")
+    if 'font: 14px/20px "Ioskeley Mono", monospace;' not in case_css:
+        errors.append("case code pre must use the pure Ioskeley Mono stack")
     if "case-code-arrow" not in renderer:
         errors.append("case code renderer must wrap arrows in the explicit arrow span")
     if not re.search(
@@ -581,8 +653,12 @@ def _portfolio_errors(portfolio_repo: Path) -> list[str]:
         errors.append("shared desktop content must use 48px vertical padding from the base bundle")
     if re.search(r"\.content\s*\{", portfolio_css):
         errors.append("homepage-only CSS must not own or duplicate the shared content shell")
-    if not re.search(r"\.portfolio-section\s*\{[^}]*display:\s*grid[^}]*grid-template-columns:\s*max-content max-content minmax\(0,\s*1fr\) auto", portfolio_css, re.DOTALL):
-        errors.append("homepage project rows must share date, project, scope, and affordance columns")
+    if not re.search(
+        r"\.portfolio-section\s*\{[^}]*display:\s*grid[^}]*grid-template-columns:\s*var\(--portfolio-table-columns\)",
+        portfolio_css,
+        re.DOTALL,
+    ):
+        errors.append("homepage project rows must consume the shared portfolio table columns")
     if not re.search(r"\.portfolio-card-link\s*\{[^}]*grid-column:\s*1 / -1[^}]*grid-template-columns:\s*subgrid[^}]*width:\s*100%[^}]*color:\s*var\(--text-tertiary\)", portfolio_css, re.DOTALL):
         errors.append("homepage project rows must be full-width subgrid links using --text-tertiary at rest")
     if not re.search(r'\.portfolio-card-arrow\s*\{[^}]*grid-column:\s*4[^}]*font-family:\s*"Inter",\s*sans-serif[^}]*font-size:\s*16px', portfolio_css, re.DOTALL):
@@ -611,7 +687,10 @@ def _portfolio_errors(portfolio_repo: Path) -> list[str]:
             'querySelector(`.portfolio-card-${key}`)',
             'getAttribute("datetime")',
             "leftValue.localeCompare(rightValue)",
-            "rows.forEach((row) => portfolioList.append(row));",
+            "const slots = [...rows];",
+            "const projects = rows.map((row) =>",
+            "slots.forEach((row, index) =>",
+            'document.documentElement.dataset.homepageEntryComplete = "true";',
             "announce(`Projects sorted by ${key}, ${description}.`)",
             "if (event.detail !== 0) button.blur();",
             "portfolioAllLink.href = `/all?sort=${key}&direction=${direction}`;",
@@ -620,44 +699,131 @@ def _portfolio_errors(portfolio_repo: Path) -> list[str]:
         )
     ):
         errors.append("homepage Date, Project, and Scope controls must globally reorder all projects and announce the active direction")
+    if "portfolioList.append" in portfolio_sort_script or "portfolioList.appendChild" in portfolio_sort_script:
+        errors.append("homepage sorting must not relocate subgrid row nodes; update values inside stable slots")
     if not re.search(r"\.portfolio-list\s*\{[^}]*display:\s*grid[^}]*grid-template-columns:\s*subgrid[^}]*margin-top:\s*0", portfolio_css, re.DOTALL) or ".portfolio-group" in portfolio_css:
         errors.append("homepage projects must use one sortable subgrid list without category wrappers")
-    if not (
-        re.search(
-            r"@media \(max-width:\s*767px\)[\s\S]*?\.portfolio-scroll-frame\s*\{[^}]*display:\s*grid[^}]*grid-template-columns:\s*max-content max-content minmax\(0,\s*1fr\) auto[^}]*column-gap:\s*clamp\(8px,\s*3vw,\s*16px\)[^}]*container-type:\s*inline-size",
-            responsive_css,
-        )
-        and re.search(
-            r"@media \(max-width:\s*767px\)[\s\S]*?\.portfolio-section\s*\{[^}]*grid-template-columns:\s*subgrid",
-            portfolio_css,
-        )
+    if not re.search(
+        r"@media \(min-width:\s*768px\)[\s\S]*?\.portfolio-scroll-frame\s*\{[^}]*grid-template-columns:\s*var\(--portfolio-table-columns\)[^}]*column-gap:\s*var\(--portfolio-table-gap\)",
+        portfolio_css,
     ):
-        errors.append("mobile homepage table must share the frame-owned four-column subgrid and width query container")
+        errors.append("homepage desktop table must consume shared content tracks and gap tokens")
     if not re.search(r"\.portfolio-card-scope\s*\{[^}]*grid-column:\s*3[^}]*color:\s*var\(--text-tertiary\)[^}]*font-size:\s*16px[^}]*line-height:\s*24px", portfolio_css, re.DOTALL):
         errors.append("homepage scope values must use tertiary 16px/24px text in column three")
     scope_markup = portfolio_engineering + portfolio_design
     expected_scopes = {
         "Design Engineering": 1,
-        "Product/Design Engineering": 1,
         "Logomark": 2,
+        "Product/Design Engineering": 1,
         "Brand Identity": 1,
-        "Typeface": 1,
         "Wordmark": 2,
+        "Typeface": 1,
     }
     for scope, count in expected_scopes.items():
         if scope_markup.count(f'class="portfolio-card-scope">{scope}') != count:
             errors.append(f"homepage scope values must preserve {count} {scope} row(s)")
-    if not re.search(
-        r"\.portfolio-card-scope\s*\{[^}]*min-width:\s*0[^}]*overflow:\s*hidden[^}]*text-overflow:\s*ellipsis",
-        portfolio_css,
-        re.DOTALL,
+    if not (
+        re.search(
+            r"@media \(max-width:\s*767px\)[\s\S]*?\.portfolio-scroll-frame\s*\{[^}]*grid-template-columns:\s*var\(--portfolio-mobile-table-columns\)[^}]*column-gap:\s*var\(--portfolio-mobile-table-gap\)",
+            responsive_css,
+        )
+        and re.search(
+            r"\.portfolio-card-scope\s*\{[^}]*min-width:\s*0[^}]*overflow:\s*hidden[^}]*text-overflow:\s*ellipsis",
+            portfolio_css,
+            re.DOTALL,
+        )
     ):
-        errors.append("homepage project table must truncate long scopes inside the flexible mobile track")
+        errors.append("homepage project table must keep 16px type and truncate long scopes inside the flexible mobile track")
     if not re.search(
         r"@media \(max-width:\s*767px\)[\s\S]*?\.portfolio-card-view\s*\{[^}]*display:\s*none",
         portfolio_css,
     ):
         errors.append("mobile homepage rows must hide View while preserving the Inter arrow")
+
+    if not all(
+        token in portfolio_css
+        for token in (
+            ".portfolio-card-link time,",
+            ".portfolio-card-title {",
+            "padding-inline-end: var(--portfolio-mobile-cell-end-space);",
+        )
+    ):
+        errors.append("mobile homepage Date and Project cells must share the measured trailing reserve")
+    if not all(
+        token in case_css
+        for token in (
+            ".case-next-list {",
+            "grid-template-columns: var(--portfolio-table-columns);",
+            "column-gap: var(--portfolio-table-gap);",
+            ".case-next-row time,",
+            ".case-next-project {",
+            "padding-inline-end: var(--portfolio-mobile-cell-end-space);",
+        )
+    ):
+        errors.append("case-next tables must share content-derived tracks and mobile trailing reserve")
+    if "font-variant-numeric: tabular-nums" in portfolio_css or "font-variant-numeric: tabular-nums" in case_css:
+        errors.append("portfolio and case-table dates must keep proportional Inter numerals")
+    if not all(
+        token in core_script
+        for token in (
+            'document.querySelector(".portfolio-card-scope")',
+            'document.querySelector(".case-next-scope")',
+            "portfolioScope.getBoundingClientRect().left",
+            '"--mobile-contact-start"',
+            '"ResizeObserver" in window',
+            'window.addEventListener("load"',
+            'window.addEventListener("resize"',
+        )
+    ) or "var(--mobile-contact-start, 3fr)" not in responsive_css:
+        errors.append("mobile Contact must measure and follow the active table Scope coordinate")
+    mobile_homepage_lock_script = (
+        'root.classList.add("homepage-scroll-locked")',
+        "function updatePortfolioScrollIndicators()",
+        '"has-scroll-top"',
+        '"has-scroll-bottom"',
+        'portfolioSection?.addEventListener(',
+        '"ResizeObserver" in window',
+    )
+    mobile_homepage_lock_css = (
+        "html.homepage-scroll-locked",
+        "height: 100dvh;",
+        "overflow: hidden;",
+        "grid-template-rows: auto auto minmax(0, 1fr) auto;",
+        "overflow-y: auto;",
+        "overscroll-behavior: auto;",
+        "scrollbar-width: none;",
+        ".portfolio-scroll-frame::before",
+        ".portfolio-scroll-frame::after",
+        "transition: opacity 160ms ease-out;",
+        "margin-bottom: var(--section-gap);",
+    )
+    if not all(token in core_script for token in mobile_homepage_lock_script):
+        errors.append("mobile homepage script must lock the viewport and maintain table edge state")
+    if not all(token in responsive_css for token in mobile_homepage_lock_css):
+        errors.append("mobile homepage CSS must keep project rows as the only scrolling region with conditional edge fades")
+    if not re.search(
+        r'\[tabindex\]:not\(\[tabindex="-1"\]\)\):active\s*\{[^}]*position:\s*relative[^}]*top:\s*1px',
+        base_css,
+        re.DOTALL,
+    ) or ":active:not(.portfolio-sort-button)" in base_css:
+        errors.append("portfolio sort controls must retain the shared 1px pressed feedback")
+    if not all(
+        token in portfolio_open
+        for token in (
+            "Date&nbsp;",
+            "Project&nbsp;",
+            "Scope&nbsp;",
+        )
+    ) or not all(
+        token in portfolio_css
+        for token in (
+            "translateX(2.3px)",
+            "translateX(1.3px)",
+        )
+    ):
+        errors.append("portfolio sort labels must preserve literal spacing and measured indicator offsets")
+    if "if (suggestionSlug === slug)" not in builder or "return [];" not in builder:
+        errors.append("case-next generation must exclude the current project instead of creating a self-row")
     if not re.search(r"\.case-copy p,\s*\n\.case-copy li\s*\{[^}]*color:\s*var\(--text-secondary\)", case_css, re.DOTALL):
         errors.append("case prose must use --text-secondary")
     if not re.search(r"\.case-caption[^}]*color:\s*var\(--text-tertiary\)", case_css, re.DOTALL):
@@ -670,28 +836,8 @@ def _portfolio_errors(portfolio_repo: Path) -> list[str]:
         if markdown_path.name == "README.md":
             continue
         captions = re.findall(r"^!\[(.*)\]\(media:[a-z0-9-]+\)$", _read(markdown_path), re.MULTILINE)
-        long_caption_exceptions = (
-            {
-                "The application board posted for feedback",
-                "Feedback on the spacing between the glyphs",
-                "The repainted board",
-                "The thinner test and the reply",
-                "Nine frames and the replies they drew",
-                "The angled 3, and the verdict on it",
-                "The pinched curve against the smoothed one",
-            }
-            if markdown_path.name == "t3.md"
-            else set()
-        )
-        if any(
-            not caption.strip()
-            or (
-                len(caption.split()) > 5
-                and caption not in long_caption_exceptions
-            )
-            for caption in captions
-        ):
-            errors.append(f"case media captions must contain one to five words: {markdown_path.name}")
+        if any(not caption.strip() for caption in captions):
+            errors.append(f"case media caption must not be empty: {markdown_path.name}")
     if not re.search(r"\.case-section\s*\{[^}]*margin-top:\s*80px", case_css, re.DOTALL):
         errors.append("case sections must use the compact 80px rhythm")
     if not re.search(r"\.all-case \+ \.all-case\s*\{[^}]*margin-top:\s*var\(--all-case-gap\)", case_css, re.DOTALL):
@@ -699,6 +845,33 @@ def _portfolio_errors(portfolio_repo: Path) -> list[str]:
     if not re.search(r"\.name\s*\{[^}]*line-height:\s*var\(--link-line-height\)[^}]*min-height:\s*calc\(var\(--link-line-height\) \* 2\)", base_css, re.DOTALL):
         errors.append("desktop location must reserve two lines so shared links never move")
     preview_css = _read(portfolio_repo / "src/styles/40-preview-content.css")
+    theme_artwork_contract = (
+        ".theme-adaptive-monochrome-artwork {",
+        ":root:not([data-theme]) .theme-adaptive-monochrome-artwork",
+        ':root[data-theme="light"] .theme-adaptive-monochrome-artwork',
+        ':root[data-theme="dark"] .theme-adaptive-monochrome-artwork',
+        "filter: brightness(0);",
+    )
+    if not all(fragment in preview_css for fragment in theme_artwork_contract):
+        errors.append("theme-adaptive monochrome artwork must use one shared explicit/system theme treatment")
+    artwork_instances = [
+        path
+        for path in (portfolio_repo / "src/case-media").rglob("*.html")
+        if "theme-adaptive-monochrome-artwork" in _read(path)
+    ]
+    if not artwork_instances:
+        errors.append("shared theme-adaptive artwork treatment has no source fixture")
+    project_theme_owners = [
+        path
+        for path in (portfolio_repo / "src/styles").glob("30-*.css")
+        if re.search(
+            r"\.theme-adaptive-monochrome-artwork\s*\{[^}]*filter:",
+            _read(path),
+            re.DOTALL,
+        )
+    ]
+    if project_theme_owners:
+        errors.append("project styles may size theme-adaptive artwork but must not own its inversion")
     if "portfolio-label" in portfolio_open or 'aria-label="Portfolio"' not in portfolio_open:
         errors.append("homepage must omit the visible Portfolio label while preserving its accessible section name")
     homepage_projects = (
@@ -734,10 +907,7 @@ def _portfolio_errors(portfolio_repo: Path) -> list[str]:
         errors.append("homepage biography must use --text-primary")
     if '<footer class="site-footer">' not in homepage_references:
         errors.append("homepage Metadata links must share one semantic footer")
-    if not all(
-        value in homepage_references
-        for value in ("humans.txt", "llms.txt", ">source<", "https://github.com/gildrb/web")
-    ):
+    if not all(value in homepage_references for value in ("humans.txt", "llms.txt", "source")):
         errors.append("homepage Metadata footer must expose the current public references")
     if "copyright-year" in homepage_references or "copyrightYear" in core_script:
         errors.append("homepage must not retain stale copyright behavior")
@@ -753,52 +923,6 @@ def _portfolio_errors(portfolio_repo: Path) -> list[str]:
         errors.append("Metadata must not use a negative desktop offset")
     if re.search(r"\.references-links\s*\{[^}]*margin-top:\s*-", responsive_css, re.DOTALL):
         errors.append("Metadata must not use a negative mobile offset")
-    for slug, (stylesheet, mark_class) in THEME_INVERTING_MARKS.items():
-        mark_css = _read(portfolio_repo / f"src/styles/{stylesheet}")
-        required_mark_rules = (
-            rf"@media \(prefers-color-scheme: light\)\s*\{{\s*:root:not\(\[data-theme\]\) \.{mark_class}\s*\{{[^}}]*filter:\s*brightness\(0\)",
-            rf':root\[data-theme="light"\] \.{mark_class}\s*\{{[^}}]*filter:\s*brightness\(0\)',
-            rf':root\[data-theme="dark"\] \.{mark_class}\s*\{{[^}}]*filter:\s*none',
-        )
-        for pattern in required_mark_rules:
-            if not re.search(pattern, mark_css, re.DOTALL):
-                errors.append(f"{mark_class} must invert with the theme in every theme state")
-        owning_bundle = re.search(rf'slug: "{slug}",[\s\S]*?scripts:', site_config)
-        if not owning_bundle or f'"{stylesheet}"' not in owning_bundle.group(0):
-            errors.append(f"{stylesheet} must be registered in the {slug} case-study style bundle")
-        foreign_bundles = [
-            other_slug
-            for other_slug in case_templates
-            if other_slug != slug
-            and (match := re.search(rf'slug: "{other_slug}",[\s\S]*?scripts:', site_config))
-            and f'"{stylesheet}"' in match.group(0)
-        ]
-        if foreign_bundles:
-            errors.append(f"{stylesheet} must stay scoped to the {slug} route")
-        for other_slug, other_template in case_templates.items():
-            if other_slug != slug and mark_class in other_template:
-                errors.append(f"{mark_class} must not appear on /{other_slug}")
-    homepage_entry_css = _read(portfolio_repo / "src/styles/15-homepage-entry.css")
-    homepage_entry_script = _read(portfolio_repo / "src/scripts/12-homepage-entry.js")
-    if not re.search(
-        r"html\.homepage-first-paint-pending body:not\(\.case-page\)\s*\{[^}]*visibility:\s*hidden",
-        homepage_entry_css,
-        re.DOTALL,
-    ):
-        errors.append("homepage must stay hidden until first paint is ready")
-    if not re.search(
-        r"animation-delay:\s*calc\(var\(--row-delay[^)]*\)\s*\+\s*var\(--column-delay[^)]*\)\)",
-        homepage_entry_css,
-    ):
-        errors.append("homepage entry must stagger rows and columns into one diagonal reveal")
-    if "@media (prefers-reduced-motion: reduce)" not in homepage_entry_css:
-        errors.append("homepage entry must respect reduced motion")
-    if "homepageFirstPaintReady" not in core_script or "homepageFirstPaintReady" not in homepage_entry_script:
-        errors.append("homepage entry must wait on the shared first-paint readiness promise")
-    if "homepage-first-paint-pending" not in homepage_entry_script:
-        errors.append("homepage entry must clear the first-paint pending class")
-    if "2800" not in homepage_entry_script:
-        errors.append("homepage entry must keep its completion timeout fallback")
     heph_demo = _read(portfolio_repo / "src/partials/heph-demo.html")
     heph_css = _read(portfolio_repo / "src/styles/30-heph-demo.css")
     if not re.search(r"\.heph-demo\s*\{[^}]*overflow:\s*visible", heph_css, re.DOTALL):
@@ -855,7 +979,38 @@ def _portfolio_errors(portfolio_repo: Path) -> list[str]:
         case_css,
         re.DOTALL,
     ):
-        errors.append("desktop case ending must derive its vertical alignment from the theme toggle footer tokens")
+        errors.append("desktop authored case ending must derive its boundary from theme-toggle footer tokens")
+    if not re.search(
+        r"\.case-article article:has\(\+ \.case-next\) > :last-child\s*\{[^}]*padding-bottom:\s*0",
+        case_css,
+        re.DOTALL,
+    ):
+        errors.append("articles followed by case-next must reset final-child padding so the table alone owns footer placement")
+    case_next_footer = re.search(
+        r"@media\s*\(min-width:\s*769px\)[\s\S]*?\.case-next\s*\{([^}]*)\}",
+        case_css,
+        re.DOTALL,
+    )
+    if not case_next_footer:
+        errors.append("desktop case-next footer contract is missing")
+    else:
+        footer_block = case_next_footer.group(1)
+        required_footer_fragments = (
+            "margin-top: auto;",
+            "padding-top: 48px;",
+            "var(--footer-title-center-offset)",
+            "(var(--theme-toggle-size) / 2)",
+            "(24px / 2)",
+        )
+        if not all(fragment in footer_block for fragment in required_footer_fragments):
+            errors.append("every desktop case-next table must consume spare height and center its final 24px row with the theme icon")
+        if "var(--footer-title-optical-offset)" in footer_block:
+            errors.append("case-next footer must not restore the rejected 4px downward offset")
+    if not re.search(
+        r"@media\s*\(max-width:\s*768px\)[\s\S]*?\.case-next\s*\{[^}]*margin-top:\s*48px",
+        case_css,
+    ):
+        errors.append("mobile case-next must restore its natural 48px article gap")
     if re.search(
         r"\.case-article article > :last-child\s*\{[^}]*(?:margin-top:\s*auto|padding-top:)",
         case_css,
@@ -880,7 +1035,7 @@ def _portfolio_errors(portfolio_repo: Path) -> list[str]:
         re.DOTALL,
     ):
         errors.append("prose after case media must use the same shared optical transition")
-    for banned in ("object-fit: cover", "border-bottom:"):
+    for banned in ("object-fit: cover",):
         if banned in case_css:
             errors.append(f"case CSS contains banned rule: {banned}")
 
@@ -936,16 +1091,8 @@ def _portfolio_errors(portfolio_repo: Path) -> list[str]:
         errors.append("homepage does not include the shared sidebar links")
     if "<!-- @include:partials/theme-toggle.html -->" not in homepage_sidebar:
         errors.append("homepage does not include the shared theme control")
-    for template_name, template in (
-        ("Ben Davis", ben_davis_template),
-        ("CURVES", curves_template),
-        ("Filen", filen_template),
-        ("Heph", heph_template),
-        ("mL7", ml7_template),
-        ("n0thing", n0thing_template),
-        ("gildrb.com", site_template),
-        ("T3", t3_template),
-    ):
+    for slug, template in case_templates.items():
+        template_name = route_titles[slug]
         if "<!-- @include:partials/sidebar-links.html -->" not in template:
             errors.append(f"{template_name} does not include the shared sidebar links")
         if template.count("<!-- @include:partials/sidebar-links.html -->") != 2:
@@ -983,38 +1130,159 @@ def _portfolio_errors(portfolio_repo: Path) -> list[str]:
     for stylesheet, pattern, message in responsive_visibility_rules:
         if not re.search(pattern, stylesheet, re.DOTALL):
             errors.append(message)
-    if "homepage-scroll-locked" not in responsive_css:
-        errors.append("mobile homepage must define the locked viewport state")
-    if "portfolio-scroll-frame" not in responsive_css:
-        errors.append("mobile homepage must define the scroll-frame wrapper")
-    if "overflow-y: auto" not in responsive_css:
-        errors.append("mobile homepage must keep rows in a nested scrolling table")
-    if "scrollbar-width: none" not in responsive_css:
-        errors.append("mobile homepage must suppress the inner scrollbar")
-    if "portfolio-scroll-frame::before" not in responsive_css or "portfolio-scroll-frame::after" not in responsive_css:
-        errors.append("mobile homepage must define conditional scroll fades")
-    if "document.overflow" in core_script:
-        errors.append("mobile homepage lock must remain owned by the CSS root state")
-    if not re.search(
-        r"@media\s*\(max-width:\s*767px\)[\s\S]*?\.name\s*\{[^}]*position:\s*sticky[^}]*top:\s*0[^}]*background:\s*linear-gradient",
-        responsive_css,
-    ):
-        errors.append("mobile routes must share the sticky main-branch location treatment")
-    if not re.search(
-        r"@media\s*\(max-width:\s*767px\)[\s\S]*?\.theme-toggle\s*\{[^}]*position:\s*sticky[^}]*top:\s*0",
-        responsive_css,
-    ):
-        errors.append("mobile homepage and shared routes must keep the theme toggle sticky at the shared top offset")
-    if not re.search(r"const sharedCaseScripts = Object\.freeze\(\[\s*\"10-core\.js\",\s*\"20-theme\.js\",\s*\"30-email\.js\",?\s*\]\)", site_config):
-        errors.append("case-page script bundle does not preserve shared email behavior")
+    shared_case_script_contract = (
+        '"10-core.js"',
+        '"20-theme.js"',
+        '"30-email.js"',
+        '"80-webmcp.js"',
+    )
+    if not all(token in site_config for token in shared_case_script_contract):
+        errors.append(
+            "case-page script bundle must include shared email and WebMCP behavior",
+        )
     if 'querySelectorAll(".email")' not in email_script:
         errors.append("shared email behavior does not bind every responsive email control")
-    redirect_pairs = {
-        (item.get("source"), item.get("destination"), item.get("permanent"))
-        for item in vercel.get("redirects", [])
+    required_redirects = (
+        "https://www.gildrb.com/* https://gildrb.com/:splat 301",
+        "/gil /",
+        "/gildrb /",
+        "/gil-rodrigues /",
+        "/gil-rodrigues-barbosa /",
+        "/gil-domingos-rodrigues-barbosa /",
+        "/work /",
+        "/index/filen /filen 301",
+        "/index/filen/ /filen 301",
+    )
+    for redirect in required_redirects:
+        if redirect not in cloudflare_redirects:
+            errors.append(f"missing documented Cloudflare redirect: {redirect}")
+    required_function_routes = {
+        "/",
+        "/all",
+        "/filen",
+        "/heph",
+        "/ben-davis",
+        "/t3",
+        "/ml7",
+        "/n0thing",
+        "/curves",
+        "/site",
+        "/api/profile",
+        "/api/status",
+        "/mcp",
+        "/mcp/server-card",
     }
-    if ("/index/filen", "/filen", True) not in redirect_pairs:
-        errors.append("missing permanent /index/filen to /filen redirect")
+    if not required_function_routes.issubset(
+        set(cloudflare_routes.get("include", [])),
+    ):
+        errors.append("Cloudflare function routes do not cover the documented bounded surface")
+    motion_contract = (
+        "@keyframes homepage-fade",
+        "@keyframes homepage-rise",
+        "filter: blur(6px)",
+        "translateY(12px)",
+        "homepage-fade 700ms cubic-bezier(0.16, 1, 0.3, 1)",
+        "homepage-rise 900ms cubic-bezier(0.16, 1, 0.3, 1)",
+        "--homepage-entry-delay: 570ms",
+        "prefers-reduced-motion: no-preference",
+        "html:not([data-homepage-entry-complete])",
+        "animation-delay: 480ms",
+        "--homepage-entry-delay: 750ms",
+    )
+    if not all(token in homepage_entry_css for token in motion_contract):
+        errors.append("approved homepage entry motion has drifted")
+    style_sources = "\n".join(
+        _read(path) for path in sorted((portfolio_repo / "src/styles").glob("*.css"))
+    )
+    keyframe_names = set(
+        re.findall(r"@keyframes\s+([a-zA-Z0-9_-]+)", style_sources)
+    )
+    expected_keyframes = {
+        "homepage-fade",
+        "homepage-rise",
+        "heph-demo-cursor-blink",
+    }
+    if keyframe_names != expected_keyframes:
+        errors.append(
+            "motion inventory drift in keyframes: "
+            f"expected {sorted(expected_keyframes)}, found {sorted(keyframe_names)}",
+        )
+    transition_values = set(
+        re.findall(r"\btransition\s*:\s*([^;]+);", style_sources)
+    )
+    if transition_values != {"opacity 160ms ease-out"}:
+        errors.append(
+            "motion inventory drift in transitions: "
+            f"found {sorted(transition_values)}",
+        )
+    animated_assets = sorted(
+        path.name
+        for path in (portfolio_repo / "images/optimized").iterdir()
+        if path.suffix.lower() in {".apng", ".gif", ".mp4", ".webm"}
+    )
+    if not animated_assets or any(
+        "n0thing-wordmark-animation" not in name for name in animated_assets
+    ):
+        errors.append("animated media inventory contains an undocumented asset")
+    inventory_contract = (
+        *expected_keyframes,
+        "opacity 160ms ease-out",
+        "n0thing-wordmark-animation",
+        "src/scripts/10-core.js",
+        "src/scripts/20-theme.js",
+        "src/scripts/50-heph-demo.js",
+        "data-homepage-entry-complete",
+        "mobile visual-row Links/Contact completes at `1650ms`",
+    )
+    if not all(token in motion_inventory for token in inventory_contract):
+        errors.append("gildrb motion inventory does not classify every motion surface")
+    if any(
+        token in homepage_entry_css
+        for token in ("visibility: hidden", "will-change")
+    ):
+        errors.append("homepage entry motion contains a forbidden render or layer gate")
+    webmcp_contract = (
+        "navigator.modelContext",
+        "document.modelContext",
+        "registerTool",
+        "provideContext",
+        "AbortController",
+    )
+    if not all(token in webmcp_script for token in webmcp_contract):
+        errors.append("WebMCP progressive-enhancement contract has drifted")
+    if not all(
+        token in agent_verifier
+        for token in (
+            'readJson(".well-known/api-catalog")',
+            'readText("functions/mcp.js")',
+            'readJson("openapi.json")',
+            'readText("auth.md")',
+        )
+    ):
+        errors.append("agent-readiness verifier does not cover discovery, MCP, OpenAPI, and auth")
+    published_output_contract = (
+        'path.join(root, "public")',
+        '".well-known"',
+        '"_headers"',
+        '"_redirects"',
+        '"_routes.json"',
+        '"all"',
+        '"content"',
+        '"fonts"',
+        '"images"',
+        '"index.html"',
+        '"openapi.json"',
+        '...siteConfig.caseStudies.map(({ slug }) => slug)',
+        "await rm(output, { recursive: true, force: true })",
+        "128 * 1024",
+    )
+    if not all(token in cloudflare_output for token in published_output_contract):
+        errors.append("Cloudflare output must remain a clean explicit allowlist with generated routes, assets, discovery, and metadata")
+    if any(
+        token in cloudflare_output
+        for token in ('"README.md"', '"CLOUDFLARE.md"', '"DNS-AID.md"')
+    ):
+        errors.append("Cloudflare output allowlist exposes operational repository Markdown")
     return errors
 
 

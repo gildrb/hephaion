@@ -29,11 +29,14 @@ Preserve one shared responsive shell and its exact structural geometry across ev
 - Below `1400px`: wrapper padding `32px`, layout gap `32px`.
 - Desktop sidebar: sticky at `top: 0`, `100vh`, `48px` vertical padding.
 - Case article maximum: `760px`, centered; copy stays left-aligned.
-- Mobile at `767px`: content plus `32px` theme-control column and wrapper inline padding `12px`. The layout and `.content` have `0` padding; the name/theme row supplies `24px` top and `8px` bottom padding. The homepage row stays in document flow; case-study rows remain sticky.
+- Mobile at `767px`: content plus `32px` theme-control column and wrapper inline padding `12px`. The layout and `.content` have `0` padding; the name/theme row supplies `24px` top and `8px` bottom padding. Case-study rows remain sticky. The homepage locks to `100dvh` and assigns project rows to the only inner scrolling region while the shared header/filter and Links/Contact occupy fixed grid rows.
 - Mobile uses the existing shared shell and `display: contents`; case article order `5`, shared navigation order `6`.
 - Shared sidebar content appears on every route from one partial. Project location uses two lines: `Gil Rodrigues` then `→ <Project>`.
 - Homepage and case Links groups begin at the same desktop coordinate by reserving two location lines.
 - Heph demo markup has one canonical owner: `src/partials/heph-demo.html`.
+- Homepage and case-next lists share `--portfolio-table-columns`: two `max-content` tracks, flexible Scope, and a minimum `19px` affordance track. Each rendered table sizes from its own visible rows; do not force identical Project widths across routes.
+- Mobile Contact starts at the measured Scope coordinate from the current homepage or case table. A fixed global Contact column is invalid because self-exclusion changes each case table's longest project.
+- Desktop `.case-next` is the only spare-height flex target. It uses `margin-top: auto` and a `48px` top pad; authored article content remains natural. Its final row centers with the sticky theme icon on short and long routes.
 
 ## Procedure
 
@@ -43,6 +46,7 @@ Preserve one shared responsive shell and its exact structural geometry across ev
 4. Change the shared owner, not generated HTML or route copies.
 5. Preserve source order for keyboard users; CSS order may only reflect the same intended DOM sequence.
 6. Rebuild every route and compare shell coordinates.
+7. For footer work, measure every case at `1440×900` and `1440×2000`; scroll long documents to their true bottom and include a short page with `scrollY === 0`.
 
 ## Reject
 
@@ -54,7 +58,7 @@ Preserve one shared responsive shell and its exact structural geometry across ev
 
 ## Verify
 
-Run the build, repository verifier, and `git diff --check`. At desktop and `390px`, verify all routes have identical name coordinates, shared links, no overflow, the article before shared mobile navigation, and the theme control in its documented column. Tab order must match visual order.
+Run the build, repository verifier, and `git diff --check`. At desktop and `390px`, verify all routes have identical name coordinates, shared links, no overflow, the article before shared mobile navigation, and the theme control in its documented column. Tab order must match visual order. For tables, prove each route's computed track list is content-derived and Contact equals Scope. For desktop footers, require final-row/theme-icon center delta no greater than `1.5px`.
 
 ## Done
 

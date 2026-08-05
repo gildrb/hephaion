@@ -1,4 +1,4 @@
 interface:
   display_name: "Gildrb Shell Layout"
-  short_description: "Maintain the shared responsive page shell"
-  default_prompt: "Use $gildrb-shell-layout to change and verify only the gildrb shell, columns, ordering, and responsive geometry."
+  short_description: "Maintain shared responsive geometry"
+  default_prompt: "Use $gildrb-shell-layout to verify content-derived table tracks, measured mobile Contact placement, shared columns, ordering, and case-footer geometry."
